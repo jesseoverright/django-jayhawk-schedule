@@ -9,7 +9,14 @@ class Game(models.Model):
     location = models.CharField(max_length=255)
     television = models.CharField(max_length=255)
     date = models.DateTimeField()
-    game_type = models.CharField(max_length=25)
+    game_type = models.CharField(max_length=25, choices=[
+        ('Exhibition', 'Exhibition'),
+        ('Non Conference', 'Non-Conference'),
+        ('Preseason Tournament', 'Preseason Tournament'),
+        ('Conference', 'Conference'),
+        ('Conference Tournament', 'Conference Tournament'),
+        ('NCAA Tournament', 'NCAA Tournament'),
+        ])
     score = models.IntegerField(null=True, blank=True)
     opponent_score = models.IntegerField(null=True, blank=True)
 
