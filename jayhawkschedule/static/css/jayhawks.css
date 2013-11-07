@@ -1,0 +1,213 @@
+body {
+    font-family: helvetica;
+    margin: 0;
+    padding: 0;
+    background: #3b74ff;
+    font-size:;
+}
+
+a, a:visited {
+    color: #3b74ff;
+    text-decoration: none;
+}
+
+h1, h2, h3, h4, p {
+    margin: 0 0 0.25em;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.17em;
+}
+
+h4, p {
+    font-size: 1em;
+}
+
+#container {
+    max-width: 1000px;
+    width: 80%;
+    margin: 30px auto;
+    box-shadow: 5px 5px #ff0a27;
+    padding: 10px;
+    background: #ffffff;
+}
+
+#header {
+    background: #dbdbdb;
+    background: -moz-linear-gradient(top,  #dbdbdb 0%, #ddf1f9 35%, #3b74ff 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dbdbdb), color-stop(35%,#ddf1f9), color-stop(100%,#3b74ff));
+    background: -webkit-linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
+    background: -o-linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
+    background: -ms-linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
+    background: linear-gradient(to bottom,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dbdbdb', endColorstr='#3b74ff',GradientType=0 );
+}
+
+#header img {
+    width: 100%;
+    height: auto;
+}
+
+#header h1 {
+    margin-top: 0;
+    padding: 5px 20px 10px;
+    font-size: 1.6em;
+    text-shadow: 2px 2px #000;
+}
+
+#header a {
+    color: #fff;
+
+}
+
+#content {
+    padding: 5px 20px 10px;
+    min-height: 100px;
+}
+
+#footer {
+    border-top: 2px solid #3b74ff;
+    padding: 20px;
+    clear: both;
+}
+
+#footer strong {
+    float: right;
+}
+
+.edit {
+    float: right;
+}
+
+.game {
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 2px solid #dbdbdb;
+    clear: both;
+}
+
+.game p {
+    line-height: 1.65em;
+}
+
+.game .game-type {
+    background-color: #ddd;
+    padding: 5px 8px;
+    margin: 0 4px;
+    border-radius: 6px;
+}
+
+.game:last-child {
+    border-bottom: none;
+}
+
+.game .final-score {
+    float: right;
+    padding: 14px;
+    width: 75px;
+    text-align: center;
+    margin: 0 0 0 20px;
+}
+
+.win {
+    background-color: #6df25c;
+}
+
+.loss {
+    background-color: #f28c8c;
+}
+
+#single-game {
+    clear: both;
+}
+
+#single-game h2:first-child {
+    text-align: center;
+    border-bottom: 2px solid #dbdbdb;
+    padding-bottom: 0.25em;
+    margin-bottom: 0.5em;
+}
+
+#single-game .final-score {
+    text-align: center;
+    width: 45%;
+    margin: 0.5em auto;
+    min-width: 80px;
+    padding: 10px;
+}
+
+#single-game .date {
+    float: left;
+}
+
+#single-game .location {
+    float: right;
+}
+
+form {
+    margin-top: 1em;
+}
+form label {
+    width: 200px;
+    float: left;
+}
+
+form #date, form #time {
+    width: 9.7em;
+}
+
+form label[for="type"] {
+    height: 7em;
+}
+
+form input[type="text"], form input[type="password"] {
+    font-size: 100%;
+    margin: 0 0 0.5em;
+    width: 20em;
+}
+
+form #score, form #opponent_score {
+    width: 2em;
+}
+
+.errors {
+    border: 2px dotted red;
+    padding: 5px 5px 0;
+    background-color: #eee;
+    margin-bottom: 10px;
+}
+
+@media all and (max-device-width: 780px)  {
+    body {
+        font-size: 240%;
+    }
+
+    #container {
+        width: 90%;
+    }
+
+    #header h1 {
+        text-shadow: 3px 3px #000;
+    }
+
+    .game {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+    }
+
+    .game .final-score {
+        width: 225px;
+    }
+
+    #single-game .location {
+        float: left;
+    }
+}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} Kansas Jayhawks Basketball Schedule {% endblock %}
+
+{% block content %}
+    {% for game in games %}
+    <div class="game">
+        <h2><a href="{{game.get_absolute_url}}">{{game.opponent}} {{game.mascot}}</a></h2>
+        <p><span class="game-type">{{game.game_type}}</span>{{game.date}} 
+        {% if game.television %}
+            on {{game.television}}
+        {% endif %}
+        </p>
+    </div>
+    {% endfor %}
+{% endblock %}
