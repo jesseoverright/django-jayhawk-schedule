@@ -9,6 +9,9 @@
         Kansas Jayhawks vs {{game.opponent}} {{game.mascot}}
     {% endif %}
     </h2>
+    {% if game.result %}
+        <h2 class="final-score {{game.result}}">{{game.score}} - {{game.opponent_score}}</h2>
+    {% endif %}
     <h3 class="date">{{game.date}}
     {% if game.television %}
         on {{game.television}}

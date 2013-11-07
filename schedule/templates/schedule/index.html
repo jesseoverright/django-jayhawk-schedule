@@ -5,6 +5,9 @@
 {% block content %}
     {% for game in games %}
     <div class="game">
+        {% if game.result %}
+            <h2 class="final-score {{game.result}}">{{game.score}} - {{game.opponent_score}}</h2>
+        {% endif %}
         <h2><a href="{{game.get_absolute_url}}">{{game.opponent}} {{game.mascot}}</a></h2>
         <p><span class="game-type">{{game.game_type}}</span>{{game.date}} 
         {% if game.television %}

@@ -10,7 +10,16 @@ class Game(models.Model):
     television = models.CharField(max_length=255)
     date = models.DateTimeField()
     game_type = models.CharField(max_length=25)
-    published = models.BooleanField(default=True)
+    score = models.IntegerField(null=True, blank=True)
+    opponent_score = models.IntegerField(null=True, blank=True)
+
+    def result(self):
+        if self.score > self.opponent_score:
+            return 'win'
+        elif self.score < self.opponent_score:
+            return 'loss'
+        else:
+            return False
 
     class Meta:
         ordering = ['-date']

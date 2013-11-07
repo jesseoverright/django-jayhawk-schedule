@@ -3,7 +3,7 @@ from schedule.models import Game
 
 def index(request):
     # get games
-    games = Game.objects.filter(published=True)
+    games = Game.objects.order_by('date')
 
     return render(request, 'schedule/index.html', {'games': games})
 
