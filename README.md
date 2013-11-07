@@ -5,4 +5,4 @@ This is a simple django app built to track the __Kansas Jayhawks 2013-14__ baske
 - create games, setting opponent, location, tv info
 - subscribe to a ical calendar feed
 - update results as games occur
-![sample view of schedule](https://raw.github.com/jesseoverright/django-jayhawk-schedule/master/jayhawk-schedule/static/images/schedule-sample.png)
+![sample view of schedule](https://github.com/jesseoverright/django-jayhawk-schedule/tree/master/jayhawkschedule/static/images/schedule-sample.png)
