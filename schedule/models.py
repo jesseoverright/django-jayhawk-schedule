@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+import datetime
 
 GAME_TYPES = (
     ('Exhibition', 'Exhibition'),
@@ -21,6 +22,9 @@ class Game(models.Model):
     game_type = models.CharField(max_length=25, choices=GAME_TYPES)
     score = models.IntegerField(null=True, blank=True)
     opponent_score = models.IntegerField(null=True, blank=True)
+
+    def game_end(self):
+        return self.date + datetime.timedelta(0,9000)
 
     def result(self):
         if self.score > self.opponent_score:
