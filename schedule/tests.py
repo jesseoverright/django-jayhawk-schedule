@@ -1,16 +1,18 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
+import datetime
+from django.utils import timezone
 
 from django.test import TestCase
+from schedule.models import Game
 
-
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+class GamesTest(TestCase):
+    def setUp(self):
+        self.game = Game.objects.create(
+            opponent='Memphis',
+            slug='memphis',
+            mascot='Tigers',
+            date=timezone.make_aware(datetime.datetime.now(), timezone.get_default_timezone()),
+            score=75,
+            opponent_score=68,
+            )
+    def test_game_result(self):
+        self.assertEqual(self.game.result(), 'win') 
