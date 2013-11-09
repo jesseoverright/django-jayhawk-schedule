@@ -4,12 +4,12 @@
 {% for game in games %}
 BEGIN:VEVENT
 DTSTART;VALUE=DATE-TIME;TZID=US/Central:{{game.date|date:"Ymd"}}T{{game.date|date:"Hi00"}}
-DTEND;VALUE=DATE-TIME;TZID=US/Central:{{game.game_end|date:"Ymd"}}T{{game.game_end|date:"Hi00"}}
+DTEND;VALUE=DATE-TIME;TZID=US/Central:{{game.game_endtime|date:"Ymd"}}T{{game.game_endtime|date:"Hi00"}}
 DTSTAMP:{% now "Ymd" %}T{% now "Hi00" %}Z
 CREATED:{% now "Ymd" %}T{% now "Hi00" %}Z
 LAST-MODIFIED:{% now "Ymd" %}T{% now "Hi00" %}Z
 UID:{{game.slug}}
-SUMMARY:KU vs {{game.opponent}}
+SUMMARY:{{game.summary}}
 DESCRIPTION:Broadcast on {{game.television}}
 X-ALT-DESC;FMTTYPE=text/html:<p>Broadcast on {{game.television}}</p>
 LOCATION:{{game.location}}

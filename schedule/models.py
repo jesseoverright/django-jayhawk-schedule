@@ -23,8 +23,21 @@ class Game(models.Model):
     score = models.IntegerField(null=True, blank=True)
     opponent_score = models.IntegerField(null=True, blank=True)
 
-    def game_end(self):
+    def game_endtime(self):
         return self.date + datetime.timedelta(0,9000)
+
+    def summary(self):
+        if self.result() != False:
+            summary = self.result()[0].upper() + ' ' + str(self.score) + ' - ' + str(self.opponent_score) + ' '
+        else:
+            summary = ''
+
+        if self.location == "Allen Fieldhouse, Lawrence, KS":
+            summary += self.opponent + ' ' + self.mascot + ' at KU'
+        else:
+            summary += 'KU vs ' + self.opponent + ' ' + self.mascot
+
+        return u'%s' % summary
 
     def result(self):
         if self.score > self.opponent_score:
