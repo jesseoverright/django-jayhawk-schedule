@@ -13,7 +13,15 @@ middleware here, or combine a Django application with an application of another
 framework.
 
 """
-import os
+import os, sys
+
+apache_configuration = os.path.dirname(__file__)
+
+project = os.path.dirname(apache_configuration)
+workspace = os.path.dirname(project)
+sys.path.append(workspace)
+sys.path.append('/var/www/django/jayhawkschedule')
+sys.path.append('/var/www/django')
 
 # We defer to a DJANGO_SETTINGS_MODULE already in the environment. This breaks
 # if running multiple sites in the same mod_wsgi process. To fix this, use
