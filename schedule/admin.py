@@ -7,6 +7,6 @@ class GameAdmin(admin.ModelAdmin):
     search_fields = ['opponent', 'mascot']
     date_heirarchy = 'date'
     save_on_top = True
-    prepopulated_fields = {"slug": ("opponent",)}
+    prepopulated_fields = {'slug': ('opponent',)}
 
 admin.site.register(Game, GameAdmin)

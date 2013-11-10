@@ -8,7 +8,15 @@
         {% if game.result %}
             <h2 class="final-score {{game.result}}">{{game.score}} - {{game.opponent_score}}</h2>
         {% endif %}
-        <h2><a href="{{game.get_absolute_url}}">{{game.opponent}} {{game.mascot}}</a></h2>
+        <h2><a href="{{game.get_absolute_url}}">
+        {% if game.team_color %}
+            <span style="color:#{{game.team_color}}">
+        {% endif %}
+        {{game.opponent}} {{game.mascot}}
+        {% if game.team_color %}
+            </span>
+        {% endif %}
+        </a></h2>
         <p><span class="game-type">{{game.game_type}}</span>{{game.date}} 
         {% if game.television %}
             on {{game.television}}

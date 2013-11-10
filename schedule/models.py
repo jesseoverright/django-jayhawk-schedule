@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 import datetime
+import json
+import urllib2
 
 GAME_TYPES = (
     ('Exhibition', 'Exhibition'),
@@ -10,6 +12,25 @@ GAME_TYPES = (
     ('Conference Tournament', 'Conference Tournament'),
     ('NCAA Tournament', 'NCAA Tournament'),
 )
+
+class EspnApi(object):
+    def __init__(self):
+        key = "q5vjgc6pmygdg3ufz3p9hw7c"
+        url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams?apikey=%s&limit=351"
+
+        response = urllib2.urlopen(url % key)
+        data = json.load(response)   
+
+        self.teams =  data['sports'][0]['leagues'][0]['teams']
+
+    def get_team(self, team_name, mascot):
+        for team in self.teams:
+            if team['name'] == mascot and team['location'] == team_name:
+                return team
+
+        return False
+
+all_cbb_teams = EspnApi();
 
 # a Game on KU's schedule includes opponent info, date, location and tv details
 class Game(models.Model):
@@ -22,6 +43,7 @@ class Game(models.Model):
     game_type = models.CharField(max_length=25, choices=GAME_TYPES)
     score = models.IntegerField(null=True, blank=True)
     opponent_score = models.IntegerField(null=True, blank=True)
+    espn_api_team_details = None
 
     def game_endtime(self):
         return self.date + datetime.timedelta(0,9000)
@@ -38,6 +60,20 @@ class Game(models.Model):
             summary += 'KU vs ' + self.opponent + ' ' + self.mascot
 
         return u'%s' % summary
+
+    def get_espn_api_team_details(self):
+        if self.espn_api_team_details is not None:
+            return self.espn_api_team_details
+        else:
+            self.espn_api_team_details = all_cbb_teams.get_team(self.opponent, self.mascot)
+            return self.espn_api_team_details
+
+
+    def espn_link(self):
+        return self.get_espn_api_team_details()['links']['web']['teams']['href']
+
+    def team_color(self):
+        return self.get_espn_api_team_details()['color']
 
     def result(self):
         if self.score > self.opponent_score:

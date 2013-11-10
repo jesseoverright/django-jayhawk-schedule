@@ -20,5 +20,8 @@
     {% endif %}
     </h3>
     <h3 class="location">{{game.location}}</h3>
+    {% if game.espn_link %}
+        <p><a href="{{game.espn_link}}">{{game.mascot}} ESPN Team Page</a></p>
+    {% endif %}
 </div>
 {% endblock %}
