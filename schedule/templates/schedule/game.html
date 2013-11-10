@@ -6,9 +6,23 @@
 <div id="single-game">
     <h2>
     {% if game.location == "Allen Fieldhouse, Lawrence, KS" %}
-        {{game.opponent}} {{game.mascot}} at Kansas Jayhawks
+        {% if game.team_color %}
+            <span style="color:#{{game.team_color}}">
+        {% endif %}
+        {{game.opponent}} {{game.mascot}}
+        {% if game.team_color %}
+            </span>
+        {% endif %}
+        at Kansas Jayhawks
     {% else %}
-        Kansas Jayhawks vs {{game.opponent}} {{game.mascot}}
+        Kansas Jayhawks vs
+        {% if game.team_color %}
+            <span style="color:#{{game.team_color}}">
+        {% endif %}
+        {{game.opponent}} {{game.mascot}}
+        {% if game.team_color %}
+            </span>
+        {% endif %}
     {% endif %}
     </h2>
     {% if game.result %}
@@ -23,5 +37,11 @@
     {% if game.espn_link %}
         <p><a href="{{game.espn_link}}">{{game.mascot}} ESPN Team Page</a></p>
     {% endif %}
+    <p>ESPN News for {{game.opponent}} {{game.mascot}}</p>
+    <ul>
+    {% for article in game.team_news %}
+        <li><a href="{{article.links.web.href}}">{{article.headline}}</a></li>
+    {% endfor %}
+    </ul>
 </div>
 {% endblock %}

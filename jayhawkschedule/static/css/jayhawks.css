@@ -154,6 +154,7 @@ h4, p {
 
 #single-game p {
     clear: both;
+    margin-bottom: 1em;
 }
 
 form {

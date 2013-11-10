@@ -13,12 +13,12 @@ GAME_TYPES = (
     ('NCAA Tournament', 'NCAA Tournament'),
 )
 
-class EspnApi(object):
+class EspnTeamInfo(object):
     def __init__(self):
-        key = "q5vjgc6pmygdg3ufz3p9hw7c"
+        self.key = "q5vjgc6pmygdg3ufz3p9hw7c"
         url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams?apikey=%s&limit=351"
 
-        response = urllib2.urlopen(url % key)
+        response = urllib2.urlopen(url % self.key)
         data = json.load(response)   
 
         self.teams =  data['sports'][0]['leagues'][0]['teams']
@@ -30,7 +30,16 @@ class EspnApi(object):
 
         return False
 
-all_cbb_teams = EspnApi();
+    def get_team_news(self, team_id):
+        url = "http://api.espn.com/v1/now?leagues=mens-college-basketball&teams=%s&apikey=%s"
+
+        response = urllib2.urlopen(url % (team_id, self.key))
+        data = json.load(response)
+
+        return data
+
+
+espn_api = EspnTeamInfo();
 
 # a Game on KU's schedule includes opponent info, date, location and tv details
 class Game(models.Model):
@@ -65,15 +74,17 @@ class Game(models.Model):
         if self.espn_api_team_details is not None:
             return self.espn_api_team_details
         else:
-            self.espn_api_team_details = all_cbb_teams.get_team(self.opponent, self.mascot)
+            self.espn_api_team_details = espn_api.get_team(self.opponent, self.mascot)
             return self.espn_api_team_details
-
 
     def espn_link(self):
         return self.get_espn_api_team_details()['links']['web']['teams']['href']
 
     def team_color(self):
         return self.get_espn_api_team_details()['color']
+
+    def team_news(self):
+        return espn_api.get_team_news(self.get_espn_api_team_details()['id'])['feed']
 
     def result(self):
         if self.score > self.opponent_score:
