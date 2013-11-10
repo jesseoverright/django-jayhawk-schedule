@@ -11,6 +11,8 @@ Main Features:
 
 ## Jayhawk Schedule Homepage
 ![Jayhawk Schedule Homepage](https://raw.github.com/jesseoverright/django-jayhawk-schedule/master/jayhawkschedule/static/images/home-page.png)
+The homepage displays the full list of games, including results, upcoming games, location, television info and more at a glance.
 
 ## Team Pages
 ![Jayhawk Schedule Team Page](https://raw.github.com/jesseoverright/django-jayhawk-schedule/master/jayhawkschedule/static/images/team-page.png)
+Team pages take further advantage of the ESPN API to include ESPN Team page links, latest ESPN articles, and team colors.
