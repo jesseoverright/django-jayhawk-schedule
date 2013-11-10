@@ -9,6 +9,8 @@ Main Features:
 - generates a ical calendar feed
 - update results as games occur
 
+## Jayhawk Schedule Homepage
 ![Jayhawk Schedule Homepage](https://raw.github.com/jesseoverright/django-jayhawk-schedule/master/jayhawkschedule/static/images/home-page.png)
 
+## Team Pages
 ![Jayhawk Schedule Team Page](https://raw.github.com/jesseoverright/django-jayhawk-schedule/master/jayhawkschedule/static/images/team-page.png)
