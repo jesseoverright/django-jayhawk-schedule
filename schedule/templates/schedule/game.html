@@ -36,12 +36,12 @@
     <h3 class="location">{{game.location}}</h3>
     {% if game.espn_link %}
         <p><a href="{{game.espn_link}}">{{game.mascot}} ESPN Team Page</a></p>
+        <p>ESPN News for {{game.opponent}} {{game.mascot}}</p>
+        <ul>
+        {% for article in game.team_news %}
+            <li><a href="{{article.links.web.href}}">{{article.headline}}</a></li>
+        {% endfor %}
+        </ul>
     {% endif %}
-    <p>ESPN News for {{game.opponent}} {{game.mascot}}</p>
-    <ul>
-    {% for article in game.team_news %}
-        <li><a href="{{article.links.web.href}}">{{article.headline}}</a></li>
-    {% endfor %}
-    </ul>
 </div>
 {% endblock %}
