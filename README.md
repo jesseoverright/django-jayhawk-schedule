@@ -9,5 +9,4 @@ Main Features:
 - subscribe to a ical calendar feed
 - update results as games occur
 
-
-[sample view of schedule](https://raw.github.com/jesseoverright/django-jayhawk-schedule/master/jayhawkschedule/static/images/schedule-sample.png)
+![sample view of schedule](https://raw.github.com/jesseoverright/django-jayhawk-schedule/master/jayhawkschedule/static/images/schedule-sample.png)
