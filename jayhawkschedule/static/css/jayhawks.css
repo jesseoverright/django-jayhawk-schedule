@@ -236,7 +236,7 @@ form #score, form #opponent_score {
         width: 225px;
     }
 
-    #single-game .location {
-        float: left;
+    #single-game .left-column, #single-game .right-column {
+        width: 100%;
     }
 }

@@ -5,7 +5,7 @@ This is a simple django app built to track the __Kansas Jayhawks 2013-14__ baske
 Main Features:
 
 - gives admin ability to create games, set opponent, location, tv info
-- takes advantage of the [ESPN API](http://developer.espn.com/docs) for video, team news, stats, and details
+- utlizes the [ESPN API](http://developer.espn.com/docs) for video, team news, stats, and details
 - generates a ical calendar feed
 - update results as games occur
 
