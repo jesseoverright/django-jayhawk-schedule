@@ -11,13 +11,7 @@ LAST-MODIFIED:{% now "Ymd" %}T{% now "Hi00" %}Z
 UID:{{game.slug}}
 SUMMARY:{{game.summary}}
 DESCRIPTION:Broadcast on {{game.television}}
-X-ALT-DESC;FMTTYPE=text/html:<p>
-{% if game.television %}
-    Broadcast on {{game.television}}
-{% endif %}
-{% if game.espn_link %}
-    <a href="{{game.espn_link}}">{{game.mascot}} ESPN Team Page</a>
-{% endif %}</p>
+X-ALT-DESC;FMTTYPE=text/html:<p>{% if game.television %}Broadcast on {{game.television}}{% endif %}{% if game.espn_link %}<br/><a href="{{game.espn_link}}">{{game.mascot}} ESPN Team Page</a>{% endif %}</p>
 LOCATION:{{game.location}}
 URL:http://jayhawkschedule.co/{{game.slug}}/
 CLASS:PUBLIC
