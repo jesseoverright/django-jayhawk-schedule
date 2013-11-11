@@ -4,44 +4,61 @@
 
 {% block content %}
 <div id="single-game">
-    <h2>
-    {% if game.location == "Allen Fieldhouse, Lawrence, KS" %}
-        {% if game.team_color %}
-            <span style="color:#{{game.team_color}}">
+    <div class="header">
+        <h2>
+        {% if game.location == "Allen Fieldhouse, Lawrence, KS" %}
+            {% if game.team_color %}
+                <span style="color:#{{game.team_color}}">
+            {% endif %}
+            {{game.opponent}} {{game.mascot}}
+            {% if game.team_color %}
+                </span>
+            {% endif %}
+            at Kansas Jayhawks
+        {% else %}
+            Kansas Jayhawks vs
+            {% if game.team_color %}
+                <span style="color:#{{game.team_color}}">
+            {% endif %}
+            {{game.opponent}} {{game.mascot}}
+            {% if game.team_color %}
+                </span>
+            {% endif %}
         {% endif %}
-        {{game.opponent}} {{game.mascot}}
-        {% if game.team_color %}
-            </span>
+        </h2>
+        {% if game.result %}
+            <h2 class="final-score {{game.result}}">{{game.score}} - {{game.opponent_score}}</h2>
         {% endif %}
-        at Kansas Jayhawks
-    {% else %}
-        Kansas Jayhawks vs
-        {% if game.team_color %}
-            <span style="color:#{{game.team_color}}">
+    </div>
+    {% if game.team_videos %}
+        <div class="left-column">
+            <h3>ESPN video for {{game.opponent}} {{game.mascot}}</h3>
+            
+            {% for video in game.team_videos %}
+                <div class="video"><script src="http://player.espn.com/player.js?playerBrandingId=4ef8000cbaf34c1687a7d9a26fe0e89e&adSetCode=91cDU6NuXTGKz3OdjOxFdAgJVtQcKJnI&pcode=1kNG061cgaoolOncv54OAO1ceO-I&externalId=espn:{{video.id}}&thruParam_espn-ui[autoPlay]=false&thruParam_espn-ui[playRelatedExternally]=true"></script></div><p><a href="{{video.links.web.href}}">{{video.headline}}</a></p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="right-column">
+        <h3 class="date">{{game.date}}
+        {% if game.television %}
+            on {{game.television}}
         {% endif %}
-        {{game.opponent}} {{game.mascot}}
-        {% if game.team_color %}
-            </span>
+        </h3>
+        <h3 class="location">{{game.location}}</h3>
+
+        {% if game.espn_link %}
+            <br /><h3><a href="{{game.espn_link}}">{{game.mascot}} ESPN Team Page</a></h3>
         {% endif %}
-    {% endif %}
-    </h2>
-    {% if game.result %}
-        <h2 class="final-score {{game.result}}">{{game.score}} - {{game.opponent_score}}</h2>
-    {% endif %}
-    <h3 class="date">{{game.date}}
-    {% if game.television %}
-        on {{game.television}}
-    {% endif %}
-    </h3>
-    <h3 class="location">{{game.location}}</h3>
-    {% if game.espn_link %}
-        <p><a href="{{game.espn_link}}">{{game.mascot}} ESPN Team Page</a></p>
-        <p>ESPN News for {{game.opponent}} {{game.mascot}}</p>
-        <ul>
-        {% for article in game.team_news %}
-            <li><a href="{{article.links.web.href}}">{{article.headline}}</a></li>
-        {% endfor %}
-        </ul>
-    {% endif %}
+        
+        {% if game.team_news %}
+            <br /><br /><h3>ESPN News for {{game.opponent}} {{game.mascot}}</h3>
+            <ul>
+            {% for article in game.team_news %}
+                <li><a href="{{article.links.web.href}}">{{article.headline}}</a></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
