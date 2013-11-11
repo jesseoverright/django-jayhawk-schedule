@@ -75,10 +75,16 @@ class Game(models.Model):
     def get_espn_api_team_details(self):
         if self._espn_api_team_details is None:
             self._espn_api_team_details = espn_api.get_team(self.opponent, self.mascot)
-            self._get_team_articles()
             return self._espn_api_team_details
         else:
             return self._espn_api_team_details
+
+    def get_espn_api_team_articles(self):
+        if self.team_news is None and self.team_videos is None:
+            self.team_news = []
+            self.team_videos = []
+
+            self._get_team_articles()
 
     def espn_link(self):
         return self.get_espn_api_team_details()['links']['web']['teams']['href']
@@ -87,17 +93,15 @@ class Game(models.Model):
         return self.get_espn_api_team_details()['color']
 
     def _get_team_articles(self):
-        if self.team_news is None and self.team_videos is None:
-            self.team_news = []
-            self.team_videos = []
-            
-            news = espn_api.get_team_news(self.get_espn_api_team_details()['id'])['feed']
+        self.get_espn_api_team_articles()
 
-            for article in news:
-                if 'type' in article.keys() and article['type'] == "Media":
-                    self.team_videos.append(article)
-                else:
-                    self.team_news.append(article)
+        news = espn_api.get_team_news(self.get_espn_api_team_details()['id'])['feed']
+
+        for article in news:
+            if 'type' in article.keys() and article['type'] == "Media":
+                self.team_videos.append(article)
+            else:
+                self.team_news.append(article)
 
     def result(self):
         if self.score > self.opponent_score:
