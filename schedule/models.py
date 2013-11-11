@@ -13,7 +13,7 @@ GAME_TYPES = (
     ('NCAA Tournament', 'NCAA Tournament'),
 )
 
-class EspnTeamInfo(object):
+class EspnApi(object):
     def __init__(self):
         self.key = "q5vjgc6pmygdg3ufz3p9hw7c"
         url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams?apikey=%s&limit=351"
@@ -39,7 +39,7 @@ class EspnTeamInfo(object):
         return data
 
 
-espn_api = EspnTeamInfo();
+espn_api = EspnApi();
 
 # a Game on KU's schedule includes opponent info, date, location and tv details
 class Game(models.Model):
@@ -52,7 +52,9 @@ class Game(models.Model):
     game_type = models.CharField(max_length=25, choices=GAME_TYPES)
     score = models.IntegerField(null=True, blank=True)
     opponent_score = models.IntegerField(null=True, blank=True)
-    espn_api_team_details = None
+    _espn_api_team_details = None
+    team_news = None
+    team_videos = None
 
     def game_endtime(self):
         return self.date + datetime.timedelta(0,9000)
@@ -71,11 +73,12 @@ class Game(models.Model):
         return u'%s' % summary
 
     def get_espn_api_team_details(self):
-        if self.espn_api_team_details is not None:
-            return self.espn_api_team_details
+        if self._espn_api_team_details is None:
+            self._espn_api_team_details = espn_api.get_team(self.opponent, self.mascot)
+            self._get_team_articles()
+            return self._espn_api_team_details
         else:
-            self.espn_api_team_details = espn_api.get_team(self.opponent, self.mascot)
-            return self.espn_api_team_details
+            return self._espn_api_team_details
 
     def espn_link(self):
         return self.get_espn_api_team_details()['links']['web']['teams']['href']
@@ -83,8 +86,18 @@ class Game(models.Model):
     def team_color(self):
         return self.get_espn_api_team_details()['color']
 
-    def team_news(self):
-        return espn_api.get_team_news(self.get_espn_api_team_details()['id'])['feed']
+    def _get_team_articles(self):
+        if self.team_news is None and self.team_videos is None:
+            self.team_news = []
+            self.team_videos = []
+            
+            news = espn_api.get_team_news(self.get_espn_api_team_details()['id'])['feed']
+
+            for article in news:
+                if 'type' in article.keys() and article['type'] == "Media":
+                    self.team_videos.append(article)
+                else:
+                    self.team_news.append(article)
 
     def result(self):
         if self.score > self.opponent_score:
