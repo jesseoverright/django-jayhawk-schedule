@@ -4,14 +4,14 @@
 {% for game in games %}
 BEGIN:VEVENT
 DTSTART;VALUE=DATE-TIME;TZID=US/Central:{{game.date|date:"Ymd"}}T{{game.date|date:"Hi00"}}
-DTEND;VALUE=DATE-TIME;TZID=US/Central:{{game.game_endtime|date:"Ymd"}}T{{game.game_endtime|date:"Hi00"}}
+DTEND;VALUE=DATE-TIME;TZID=US/Central:{{game.get_endtime|date:"Ymd"}}T{{game.get_endtime|date:"Hi00"}}
 DTSTAMP:{% now "Ymd" %}T{% now "Hi00" %}Z
 CREATED:{% now "Ymd" %}T{% now "Hi00" %}Z
 LAST-MODIFIED:{% now "Ymd" %}T{% now "Hi00" %}Z
 UID:{{game.slug}}
-SUMMARY:{{game.summary}}
+SUMMARY:{{game.get_summary}}
 DESCRIPTION:Broadcast on {{game.television}}
-X-ALT-DESC;FMTTYPE=text/html:<p>{% if game.television %}Broadcast on {{game.television}}{% endif %}{% if game.espn_link %}<br/><a href="{{game.espn_link}}">{{game.mascot}} ESPN Team Page</a>{% endif %}</p>
+X-ALT-DESC;FMTTYPE=text/html:<p>{% if game.television %}Broadcast on {{game.television}}{% endif %}{% if game.get_espn_link %}<br/><a href="{{game.get_espn_link}}">{{game.mascot}} ESPN Team Page</a>{% endif %}</p>
 LOCATION:{{game.location}}
 URL:http://jayhawkschedule.co/{{game.slug}}/
 CLASS:PUBLIC

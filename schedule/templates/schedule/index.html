@@ -5,15 +5,15 @@
 {% block content %}
     {% for game in games %}
     <div class="game">
-        {% if game.result %}
-            <h2 class="final-score {{game.result}}">{{game.score}} - {{game.opponent_score}}</h2>
+        {% if game.get_result %}
+            <h2 class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</h2>
         {% endif %}
         <h2><a href="{{game.get_absolute_url}}">
-        {% if game.team_color %}
-            <span style="color:#{{game.team_color}}">
+        {% if game.get_team_color %}
+            <span style="color:#{{game.get_team_color}}">
         {% endif %}
         {{game.opponent}} {{game.mascot}}
-        {% if game.team_color %}
+        {% if game.get_team_color %}
             </span>
         {% endif %}
         </a></h2>

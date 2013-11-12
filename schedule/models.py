@@ -65,44 +65,21 @@ class Game(models.Model):
     team_news = None
     team_videos = None
 
-    def game_endtime(self):
-        return self.date + datetime.timedelta(0,9000)
+    class Meta:
+        ordering = ['-date']
 
-    def summary(self):
-        if self.result() != False:
-            summary = self.result()[0].upper() + ' ' + str(self.score) + ' - ' + str(self.opponent_score) + ' '
-        else:
-            summary = ''
+    def __unicode__(self):
+        return u'%s %s' % (self.opponent, self.date.strftime('%b %d'))
 
-        if self.location == "Allen Fieldhouse, Lawrence, KS":
-            summary += self.opponent + ' ' + self.mascot + ' at KU'
-        else:
-            summary += 'KU vs ' + self.opponent + ' ' + self.mascot
-
-        return u'%s' % summary
-
-    def get_espn_api_team_details(self):
+    def _get_espn_api_team_details(self):
         if self._espn_api_team_details is None:
             self._espn_api_team_details = espn_api.get_team(self.opponent, self.mascot)
             return self._espn_api_team_details
         else:
             return self._espn_api_team_details
 
-    def get_espn_api_team_articles(self):
-        if self.team_news is None and self.team_videos is None:
-            self.team_news = []
-            self.team_videos = []
-
-            self._get_team_articles()
-
-    def espn_link(self):
-        return self.get_espn_api_team_details()['links']['web']['teams']['href']
-
-    def team_color(self):
-        return self.get_espn_api_team_details()['color']
-
-    def _get_team_articles(self):
-        news = espn_api.get_team_news(self.get_espn_api_team_details()['id'])['feed']
+    def _get_espn_api_team_articles(self):
+        news = espn_api.get_team_news(self._get_espn_api_team_details()['id'])['feed']
 
         for article in news:
             if 'type' in article.keys() and article['type'] == "Media":
@@ -110,7 +87,7 @@ class Game(models.Model):
             else:
                 self.team_news.append(article)
 
-    def result(self):
+    def get_result(self):
         if self.score > self.opponent_score:
             return 'win'
         elif self.score < self.opponent_score:
@@ -118,11 +95,36 @@ class Game(models.Model):
         else:
             return False
 
-    class Meta:
-        ordering = ['-date']
+    def get_endtime(self):
+        return self.date + datetime.timedelta(0,9000)
 
-    def __unicode__(self):
-        return u'%s %s' % (self.opponent, self.date.strftime('%b %d'))
+    def get_summary(self):
+        if self.get_result() != False:
+            summary = self.get_result()[0].upper() + ' ' + str(self.score) + '-' + str(self.opponent_score) + ' '
+        else:
+            summary = ''
+
+        if self.location == "Allen Fieldhouse, Lawrence, KS":
+            summary += self.opponent + ' at KU'
+        else:
+            summary += 'KU vs ' + self.opponent
+
+        return u'%s' % summary
+
+    def get_espn_link(self):
+        return self._get_espn_api_team_details()['links']['web']['teams']['href']
+
+    def get_team_color(self):
+        return self._get_espn_api_team_details()['color']
+
+    def get_team_articles(self):
+        if self.team_news is None and self.team_videos is None:
+            self.team_news = []
+            self.team_videos = []
+
+            self._get_espn_api_team_articles()
 
     def get_absolute_url(self):
         return reverse('schedule.views.game', args=[self.slug])
+
+    
