@@ -3,7 +3,6 @@ body {
     margin: 0;
     padding: 0;
     background: #3b74ff;
-    font-size:;
 }
 
 a, a:visited {
@@ -48,7 +47,6 @@ h4, p {
     background: -o-linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
     background: -ms-linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
     background: linear-gradient(to bottom,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dbdbdb', endColorstr='#3b74ff',GradientType=0 );
 }
 
 #header img {

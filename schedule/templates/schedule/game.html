@@ -35,7 +35,7 @@
             <h3>ESPN video for {{game.opponent}} {{game.mascot}}</h3>
             
             {% for video in game.team_videos %}
-                <div class="video"><script src="http://player.espn.com/player.js?playerBrandingId=4ef8000cbaf34c1687a7d9a26fe0e89e&adSetCode=91cDU6NuXTGKz3OdjOxFdAgJVtQcKJnI&pcode=1kNG061cgaoolOncv54OAO1ceO-I&externalId=espn:{{video.id}}&thruParam_espn-ui[autoPlay]=false&thruParam_espn-ui[playRelatedExternally]=true"></script></div><p><a href="{{video.links.web.href}}">{{video.headline}}</a></p>
+                <div class="video"><script src="http://player.espn.com/player.js?playerBrandingId=4ef8000cbaf34c1687a7d9a26fe0e89e&amp;adSetCode=91cDU6NuXTGKz3OdjOxFdAgJVtQcKJnI&amp;pcode=1kNG061cgaoolOncv54OAO1ceO-I&amp;externalId=espn:{{video.id}}&amp;thruParam_espn-ui[autoPlay]=false&amp;thruParam_espn-ui[playRelatedExternally]=true"></script></div><p><a href="{{video.links.web.href}}">{{video.headline}}</a></p>
             {% endfor %}
         </div>
     {% endif %}
