@@ -79,13 +79,15 @@ class Game(models.Model):
             return self._espn_api_team_details
 
     def _get_espn_api_team_articles(self):
-        news = espn_api.get_team_news(self._get_espn_api_team_details()['id'])['feed']
+        if self._get_espn_api_team_details() != False:
+            news = espn_api.get_team_news(self._get_espn_api_team_details()['id'])
 
-        for article in news:
-            if 'type' in article.keys() and article['type'] == "Media":
-                self.team_videos.append(article)
-            else:
-                self.team_news.append(article)
+            if news:
+                for article in news['feed']:
+                    if 'type' in article.keys() and article['type'] == "Media":
+                        self.team_videos.append(article)
+                    else:
+                        self.team_news.append(article)
 
     def get_result(self):
         if self.score > self.opponent_score:
