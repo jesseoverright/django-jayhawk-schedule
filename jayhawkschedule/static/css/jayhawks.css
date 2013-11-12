@@ -170,8 +170,7 @@ h4, p {
 
 .video {
     position: relative;
-    padding-bottom: 52%;
-    padding-top: 25px;
+    padding-bottom: 56.25%;
     height: 0;
     margin-bottom: 5px;
 }
