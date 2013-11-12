@@ -241,4 +241,8 @@ form #score, form #opponent_score {
     body {
         font-size: 240%;
     }
+    /* temporarily hide video on mobile devices */
+    #single-game .left-column {
+        display: none;
+    }
 }
