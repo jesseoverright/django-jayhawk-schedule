@@ -18,10 +18,16 @@ class EspnApi(object):
         self.key = "q5vjgc6pmygdg3ufz3p9hw7c"
         url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams?apikey=%s&limit=351"
 
-        response = urllib2.urlopen(url % self.key)
-        data = json.load(response)   
+        try:
+            response = urllib2.urlopen(url % self.key)
+            data = json.load(response)
+        except urllib2.HTTPError as error:
+            data = False
 
-        self.teams =  data['sports'][0]['leagues'][0]['teams']
+        if data:
+            self.teams =  data['sports'][0]['leagues'][0]['teams']
+        else: 
+            self.teams = []
 
     def get_team(self, team_name, mascot):
         for team in self.teams:
@@ -33,13 +39,16 @@ class EspnApi(object):
     def get_team_news(self, team_id):
         url = "http://api.espn.com/v1/now?leagues=mens-college-basketball&teams=%s&apikey=%s"
 
-        response = urllib2.urlopen(url % (team_id, self.key))
-        data = json.load(response)
+        try:
+            response = urllib2.urlopen(url % (team_id, self.key))
+            data = json.load(response)
+        except urllib2.HTTPError as error:
+            data = False
 
         return data
 
 
-espn_api = EspnApi();
+espn_api = EspnApi()
 
 # a Game on KU's schedule includes opponent info, date, location and tv details
 class Game(models.Model):
@@ -93,8 +102,6 @@ class Game(models.Model):
         return self.get_espn_api_team_details()['color']
 
     def _get_team_articles(self):
-        self.get_espn_api_team_articles()
-
         news = espn_api.get_team_news(self.get_espn_api_team_details()['id'])['feed']
 
         for article in news:
