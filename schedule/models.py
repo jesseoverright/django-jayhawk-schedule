@@ -64,8 +64,9 @@ class TwitterApi(object):
         self.session = self.twitter_api.get_session((self.keys['access_token'], self.keys['access_token_secret']))
 
     def get_tweets(self, team_name, team_mascot): 
-        params = {'q': team_name + '+' + team_mascot,
+        params = {'q': team_name + ' ' + team_mascot,
                   'count': 10,
+                  'result_type': 'popular'
                   }
 
         r = self.session.get('search/tweets.json', params=params, verify=True) 
