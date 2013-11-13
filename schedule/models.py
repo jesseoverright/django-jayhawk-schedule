@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.conf import settings
 import datetime
 import json
 import urllib2
@@ -15,7 +16,7 @@ GAME_TYPES = (
 
 class EspnApi(object):
     def __init__(self):
-        self.key = "q5vjgc6pmygdg3ufz3p9hw7c"
+        self.key = getattr(settings, "ESPN_API_KEY", None)
         url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams?apikey=%s&limit=351"
 
         try:
