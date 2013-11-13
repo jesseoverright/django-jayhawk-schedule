@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from rauth import OAuth1Service
 import datetime
 import json
 import urllib2
@@ -48,6 +49,28 @@ class EspnApi(object):
 
         return data
 
+class TwitterApi(object):
+    def __init__(self):
+        self.keys = getattr(settings, "TWITTER_API_KEYS", None)
+        self.twitter_api = OAuth1Service(
+            name='twitter',
+            consumer_key=self.keys['consumer_key'],
+            consumer_secret=self.keys['consumer_secret'],
+            request_token_url='https://api.twitter.com/oauth/request_token',
+            access_token_url='https://api.twitter.com/oauth/access_token',
+            authorize_url='https://api.twitter.com/oauth/authorize',
+            base_url='https://api.twitter.com/1.1/')
+
+        self.session = self.twitter_api.get_session((self.keys['access_token'], self.keys['access_token_secret']))
+
+    def get_tweets(self, team_name, team_mascot): 
+        params = {'q': team_name + '+' + team_mascot,
+                  'count': 10,
+                  }
+
+        r = self.session.get('search/tweets.json', params=params, verify=True) 
+
+        return r.json()
 
 espn_api = EspnApi()
 
@@ -129,5 +152,10 @@ class Game(models.Model):
 
     def get_absolute_url(self):
         return reverse('schedule.views.game', args=[self.slug])
+
+    def test_tweets(self):
+        twitter_api = TwitterApi()
+        return twitter_api.get_tweets(self.opponent, self.mascot)
+
 
     
