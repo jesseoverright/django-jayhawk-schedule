@@ -3,6 +3,7 @@
 {% block title %} Kansas Jayhawks Basketball Schedule {% endblock %}
 
 {% block content %}
+    <div class="content-header"><h2>{{record.wins}}-{{record.losses}}</h2></div>
     {% for game in games %}
     <div class="game">
         {% if game.get_result %}

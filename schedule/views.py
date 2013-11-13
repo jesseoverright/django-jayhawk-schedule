@@ -4,7 +4,17 @@ from schedule.models import Game
 def index(request):
     games = Game.objects.order_by('date')
 
-    return render(request, 'schedule/index.html', {'games': games})
+    record = {}
+    record['wins'] = 0
+    record['losses'] = 0
+
+    for game in games:
+        if game.get_result() == 'win' and game.game_type != 'Exhibition':
+            record['wins'] += 1
+        if game.get_result() == 'loss' and game.game_type != 'Exhibition':
+            record['losses'] += 1
+
+    return render(request, 'schedule/index.html', {'games': games, 'record': record})
 
 
 def game(request, slug):

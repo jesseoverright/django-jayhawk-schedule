@@ -71,6 +71,37 @@ h4, p {
     min-height: 100px;
 }
 
+#single-game {
+    clear: both;
+}
+
+#single-game .final-score {
+    text-align: center;
+    width: 45%;
+    margin: 0.5em auto;
+    min-width: 80px;
+    padding: 10px;
+}
+
+#single-game p {
+    clear: both;
+    margin-bottom: 1em;
+}
+
+#single-game .left-column, #single-game .right-column {
+    float: left;
+    min-height: 30px;
+}
+
+#single-game .left-column {
+    width: 60%;
+    margin-right: 6%;
+}
+
+#single-game .right-column {
+    width: 34%;
+}
+
 #footer {
     border-top: 2px solid #3b74ff;
     padding: 20px;
@@ -123,47 +154,16 @@ h4, p {
     background-color: #f28c8c;
 }
 
-#single-game {
-    clear: both;
-}
-
-#single-game h2:first-child {
-    text-align: center;
-    border-bottom: 2px solid #dbdbdb;
-    padding-bottom: 0.25em;
-    margin-bottom: 0.5em;
-}
-
-#single-game .final-score {
-    text-align: center;
-    width: 45%;
-    margin: 0.5em auto;
-    min-width: 80px;
-    padding: 10px;
-}
-
-#single-game p {
-    clear: both;
-    margin-bottom: 1em;
-}
-
-#single-game .header {
+.content-header {
     overflow: hidden;
     margin-bottom: 20px;
 }
 
-#single-game .left-column, #single-game .right-column {
-    float: left;
-    min-height: 30px;
-}
-
-#single-game .left-column {
-    width: 60%;
-    margin-right: 6%;
-}
-
-#single-game .right-column {
-    width: 34%;
+.content-header h2:first-child {
+    text-align: center;
+    border-bottom: 2px solid #dbdbdb;
+    padding-bottom: 0.25em;
+    margin-bottom: 0.5em;
 }
 
 .video {
