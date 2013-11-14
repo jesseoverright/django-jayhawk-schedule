@@ -1,6 +1,6 @@
 # Django settings for jayhawkschedule project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -11,12 +11,24 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends',
-        'NAME': '',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'jayhawkschedule',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
         'PORT': '',
+    }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'api_cache',
+        'TIMEOUT': 60*10, # 10 minutes
+        'VERSION': 1,
+        'OPTIONS': {
+            'MAX_ENTRIES': 10000
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.conf import settings
 import datetime
@@ -29,11 +30,18 @@ class EspnApi(object):
             self.teams = []
 
     def _get_results(self, url, params):
-        try:
-            response = requests.get(url, params=params)
-            json_results = response.json()
-        except request.exceptions.HTTPError as error:
-            json_results = False
+        cache_key = url + str(params)
+        json_results = cache.get(cache_key)
+
+        if not json_results:
+
+            try:
+                response = requests.get(url, params=params)
+                json_results = response.json()
+            except request.exceptions.HTTPError as error:
+                json_results = False
+
+            cache.set(cache_key, json_results)
 
         return json_results
 
