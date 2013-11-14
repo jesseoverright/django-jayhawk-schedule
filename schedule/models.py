@@ -2,8 +2,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.conf import settings
 import datetime
-import json
-import urllib2
+import requests
 
 GAME_TYPES = (
     ('Exhibition', 'Exhibition'),
@@ -17,18 +16,26 @@ GAME_TYPES = (
 class EspnApi(object):
     def __init__(self):
         self.key = getattr(settings, "ESPN_API_KEY", None)
-        url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams?apikey=%s&limit=351"
+        url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams"
+        params = {'apikey': self.key,
+                  'limit': 351,
+                  }
 
-        try:
-            response = urllib2.urlopen(url % self.key)
-            data = json.load(response)
-        except urllib2.HTTPError as error:
-            data = False
+        all_teams = self._get_results(url, params)
 
-        if data:
-            self.teams =  data['sports'][0]['leagues'][0]['teams']
+        if all_teams:
+            self.teams =  all_teams['sports'][0]['leagues'][0]['teams']
         else: 
             self.teams = []
+
+    def _get_results(self, url, params):
+        try:
+            response = requests.get(url, params=params)
+            json_results = response.json()
+        except request.exceptions.HTTPError as error:
+            json_results = False
+
+        return json_results
 
     def get_team(self, team_name, mascot):
         for team in self.teams:
@@ -38,15 +45,13 @@ class EspnApi(object):
         return False
 
     def get_team_news(self, team_id):
-        url = "http://api.espn.com/v1/now?leagues=mens-college-basketball&teams=%s&apikey=%s"
+        url = "http://api.espn.com/v1/now"
+        params = {'leagues': 'mens-college-basketball',
+                  'teams': team_id,
+                  'apikey': self.key
+                  }
 
-        try:
-            response = urllib2.urlopen(url % (team_id, self.key))
-            data = json.load(response)
-        except urllib2.HTTPError as error:
-            data = False
-
-        return data
+        return self._get_results(url, params)
 
 
 espn_api = EspnApi()
