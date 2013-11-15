@@ -1,6 +1,6 @@
 # Django settings for jayhawkschedule project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -11,8 +11,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends',
-        'NAME': '',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'jayhawkschedule',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -20,9 +20,21 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'api_cache',
+        'TIMEOUT': 60*60*24, # 1 day caching
+        'VERSION': 1,
+        'OPTIONS': {
+            'MAX_ENTRIES': 10000
+        }
+    }
+}
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.jayhawkschedule.co']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

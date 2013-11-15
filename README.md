@@ -1,6 +1,6 @@
 #Jayhawk Schedule
 
-This is a simple django app built to track the __Kansas Jayhawks 2013-14__ basketball schedule.  The __Kansas Jayhawks 2013-14 Basketball Schedule__ provides all the latest news and results for the Jayhawks season. It's rebuilt from the group up based on the original [codeigniter project](https://github.com/jesseoverright/jayhawk-schedule/).
+This is a simple django app built to track the __Kansas Jayhawks 2013-14__ basketball schedule.  The __Kansas Jayhawks 2013-14 Basketball Schedule__ provides all the latest news and results for the Jayhawks season. You can view the project live at [http://jayhawkschedule.co](http://jayhawkschedule.co).
 
 Main Features:
 
