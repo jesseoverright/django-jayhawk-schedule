@@ -83,8 +83,8 @@ class TwitterApi(object):
                   }
 
         r = self.session.get('search/tweets.json', params=params, verify=True) 
-
-        return r.json()
+        
+        return r.json()['statuses']
 
 espn_api = EspnApi()
 

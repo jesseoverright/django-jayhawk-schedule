@@ -60,10 +60,15 @@
             </ul>
         {% endif %}
 
-        <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/search?q={{game.opponent.split|join:'+'}}+{{ game.mascot.split|join:'+' }}" data-widget-id="400717007772844032" data-search-term="test">Tweets about "{{game.opponent}} {{game.mascot}}"</a>
-        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        <!--<a class="twitter-timeline" data-dnt="true" href="https://twitter.com/search?q={{game.opponent.split|join:'+'}}+{{ game.mascot.split|join:'+' }}" data-widget-id="400717007772844032" data-search-term="test">Tweets about "{{game.opponent}} {{game.mascot}}"</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>-->
 
-        {{ game.test_tweets }}
+        {% for tweet in game.test_tweets %}
+            <div class="tweet">
+                <img src="{{tweet.user.profile_image_url_https}}">{{tweet.user.name}} @{{tweet.user.screen_name}}
+                <p>{{tweet.text}}</p>
+            </div>
+        {% endfor %}
 
 
     </div>
