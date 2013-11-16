@@ -83,11 +83,6 @@ h4, p {
     padding: 10px;
 }
 
-#single-game p {
-    clear: both;
-    margin-bottom: 1em;
-}
-
 #single-game .left-column, #single-game .right-column {
     float: left;
     min-height: 30px;
@@ -179,6 +174,47 @@ h4, p {
     left: 0;
     width: 100% !important;
     height: 100% !important;
+}
+
+.twitter-timeline {
+    margin-bottom: 10px;
+}
+
+.twitter-timeline h4 {
+    border-radius: 6px 6px 0 0;
+    border: 1px solid #e8e8e8;
+    padding:12px;
+    margin: 0 0 -1px 0;
+}
+
+.tweet {
+    font-size: 14px;
+    line-height: 16px;
+    border: 1px solid #e8e8e8;
+    padding: 12px;
+    margin-bottom: -1px;
+}
+
+.tweet:last-child {
+    margin-bottom: 0px;
+}
+
+.tweet-profile {
+    overflow: hidden;
+}
+
+.tweet-profile .handle {
+    font-size: 12px;
+    color: #707070;
+}
+
+.tweet-image {
+    float: left;
+    margin-right: 9px;
+}
+
+.tweet-image img {
+    border-radius: 4px;
 }
 
 form {

@@ -31,7 +31,7 @@ class EspnApi(object):
             self.teams = []
 
     def _get_results(self, url, params):
-        cache_key = url + str(params)
+        cache_key = u'%s%s' % (url, str(params))
         json_results = cache.get(cache_key)
 
         if not json_results:
@@ -167,7 +167,7 @@ class Game(models.Model):
     def get_absolute_url(self):
         return reverse('schedule.views.game', args=[self.slug])
 
-    def test_tweets(self):
+    def get_tweets(self):
         twitter_api = TwitterApi()
         return twitter_api.get_tweets(self.opponent, self.mascot)
 
