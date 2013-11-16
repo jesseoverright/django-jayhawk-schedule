@@ -30,7 +30,7 @@ class EspnApi(object):
             self.teams = []
 
     def _get_results(self, url, params):
-        cache_key = url + str(params)
+        cache_key = u'%s%s' % (url, str(params))
         json_results = cache.get(cache_key)
 
         if not json_results:
