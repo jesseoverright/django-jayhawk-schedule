@@ -1,8 +1,10 @@
 import datetime
 from django.utils import timezone
+from django.core.cache import cache
+from django.conf import settings
 
 from django.test import TestCase
-from schedule.models import Game
+from schedule.models import Game, EspnApi
 
 class GamesTest(TestCase):
     def setUp(self):
@@ -26,3 +28,12 @@ class GamesTest(TestCase):
         self.assertIsNotNone(self.game.team_news)
     def test_game_title(self):
         self.assertEqual(u'%s' % self.game, u'Memphis Apr 07')
+    def test_espn_api_cache(self):
+        self.espn_api = EspnApi()
+        url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams"
+        params = {'apikey': getattr(settings, "ESPN_API_KEY", None),
+                  'limit': 351,
+                  }
+        cache_key = u'%s%s' % (url, str(params))
+
+        self.assertEqual(cache.get(cache_key)['sports'][0]['leagues'][0]['teams'], self.espn_api.teams)
