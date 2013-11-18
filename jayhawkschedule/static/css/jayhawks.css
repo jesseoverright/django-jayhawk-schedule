@@ -188,7 +188,7 @@ h4, p {
 }
 
 .tweet {
-    font-size: 14px;
+    font-size: 0.9em;
     line-height: 16px;
     border: 1px solid #e8e8e8;
     padding: 12px;
@@ -204,7 +204,7 @@ h4, p {
 }
 
 .tweet-profile .handle {
-    font-size: 12px;
+    font-size: 0.8em;
     color: #707070;
 }
 
@@ -215,6 +215,11 @@ h4, p {
 
 .tweet-image img {
     border-radius: 4px;
+}
+
+.tweet .time {
+    float: right;
+    font-size: 0.75em;
 }
 
 form {

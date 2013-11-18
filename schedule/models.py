@@ -94,6 +94,9 @@ class TwitterApi(object):
             tweet['text'] = re.sub(r'#([_a-zA-Z0-9]+)', r'<a href="http://twitter.com/search?q=\1">#\1</a>', tweet['text'])
             # add anchor tags to mentions
             tweet['text'] = re.sub(r'@([_a-zA-Z0-9]+)', r'<a href="http://twitter.com/\1">@\1</a>', tweet['text'])
+            # convert date to relative date
+            # Sun Nov 17 18:00:04 +0000 2013
+            tweet['created_at'] = datetime.datetime.strptime(tweet['created_at'][0:19], '%a %b %d %H:%M:%S')
         
         return statuses
 

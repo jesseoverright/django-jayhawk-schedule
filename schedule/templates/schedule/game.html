@@ -71,10 +71,10 @@
                     <img src="{{tweet.user.profile_image_url_https}}">
                 </div>
                 <div class="tweet-profile">
+                    <p class="time">{{tweet.created_at|date:"M d"}}</p>
                     <p>
                         <span class="profile"><strong>{{tweet.user.name}}</strong></span>
                         <span class="handle">@{{tweet.user.screen_name}}</span>
-                        <span class="time">{{tweet.created_at|date:"md"}}</span>
                     </p>
                     <p>{{tweet.text|safe}}</p>
                 </div>
