@@ -91,7 +91,9 @@ class TwitterApi(object):
             # add anchor tags to links in tweet
             tweet['text'] = re.sub(r'((https?|s?ftp|ssh)\:\/\/[^"\s\<\>]*[^.,;\'">\:\s\<\>\)\]\!])', r'<a href="\1">\1</a>', tweet['text'])
             # add anchor tags to hashtags
+            tweet['text'] = re.sub(r'#([_a-zA-Z0-9]+)', r'<a href="http://twitter.com/search?q=\1">#\1</a>', tweet['text'])
             # add anchor tags to mentions
+            tweet['text'] = re.sub(r'@([_a-zA-Z0-9]+)', r'<a href="http://twitter.com/\1">@\1</a>', tweet['text'])
         
         return statuses
 
