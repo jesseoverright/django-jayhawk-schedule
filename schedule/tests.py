@@ -1,8 +1,10 @@
 import datetime
 from django.utils import timezone
+from django.core.cache import cache
+from django.conf import settings
 
 from django.test import TestCase
-from schedule.models import Game
+from schedule.models import Game, EspnApi
 
 import re
 
@@ -16,18 +18,33 @@ class GamesTest(TestCase):
             score=75,
             opponent_score=68,
             )
-    def test_game_result(self):
+        self.espn_api = EspnApi()
+
+    def test_is_game_result_accurate(self):
         self.assertEqual(self.game.get_result(), 'win') 
-    def test_game_summary(self):
+
+    def test_accurate_game_summary(self):
         self.assertEqual(self.game.get_summary(), 'W 75-68 KU vs Memphis')
-    def test_team_ESPN_link(self):
+
+    def test_has_ESPN_link(self):
         self.assertIsNotNone(self.game.get_espn_link)
-    def test_team_articles(self):
+
+    def test_has_team_articles(self):
         self.game.get_team_articles()
         self.assertIsNotNone(self.game.team_videos)
         self.assertIsNotNone(self.game.team_news)
+
     def test_game_title(self):
         self.assertEqual(u'%s' % self.game, u'Memphis Apr 07')
+
+    def test_is_espn_api_result_caching(self):
+        url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams"
+        params = {'apikey': getattr(settings, "ESPN_API_KEY", None),
+                  'limit': 351,
+                  }
+        cache_key = u'%s%s' % (url, str(params))
+
+        self.assertEqual(cache.get(cache_key)['sports'][0]['leagues'][0]['teams'], self.espn_api.teams)
 
     def test_regex_for_web_links(self):
         tweet = "A closer look at Duke's first national ranking since Dec. 6, 1994. One writer had the Blue Devils as high as No. 21 https://t.co/1VJegEg3CY"
@@ -35,4 +52,3 @@ class GamesTest(TestCase):
         tweet = re.sub(r'((https?|s?ftp|ssh)\:\/\/[^"\s\<\>]*[^.,;\'">\:\s\<\>\)\]\!])', r'<a href="\1">\1</a>', tweet)
 
         self.assertEqual(tweet, "A closer look at Duke's first national ranking since Dec. 6, 1994. One writer had the Blue Devils as high as No. 21 <a href=\"https://t.co/1VJegEg3CY\">https://t.co/1VJegEg3CY</a>")
-
