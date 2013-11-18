@@ -4,6 +4,8 @@ from django.utils import timezone
 from django.test import TestCase
 from schedule.models import Game
 
+import re
+
 class GamesTest(TestCase):
     def setUp(self):
         self.game = Game.objects.create(
@@ -26,3 +28,11 @@ class GamesTest(TestCase):
         self.assertIsNotNone(self.game.team_news)
     def test_game_title(self):
         self.assertEqual(u'%s' % self.game, u'Memphis Apr 07')
+
+    def test_regex_for_web_links(self):
+        tweet = "A closer look at Duke's first national ranking since Dec. 6, 1994. One writer had the Blue Devils as high as No. 21 https://t.co/1VJegEg3CY"
+
+        tweet = re.sub(r'((https?|s?ftp|ssh)\:\/\/[^"\s\<\>]*[^.,;\'">\:\s\<\>\)\]\!])', r'<a href="\1">\1</a>', tweet)
+
+        self.assertEqual(tweet, "A closer look at Duke's first national ranking since Dec. 6, 1994. One writer had the Blue Devils as high as No. 21 <a href=\"https://t.co/1VJegEg3CY\">https://t.co/1VJegEg3CY</a>")
+

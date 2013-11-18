@@ -76,7 +76,7 @@
                         <span class="handle">@{{tweet.user.screen_name}}</span>
                         <span class="time">{{tweet.created_at|date:"md"}}</span>
                     </p>
-                    <p>{{tweet.text}}</p>
+                    <p>{{tweet.text|safe}}</p>
                 </div>
             </div>
         {% endfor %}

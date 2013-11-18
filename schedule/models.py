@@ -5,6 +5,7 @@ from django.conf import settings
 from rauth import OAuth1Service
 import datetime
 import requests
+import re
 
 GAME_TYPES = (
     ('Exhibition', 'Exhibition'),
@@ -82,9 +83,17 @@ class TwitterApi(object):
                   'result_type': 'popular'
                   }
 
-        r = self.session.get('search/tweets.json', params=params, verify=True) 
+        r = self.session.get('search/tweets.json', params=params, verify=True)
+
+        statuses = r.json()['statuses']
+
+        for tweet in statuses:
+            # add anchor tags to links in tweet
+            tweet['text'] = re.sub(r'((https?|s?ftp|ssh)\:\/\/[^"\s\<\>]*[^.,;\'">\:\s\<\>\)\]\!])', r'<a href="\1">\1</a>', tweet['text'])
+            # add anchor tags to hashtags
+            # add anchor tags to mentions
         
-        return r.json()['statuses']
+        return statuses
 
 espn_api = EspnApi()
 
