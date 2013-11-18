@@ -6,6 +6,8 @@ from django.conf import settings
 from django.test import TestCase
 from schedule.models import Game, EspnApi
 
+import re
+
 class GamesTest(TestCase):
     def setUp(self):
         self.game = Game.objects.create(
@@ -43,3 +45,10 @@ class GamesTest(TestCase):
         cache_key = u'%s%s' % (url, str(params))
 
         self.assertEqual(cache.get(cache_key)['sports'][0]['leagues'][0]['teams'], self.espn_api.teams)
+
+    def test_regex_for_web_links(self):
+        tweet = "A closer look at Duke's first national ranking since Dec. 6, 1994. One writer had the Blue Devils as high as No. 21 https://t.co/1VJegEg3CY"
+
+        tweet = re.sub(r'((https?|s?ftp|ssh)\:\/\/[^"\s\<\>]*[^.,;\'">\:\s\<\>\)\]\!])', r'<a href="\1">\1</a>', tweet)
+
+        self.assertEqual(tweet, "A closer look at Duke's first national ranking since Dec. 6, 1994. One writer had the Blue Devils as high as No. 21 <a href=\"https://t.co/1VJegEg3CY\">https://t.co/1VJegEg3CY</a>")
