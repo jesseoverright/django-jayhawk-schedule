@@ -83,18 +83,16 @@ h4, p {
     padding: 10px;
 }
 
-#single-game .left-column, #single-game .right-column {
+#single-game .column {
     float: left;
     min-height: 30px;
+    width: 34%;
 }
 
-#single-game .left-column {
+/* the second div, after .content-header, will be first .column */
+#single-game .column:nth-child(2) {
     width: 60%;
     margin-right: 6%;
-}
-
-#single-game .right-column {
-    width: 34%;
 }
 
 #footer {
