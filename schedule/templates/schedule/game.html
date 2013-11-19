@@ -64,21 +64,23 @@
         {% if game.get_tweets %}
             <div class="twitter-timeline">
                 <h4>Tweets about {{game.opponent}} {{game.mascot}}</h4>
-                {% for tweet in game.get_tweets %}
-                <div class="tweet">
-                    <div class="tweet-image">
-                        <img src="{{tweet.user.profile_image_url_https}}">
+                <div class="tweets">
+                    {% for tweet in game.get_tweets %}
+                    <div class="tweet">
+                        <div class="tweet-image">
+                            <img src="{{tweet.user.profile_image_url_https}}">
+                        </div>
+                        <div class="tweet-profile">
+                            <p class="time">{{tweet.created_at|date:"M d"}}</p>
+                            <p>
+                                <span class="profile"><strong>{{tweet.user.name}}</strong></span>
+                                <span class="handle">@{{tweet.user.screen_name}}</span>
+                            </p>
+                            <p>{{tweet.text|safe}}</p>
+                        </div>
                     </div>
-                    <div class="tweet-profile">
-                        <p class="time">{{tweet.created_at|date:"M d"}}</p>
-                        <p>
-                            <span class="profile"><strong>{{tweet.user.name}}</strong></span>
-                            <span class="handle">@{{tweet.user.screen_name}}</span>
-                        </p>
-                        <p>{{tweet.text|safe}}</p>
-                    </div>
+                {% endfor %}
                 </div>
-            {% endfor %}
             </div>
         {% endif %}
     </div>

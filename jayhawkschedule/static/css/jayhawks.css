@@ -185,6 +185,11 @@ h4, p {
     margin: 0 0 -1px 0;
 }
 
+.twitter-timeline .tweets {
+    max-height: 450px;
+    overflow-y: scroll;
+}
+
 .tweet {
     font-size: 0.9em;
     line-height: 1.1em;

@@ -79,7 +79,7 @@ class TwitterApi(object):
 
     def get_tweets(self, team_name, team_mascot): 
         params = {'q': team_name + ' ' + team_mascot,
-                  'count': 8,
+                  'count': 15,
                   'result_type': 'popular'
                   }
 
