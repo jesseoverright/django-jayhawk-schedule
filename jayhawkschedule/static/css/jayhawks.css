@@ -187,7 +187,7 @@ h4, p {
 
 .tweet {
     font-size: 0.9em;
-    line-height: 16px;
+    line-height: 1.1em;
     border: 1px solid #e8e8e8;
     padding: 12px;
     margin-bottom: -1px;
@@ -271,7 +271,7 @@ form #score, form #opponent_score {
         width: 225px;
     }
 
-    #single-game .column {
+    #single-game .column, #single-game .column:nth-child(2) {
         width: 100%;
     }
 }
