@@ -79,11 +79,16 @@ class TwitterApi(object):
 
     def get_tweets(self, team_name, team_mascot): 
         params = {'q': team_name + ' ' + team_mascot,
-                  'count': 10,
+                  'count': 8,
                   'result_type': 'popular'
                   }
 
         r = self.session.get('search/tweets.json', params=params, verify=True)
+
+        # get all tweets if no popular tweets exist
+        if not 'statuses' in r:
+            params['result_type'] = 'mixed'
+            r = self.session.get('search/tweets.json', params=params, verify=True)
 
         statuses = r.json()['statuses']
 
