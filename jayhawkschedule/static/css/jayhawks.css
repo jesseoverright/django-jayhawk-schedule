@@ -105,10 +105,6 @@ h4, p {
     float: right;
 }
 
-.edit {
-    float: right;
-}
-
 .game {
     padding-bottom: 5px;
     margin-bottom: 5px;
@@ -225,40 +221,7 @@ h4, p {
     font-size: 0.75em;
 }
 
-form {
-    margin-top: 1em;
-}
-form label {
-    width: 200px;
-    float: left;
-}
-
-form #date, form #time {
-    width: 9.7em;
-}
-
-form label[for="type"] {
-    height: 7em;
-}
-
-form input[type="text"], form input[type="password"] {
-    font-size: 100%;
-    margin: 0 0 0.5em;
-    width: 20em;
-}
-
-form #score, form #opponent_score {
-    width: 2em;
-}
-
-.errors {
-    border: 2px dotted red;
-    padding: 5px 5px 0;
-    background-color: #eee;
-    margin-bottom: 10px;
-}
-
-@media all and (max-device-width: 780px), all and (max-width:780px)  {
+@media screen and (max-device-width: 568px), all and (max-width:568px)  {
     #container {
         width: 90%;
     }
@@ -281,7 +244,7 @@ form #score, form #opponent_score {
     }
 }
 
-@media only screen and (max-device-width: 780px) {
+@media only screen and (max-device-width: 568px) {
     body {
         font-size: 240%;
     }
