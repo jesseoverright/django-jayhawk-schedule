@@ -242,6 +242,7 @@ h4, p {
 
     #single-game .column, #single-game .column:nth-child(2) {
         width: 100%;
+        margin-bottom: 20px;
     }
 }
 
