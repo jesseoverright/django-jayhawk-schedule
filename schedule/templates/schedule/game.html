@@ -52,7 +52,7 @@
         {% endif %}
         
         {% if game.team_news %}
-            <br /><br /><h3>ESPN News for {{game.opponent}} {{game.mascot}}</h3>
+            <br /><h3>ESPN News for {{game.opponent}} {{game.mascot}}</h3>
             <ul>
             {% for article in game.team_news %}
                 <li><a href="{{article.links.web.href}}">{{article.headline}}</a></li>

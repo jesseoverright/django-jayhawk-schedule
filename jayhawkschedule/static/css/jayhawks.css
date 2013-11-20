@@ -87,6 +87,7 @@ h4, p {
     float: left;
     min-height: 30px;
     width: 34%;
+    margin-bottom: 10px;
 }
 
 /* the second div, after .content-header, will be first .column */
@@ -251,5 +252,9 @@ h4, p {
     /* temporarily hide video on mobile devices */
     .video {
         display: none;
+    }
+
+    .twitter-timeline .tweets {
+        max-height: 700px;
     }
 }
