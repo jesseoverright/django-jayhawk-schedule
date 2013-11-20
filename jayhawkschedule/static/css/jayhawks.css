@@ -249,7 +249,7 @@ h4, p {
         font-size: 240%;
     }
     /* temporarily hide video on mobile devices */
-    #single-game .left-column {
+    .video {
         display: none;
     }
 }
