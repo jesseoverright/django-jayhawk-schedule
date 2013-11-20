@@ -75,22 +75,34 @@ class TwitterApi(object):
             authorize_url='https://api.twitter.com/oauth/authorize',
             base_url='https://api.twitter.com/1.1/')
 
-        self.session = self.twitter_api.get_session((self.keys['access_token'], self.keys['access_token_secret']))
+    def _get_tweets(self, params):
+        cache_key = u'%s' % str(params)
+        tweet_results = cache.get(cache_key)
 
-    def get_tweets(self, team_name, team_mascot): 
+        if not tweet_results:
+
+            self.session = self.twitter_api.get_session((self.keys['access_token'], self.keys['access_token_secret']))
+
+            api_response = self.session.get('search/tweets.json', params=params, verify=True)
+
+            # get all tweets if no popular tweets exist
+            if not 'statuses' in api_response:
+                params['result_type'] = 'mixed'
+                api_response = self.session.get('search/tweets.json', params=params, verify=True)
+
+            tweet_results = api_response.json()['statuses']
+
+            cache.set(cache_key, tweet_results)
+
+        return tweet_results
+
+    def get_team_tweets(self, team_name, team_mascot): 
         params = {'q': team_name + ' ' + team_mascot,
                   'count': 15,
                   'result_type': 'popular'
                   }
 
-        r = self.session.get('search/tweets.json', params=params, verify=True)
-
-        # get all tweets if no popular tweets exist
-        if not 'statuses' in r:
-            params['result_type'] = 'mixed'
-            r = self.session.get('search/tweets.json', params=params, verify=True)
-
-        statuses = r.json()['statuses']
+        statuses = self._get_tweets(params)
 
         for tweet in statuses:
             # add anchor tags to links in tweet
@@ -106,6 +118,8 @@ class TwitterApi(object):
         return statuses
 
 espn_api = EspnApi()
+twitter_api = TwitterApi()
+
 
 # a Game on KU's schedule includes opponent info, date, location and tv details
 class Game(models.Model):
@@ -186,9 +200,8 @@ class Game(models.Model):
     def get_absolute_url(self):
         return reverse('schedule.views.game', args=[self.slug])
 
-    def get_tweets(self):
-        twitter_api = TwitterApi()
-        return twitter_api.get_tweets(self.opponent, self.mascot)
+    def get_team_tweets(self):
+        return twitter_api.get_team_tweets(self.opponent, self.mascot)
 
 
     

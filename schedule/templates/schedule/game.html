@@ -61,11 +61,11 @@
         {% endif %}
     </div>
     <div class="column">
-        {% if game.get_tweets %}
+        {% if game.get_team_tweets %}
             <div class="twitter-timeline">
                 <h4>Tweets about {{game.opponent}} {{game.mascot}}</h4>
                 <div class="tweets">
-                    {% for tweet in game.get_tweets %}
+                    {% for tweet in game.get_team_tweets %}
                     <div class="tweet">
                         <div class="tweet-image">
                             <img src="{{tweet.user.profile_image_url_https}}">

@@ -18,7 +18,6 @@ class GamesTest(TestCase):
             score=75,
             opponent_score=68,
             )
-        self.espn_api = EspnApi()
 
     def test_is_game_result_accurate(self):
         self.assertEqual(self.game.get_result(), 'win') 
@@ -38,6 +37,8 @@ class GamesTest(TestCase):
         self.assertEqual(u'%s' % self.game, u'Memphis Apr 07')
 
     def test_is_espn_api_result_caching(self):
+        self.espn_api = EspnApi()
+
         url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams"
         params = {'apikey': getattr(settings, "ESPN_API_KEY", None),
                   'limit': 351,
