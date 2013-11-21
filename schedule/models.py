@@ -121,11 +121,55 @@ class TwitterApi(object):
 espn_api = EspnApi()
 twitter_api = TwitterApi()
 
-
-# a Game on KU's schedule includes opponent info, date, location and tv details
-class Game(models.Model):
-    opponent = models.CharField(max_length=255)
+class Team(models.Model):
+    name = models.CharField(max_length=255)
     mascot = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, max_length=255)
+    _espn_api_team_details = None
+    news = None
+    videos = None
+
+    def __unicode__(self):
+        return u'%s %s' % (self.name, self.mascot)
+
+    def _get_espn_api_team_details(self):
+        if self._espn_api_team_details is None:
+            self._espn_api_team_details = espn_api.get_team(self.name, self.mascot)
+            return self._espn_api_team_details
+        else:
+            return self._espn_api_team_details
+
+    def _get_espn_api_news(self):
+        if self._get_espn_api_team_details() != False:
+            news = espn_api.get_team_news(self._get_espn_api_team_details()['id'])
+
+            if news:
+                for article in news['feed']:
+                    if 'type' in article.keys() and article['type'] == "Media":
+                        self.videos.append(article)
+                    else:
+                        self.news.append(article)
+
+    def espn_link(self):
+        return self._get_espn_api_team_details()['links']['web']['teams']['href']
+
+    def team_color(self):
+        return self._get_espn_api_team_details()['color']
+
+    def get_news(self):
+        if self.news is None and self.videos is None:
+            self.news = []
+            self.videos = []
+
+            self._get_espn_api_news()
+
+    def get_tweets(self):
+        return twitter_api.get_team_tweets(self.name, self.mascot)
+
+
+# a Game on KU's schedule includes opponent, date, location and tv details
+class Game(models.Model):
+    opponent = models.ForeignKey(Team)
     slug = models.SlugField(unique=True, max_length=255)
     location = models.CharField(max_length=255)
     television = models.CharField(max_length=255)
@@ -133,33 +177,12 @@ class Game(models.Model):
     game_type = models.CharField(max_length=25, choices=GAME_TYPES)
     score = models.IntegerField(null=True, blank=True)
     opponent_score = models.IntegerField(null=True, blank=True)
-    _espn_api_team_details = None
-    team_news = None
-    team_videos = None
-
+    
     class Meta:
         ordering = ['-date']
 
     def __unicode__(self):
         return u'%s %s' % (self.opponent, self.date.strftime('%b %d'))
-
-    def _get_espn_api_team_details(self):
-        if self._espn_api_team_details is None:
-            self._espn_api_team_details = espn_api.get_team(self.opponent, self.mascot)
-            return self._espn_api_team_details
-        else:
-            return self._espn_api_team_details
-
-    def _get_espn_api_team_articles(self):
-        if self._get_espn_api_team_details() != False:
-            news = espn_api.get_team_news(self._get_espn_api_team_details()['id'])
-
-            if news:
-                for article in news['feed']:
-                    if 'type' in article.keys() and article['type'] == "Media":
-                        self.team_videos.append(article)
-                    else:
-                        self.team_news.append(article)
 
     def get_result(self):
         if self.score > self.opponent_score:
@@ -179,30 +202,14 @@ class Game(models.Model):
             summary = ''
 
         if self.location == "Allen Fieldhouse, Lawrence, KS":
-            summary += self.opponent + ' at KU'
+            summary += self.opponent.name + ' at KU'
         else:
-            summary += 'KU vs ' + self.opponent
+            summary += 'KU vs ' + self.opponent.name
 
         return u'%s' % summary
 
-    def get_espn_link(self):
-        return self._get_espn_api_team_details()['links']['web']['teams']['href']
-
-    def get_team_color(self):
-        return self._get_espn_api_team_details()['color']
-
-    def get_team_articles(self):
-        if self.team_news is None and self.team_videos is None:
-            self.team_news = []
-            self.team_videos = []
-
-            self._get_espn_api_team_articles()
-
     def get_absolute_url(self):
         return reverse('schedule.views.game', args=[self.slug])
-
-    def get_team_tweets(self):
-        return twitter_api.get_team_tweets(self.opponent, self.mascot)
 
 
     

@@ -7,21 +7,21 @@
     <div class="content-header">
         <h2>
         {% if game.location == "Allen Fieldhouse, Lawrence, KS" %}
-            {% if game.get_team_color %}
-                <span style="color:#{{game.get_team_color}}">
+            {% if game.opponent.team_color %}
+                <span style="color:#{{game.opponent.team_color}}">
             {% endif %}
-            {{game.opponent}} {{game.mascot}}
-            {% if game.get_team_color %}
+            {{game.opponent}}
+            {% if game.opponent.team_color %}
                 </span>
             {% endif %}
             at Kansas Jayhawks
         {% else %}
             Kansas Jayhawks vs
-            {% if game.get_team_color %}
-                <span style="color:#{{game.get_team_color}}">
+            {% if game.opponent.team_color %}
+                <span style="color:#{{game.opponent.team_color}}">
             {% endif %}
-            {{game.opponent}} {{game.mascot}}
-            {% if game.get_team_color %}
+            {{game.opponent}}
+            {% if game.opponent.team_color %}
                 </span>
             {% endif %}
         {% endif %}
@@ -30,12 +30,12 @@
             <h2 class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</h2>
         {% endif %}
     </div>
-    {% if game.team_videos %}
+    {% if game.opponent.videos %}
         <div class="column">
-            <h3>ESPN video for {{game.opponent}} {{game.mascot}}</h3>
+            <h3>ESPN video for {{game.opponent}}</h3>
             
             <ul>
-            {% for video in game.team_videos %}
+            {% for video in game.opponent.videos %}
                 <li>
                     <div class="video"><script src="http://player.espn.com/player.js?playerBrandingId=4ef8000cbaf34c1687a7d9a26fe0e89e&adSetCode=91cDU6NuXTGKz3OdjOxFdAgJVtQcKJnI&pcode=1kNG061cgaoolOncv54OAO1ceO-I&externalId=espn:{{video.id}}&thruParam_espn-ui[autoPlay]=false&thruParam_espn-ui[playRelatedExternally]=true"></script></div>
                     <a href="{{video.links.web.href}}">
@@ -57,14 +57,14 @@
         </h3>
         <h3 class="location">{{game.location}}</h3>
 
-        {% if game.get_espn_link %}
-            <br /><h3><a href="{{game.get_espn_link}}">{{game.mascot}} ESPN Team Page</a></h3>
+        {% if game.opponent.espn_link %}
+            <br /><h3><a href="{{game.opponent.espn_link}}">{{game.opponent}} ESPN Team Page</a></h3>
         {% endif %}
         
-        {% if game.team_news %}
-            <br /><h3>ESPN News for {{game.opponent}} {{game.mascot}}</h3>
+        {% if game.opponent.news %}
+            <br /><h3>ESPN News for {{game.opponent}}</h3>
             <ul>
-            {% for article in game.team_news %}
+            {% for article in game.opponent.news %}
                 <li>
                     <a href="{{article.links.web.href}}">
                         {% with article.images|first as image %}
@@ -80,11 +80,11 @@
         {% endif %}
     </div>
     <div class="column">
-        {% if game.get_team_tweets %}
+        {% if game.opponent.get_tweets %}
             <div class="twitter-timeline">
-                <h4>Tweets about {{game.opponent}} {{game.mascot}}</h4>
+                <h4>Tweets about {{game.opponent}}</h4>
                 <div class="tweets">
-                    {% for tweet in game.get_team_tweets %}
+                    {% for tweet in game.opponent.get_tweets %}
                     <div class="tweet">
                         <div class="tweet-image">
                             <img src="{{tweet.user.profile_image_url_https}}">

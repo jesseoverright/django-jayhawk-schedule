@@ -20,7 +20,7 @@ def index(request):
 def game(request, slug):
     game = get_object_or_404(Game, slug=slug)
 
-    game.get_team_articles()
+    game.opponent.get_news()
 
     return render(request, 'schedule/game.html', {
         'title': 'KU vs %s' % game.opponent,
