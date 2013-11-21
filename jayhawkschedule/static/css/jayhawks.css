@@ -47,10 +47,6 @@ li img {
     width: 100%;
 }
 
-li a:before {
-    content: "\2022\00a0";
-}
-
 #container {
     max-width: 1000px;
     width: 80%;
@@ -192,6 +188,11 @@ li a:before {
     height: 100% !important;
 }
 
+.video-thumbnail {
+    /* suppress when video content displays */
+    display: none;
+}
+
 .twitter-timeline {
     margin-bottom: 10px;
 }
@@ -264,6 +265,14 @@ li a:before {
     #single-game .column, #single-game .column:nth-child(2) {
         width: 100%;
         margin-bottom: 20px;
+    }
+
+    .video {
+        display: none;
+    }
+
+    .video-thumbnail {
+        display: block;
     }
 }
 
