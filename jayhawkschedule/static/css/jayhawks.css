@@ -267,7 +267,7 @@ li img {
         width: 225px;
     }
 
-    #single-game .column, #single-game .column:nth-child(2) {
+    #single-game .column, #single-game .column:nth-child(2n) {
         width: 100%;
         margin-bottom: 20px;
     }
