@@ -210,7 +210,7 @@ li img {
 }
 
 .twitter-timeline .tweets {
-    max-height: 800px;
+    max-height: 550px;
     overflow-y: scroll;
 }
 
@@ -289,6 +289,6 @@ li img {
     }
 
     .twitter-timeline .tweets {
-        max-height: 1000px;
+        max-height: 800px;
     }
 }
