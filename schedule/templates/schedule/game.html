@@ -34,9 +34,13 @@
         <div class="column">
             <h3>ESPN video for {{game.opponent}} {{game.mascot}}</h3>
             
+            <ul>
             {% for video in game.team_videos %}
-                <div class="video"><script src="http://player.espn.com/player.js?playerBrandingId=4ef8000cbaf34c1687a7d9a26fe0e89e&adSetCode=91cDU6NuXTGKz3OdjOxFdAgJVtQcKJnI&pcode=1kNG061cgaoolOncv54OAO1ceO-I&externalId=espn:{{video.id}}&thruParam_espn-ui[autoPlay]=false&thruParam_espn-ui[playRelatedExternally]=true"></script></div><p><a href="{{video.links.web.href}}">{{video.headline}}</a></p>
+                <li>
+                    <div class="video"><script src="http://player.espn.com/player.js?playerBrandingId=4ef8000cbaf34c1687a7d9a26fe0e89e&adSetCode=91cDU6NuXTGKz3OdjOxFdAgJVtQcKJnI&pcode=1kNG061cgaoolOncv54OAO1ceO-I&externalId=espn:{{video.id}}&thruParam_espn-ui[autoPlay]=false&thruParam_espn-ui[playRelatedExternally]=true"></script></div><p><a href="{{video.links.web.href}}">{{video.headline}}</a></p>
+                </li>
             {% endfor %}
+            </ul>
         </div>
     {% endif %}
     <div class="column">
@@ -55,7 +59,15 @@
             <br /><h3>ESPN News for {{game.opponent}} {{game.mascot}}</h3>
             <ul>
             {% for article in game.team_news %}
-                <li><a href="{{article.links.web.href}}">{{article.headline}}</a></li>
+                <li>
+                    {% with article.images|first as image %}
+                        {% if image.width >= 576 %} 
+                            <img src="{{image.url}}">
+                        {% endif %}
+                    {% endwith %}
+                    <a href="{{article.links.web.href}}">{{article.headline}}</a>
+
+                </li>
             {% endfor %}
             </ul>
         {% endif %}
