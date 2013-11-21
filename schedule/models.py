@@ -58,7 +58,8 @@ class EspnApi(object):
         url = "http://api.espn.com/v1/now"
         params = {'leagues': 'mens-college-basketball',
                   'teams': team_id,
-                  'apikey': self.key
+                  'apikey': self.key,
+                  'limit': 7,
                   }
 
         return self._get_results(url, params)

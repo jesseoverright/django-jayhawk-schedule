@@ -107,10 +107,15 @@ li img {
     margin-bottom: 10px;
 }
 
-/* the second div, after .content-header, will be first .column */
-#single-game .column:nth-child(2) {
+/* the even divs, after .content-header, will be left .column */
+#single-game .column:nth-child(2n) {
     width: 60%;
     margin-right: 6%;
+}
+
+/* css hack to get left columns lined up vertically */
+#single-game .column:nth-child(2n+1) {
+    float: right;
 }
 
 #footer {
