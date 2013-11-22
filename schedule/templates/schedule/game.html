@@ -37,10 +37,12 @@
             <ul>
             {% for video in game.team_videos %}
                 <li>
-                    <div class="video" id="{{video.id}}">
+                    <div class="video">
+                        <div id="{{video.id}}">
                         {% with video.images|first as image %}
                             <img src="{{image.url}}" alt="{{image.caption}}">
                         {% endwith %}
+                        </div>
                     </div>
                     <a href="{{video.links.web.href}}">
                         {% with video.images|first as image %}
