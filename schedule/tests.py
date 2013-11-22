@@ -19,6 +19,14 @@ class GamesTest(TestCase):
             opponent_score=68,
             )
 
+    def test_homepage_renders_correct_template(self):
+        response = self.client.get('/')
+        self.assertTemplateUsed(response, 'schedule/index.html')
+
+    def test_game_page_renders_correct_template(self):
+        response = self.client.get('/memphis/')
+        self.assertTemplateUsed(response, 'schedule/game.html')
+
     def test_is_game_result_accurate(self):
         self.assertEqual(self.game.get_result(), 'win') 
 
@@ -44,6 +52,7 @@ class GamesTest(TestCase):
                   'limit': 351,
                   }
         cache_key = u'%s%s' % (url, str(params))
+        cache_key = cache_key.replace(' ','')
 
         self.assertEqual(cache.get(cache_key)['sports'][0]['leagues'][0]['teams'], self.espn_api.teams)
 

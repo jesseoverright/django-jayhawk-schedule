@@ -33,6 +33,7 @@ class EspnApi(object):
 
     def _get_results(self, url, params):
         cache_key = u'%s%s' % (url, str(params))
+        cache_key = cache_key.replace(' ','')
         json_results = cache.get(cache_key)
 
         if not json_results:
@@ -78,6 +79,7 @@ class TwitterApi(object):
 
     def _get_tweets(self, params):
         cache_key = u'%s' % str(params)
+        cache_key = cache_key.replace(' ','')
         tweet_results = cache.get(cache_key)
 
         if not tweet_results:
