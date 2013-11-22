@@ -40,7 +40,7 @@
                     <div class="video"><script src="http://player.espn.com/player.js?playerBrandingId=4ef8000cbaf34c1687a7d9a26fe0e89e&adSetCode=91cDU6NuXTGKz3OdjOxFdAgJVtQcKJnI&pcode=1kNG061cgaoolOncv54OAO1ceO-I&externalId=espn:{{video.id}}&thruParam_espn-ui[autoPlay]=false&thruParam_espn-ui[playRelatedExternally]=true"></script></div>
                     <a href="{{video.links.web.href}}">
                         {% with video.images|first as image %}
-                            <img class="video-thumbnail" src="{{image.url}}">
+                            <img class="video-thumbnail" src="{{image.url}}" alt="{{image.caption}}">
                         {% endwith %}
                         {{video.headline}}
                     </a>
@@ -69,7 +69,7 @@
                     <a href="{{article.links.web.href}}">
                         {% with article.images|first as image %}
                             {% if image.width >= 576 %} 
-                                <img src="{{image.url}}">
+                                <img src="{{image.url}}" alt="{{image.caption}}">
                             {% endif %}
                         {% endwith %}
                         {{article.headline}}
