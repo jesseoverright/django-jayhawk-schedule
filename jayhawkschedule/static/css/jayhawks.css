@@ -249,6 +249,18 @@ li img {
     font-size: 0.75em;
 }
 
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+    #container {
+        width: 85%;
+    }
+    .video {
+        display: none;
+    }
+    .video-thumbnail {
+        display: block;
+    }
+}
+
 @media screen and (max-device-width: 568px), all and (max-width:568px)  {
     #container {
         width: 90%;
