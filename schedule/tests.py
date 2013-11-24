@@ -4,7 +4,7 @@ from django.core.cache import cache
 from django.conf import settings
 
 from django.test import TestCase
-from schedule.models import Game, EspnApi
+from schedule.models import Game, EspnApi, TwitterApi
 
 import re
 
@@ -14,6 +14,7 @@ class GamesTest(TestCase):
             opponent='Memphis',
             slug='memphis',
             mascot='Tigers',
+            location='Alamodome, San Antonio, TX',
             date=timezone.make_aware(datetime.datetime(2008, 04, 07), timezone.get_default_timezone()),
             score=75,
             opponent_score=68,
@@ -30,11 +31,14 @@ class GamesTest(TestCase):
     def test_is_game_result_accurate(self):
         self.assertEqual(self.game.get_result(), 'win') 
 
-    def test_accurate_game_summary(self):
+    def test_game_summary(self):
         self.assertEqual(self.game.get_summary(), 'W 75-68 KU vs Memphis')
 
     def test_has_ESPN_link(self):
         self.assertIsNotNone(self.game.get_espn_link)
+
+    def test_get_team_color(self):
+        self.assertEqual(self.game.get_team_color(), '002447')
 
     def test_has_team_articles(self):
         self.game.get_team_articles()
@@ -55,6 +59,20 @@ class GamesTest(TestCase):
         cache_key = cache_key.replace(' ','')
 
         self.assertEqual(cache.get(cache_key)['sports'][0]['leagues'][0]['teams'], self.espn_api.teams)
+
+    def test_is_twitter_api_result_caching(self):
+        self.twitter_api = TwitterApi()
+        self.game.get_team_tweets()
+
+        params = {'q': self.game.opponent + ' ' + self.game.mascot,
+                  'count': 15,
+                  'result_type': 'popular'
+                  }
+
+        cache_key = u'%s' % str(params)
+        cache_key = cache_key.replace(' ','')
+
+        self.assertEqual(cache.get(cache_key), self.twitter_api._get_tweets(params))
 
     def test_regex_for_web_links(self):
         tweet = "A closer look at Duke's first national ranking since Dec. 6, 1994. One writer had the Blue Devils as high as No. 21 https://t.co/1VJegEg3CY"
