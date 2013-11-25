@@ -184,7 +184,7 @@ class Game(models.Model):
         ordering = ['-date']
 
     def __unicode__(self):
-        return u'%s %s' % (self.opponent, self.date.strftime('%b %d'))
+        return u'%s %s' % (self.opponent.name, self.date.strftime('%b %d'))
 
     def get_result(self):
         if self.score > self.opponent_score:
