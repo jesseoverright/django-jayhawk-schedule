@@ -4,16 +4,20 @@ from django.core.cache import cache
 from django.conf import settings
 
 from django.test import TestCase
-from schedule.models import Game, EspnApi, TwitterApi
+from schedule.models import Team, Game, EspnApi, TwitterApi
 
 import re
 
 class GamesTest(TestCase):
     def setUp(self):
-        self.game = Game.objects.create(
-            opponent='Memphis',
-            slug='memphis',
+        team = Team.objects.create(
+            name='Memphis',
             mascot='Tigers',
+            slug='memphis'
+            )
+        self.game = Game.objects.create(
+            opponent=team,
+            slug='2008-championship',
             location='Alamodome, San Antonio, TX',
             date=timezone.make_aware(datetime.datetime(2008, 04, 07), timezone.get_default_timezone()),
             score=75,
@@ -25,8 +29,12 @@ class GamesTest(TestCase):
         self.assertTemplateUsed(response, 'schedule/index.html')
 
     def test_game_page_renders_correct_template(self):
-        response = self.client.get('/memphis/')
+        response = self.client.get('/2008-championship/')
         self.assertTemplateUsed(response, 'schedule/game.html')
+
+    #def test_team_page_renders_correct_template(self):
+    #    response = self.client.get('/memphis')
+    #    self.assertTemplateUsed(response,'schedule/team.html') 
 
     def test_is_game_result_accurate(self):
         self.assertEqual(self.game.get_result(), 'win') 
@@ -35,15 +43,15 @@ class GamesTest(TestCase):
         self.assertEqual(self.game.get_summary(), 'W 75-68 KU vs Memphis')
 
     def test_has_ESPN_link(self):
-        self.assertIsNotNone(self.game.get_espn_link)
+        self.assertIsNotNone(self.game.opponent.espn_link)
 
-    def test_get_team_color(self):
-        self.assertEqual(self.game.get_team_color(), '002447')
+    def test_is_team_color_correct(self):
+        self.assertEqual(self.game.opponent.team_color(), '002447')
 
     def test_has_team_articles(self):
-        self.game.get_team_articles()
-        self.assertIsNotNone(self.game.team_videos)
-        self.assertIsNotNone(self.game.team_news)
+        self.game.opponent.get_news()
+        self.assertIsNotNone(self.game.opponent.videos)
+        self.assertIsNotNone(self.game.opponent.news)
 
     def test_game_title(self):
         self.assertEqual(u'%s' % self.game, u'Memphis Apr 07')
@@ -62,9 +70,9 @@ class GamesTest(TestCase):
 
     def test_is_twitter_api_result_caching(self):
         self.twitter_api = TwitterApi()
-        self.game.get_team_tweets()
+        self.game.opponent.get_tweets()
 
-        params = {'q': self.game.opponent + ' ' + self.game.mascot,
+        params = {'q': self.game.opponent.name + ' ' + self.game.opponent.mascot,
                   'count': 15,
                   'result_type': 'popular'
                   }
