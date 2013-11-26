@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div id="single-game">
+    <div class="content-header">
+        <h2><span style="color:#{{team.team_color}}">{{team}}</span></h2>
+    </div>
+    {% if team.videos %}
+        <div class="column">
+            <h3>ESPN video for {{team}}</h3>
+            
+            <ul>
+            {% for video in team.videos %}
+                <li>
+                    <div class="video">
+                        <div id="{{video.id}}">
+                        {% with video.images|first as image %}
+                            <img src="{{image.url}}" alt="{{image.caption}}">
+                        {% endwith %}
+                        </div>
+                    </div>
+                    <a href="{{video.links.web.href}}">
+                        {% with video.images|first as image %}
+                            <img class="video-thumbnail" src="{{image.url}}" alt="{{image.caption}}">
+                        {% endwith %}
+                        {{video.headline}}
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <div class="column">
+        <h3>{{team.conference}} Conference</h3>
+        {% if team.espn_link %}
+            <br /><h3><a href="{{team.espn_link}}">{{team}} ESPN Team Page</a></h3>
+        {% endif %}
+        
+        {% if team.news %}
+            <br /><h3>ESPN News for {{team}}</h3>
+            <ul>
+            {% for article in team.news %}
+                <li>
+                    <a href="{{article.links.web.href}}">
+                        {% with article.images|first as image %}
+                            {% if image.width >= 576 %} 
+                                <img src="{{image.url}}" alt="{{image.caption}}">
+                            {% endif %}
+                        {% endwith %}
+                        {{article.headline}}
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div class="column">
+        {% if team.get_tweets %}
+            <div class="twitter-timeline">
+                <h4>Tweets about {{team}}</h4>
+                <div class="tweets">
+                    {% for tweet in team.get_tweets %}
+                    <div class="tweet">
+                        <div class="tweet-image">
+                            <img src="{{tweet.user.profile_image_url_https}}">
+                        </div>
+                        <div class="tweet-profile">
+                            <p class="time">{{tweet.created_at|date:"M d"}}</p>
+                            <p>
+                                <span class="profile"><strong>{{tweet.user.name}}</strong></span>
+                                <span class="handle">@{{tweet.user.screen_name}}</span>
+                            </p>
+                            <p>{{tweet.text|safe}}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>{% endblock %}
