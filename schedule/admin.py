@@ -5,13 +5,14 @@ class GameAdmin(admin.ModelAdmin):
     list_display = ['opponent','date','location','game_type']
     list_filter = ['date', 'game_type']
     search_fields = ['location']
-    date_heirarchy = 'date'
+    ordering = ('date',)
     save_on_top = True
     prepopulated_fields = {'slug': ('date',)}
     
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ['name', 'mascot']
-    search_fileds = ['name', 'mascot']
+    list_display = ['name', 'mascot', 'conference']
+    search_fields = ['name', 'mascot','conference']
+    ordering = ('name','mascot')
     save_on_top = True
     prepopulated_fields = {'slug': ('name','mascot')}
 

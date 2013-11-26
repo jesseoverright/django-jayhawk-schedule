@@ -127,6 +127,7 @@ class Team(models.Model):
     name = models.CharField(max_length=255)
     mascot = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, max_length=255)
+    conference = models.CharField(max_length=255)
     _espn_api_team_details = None
     news = None
     videos = None
