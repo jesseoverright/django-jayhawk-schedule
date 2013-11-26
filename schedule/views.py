@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from schedule.models import Game
+from schedule.models import Game, Team
 
 def index(request):
     games = Game.objects.order_by('date')
@@ -25,6 +25,16 @@ def game(request, slug):
     return render(request, 'schedule/game.html', {
         'title': 'KU vs %s' % game.opponent,
         'game': game
+    })
+
+def team(request, slug):
+    team = get_object_or_404(Team, slug=slug)
+
+    team.get_news()
+
+    return render(request, 'schedule/team.html', {
+        'title': team.name,
+        'team': team
     })
 
 def ical(request):
