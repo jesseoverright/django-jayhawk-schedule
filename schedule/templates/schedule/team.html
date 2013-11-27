@@ -3,9 +3,8 @@
 {% block title %}{{title}}{% endblock %}
 
 {% block content %}
-<div id="single-game">
     <div class="content-header">
-        <h2><span style="color:#{{team.team_color}}">{{team}}</span></h2>
+        <h2>{{team.get_colored_name | safe}}</h2>
     </div>
     {% if team.videos %}
         <div class="column">
@@ -33,15 +32,20 @@
         </div>
     {% endif %}
     <div class="column">
-        {% for game in games %}
-            <a href="{{game.get_absolute_url}}">{{game.get_short_matchup}}</a>
+        {% if team.espn_link %}
+            <h3><a href="{{team.espn_link}}">{{team}} ESPN Team Page</a></h3>
+        {% endif %}
+        {% if games %}
+            <h3>Games against KU</h3>
+            {% for game in games %}
+            <a href="{{game.get_absolute_url}}">{{game.get_ical_summary}}</a>
         {% endfor %}
+        {% endif %}
+        
         {% if team.conference %}
             <h3>{{team.conference}} Conference</h3>
         {% endif %}
-        {% if team.espn_link %}
-            <br /><h3><a href="{{team.espn_link}}">{{team}} ESPN Team Page</a></h3>
-        {% endif %}
+
         
         {% if team.news %}
             <br /><h3>ESPN News for {{team}}</h3>
@@ -85,4 +89,4 @@
             </div>
         {% endif %}
     </div>
-</div>{% endblock %}
+{% endblock %}
