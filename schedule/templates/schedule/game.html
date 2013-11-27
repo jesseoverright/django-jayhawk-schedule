@@ -5,27 +5,7 @@
 {% block content %}
 <div id="single-game">
     <div class="content-header">
-        <h2>
-        {% if game.location == "Allen Fieldhouse, Lawrence, KS" %}
-            {% if game.opponent.color %}
-                <span style="color:#{{game.opponent.color}}">
-            {% endif %}
-            {{game.opponent}}
-            {% if game.opponent.color %}
-                </span>
-            {% endif %}
-            at Kansas Jayhawks
-        {% else %}
-            Kansas Jayhawks vs
-            {% if game.opponent.color %}
-                <span style="color:#{{game.opponent.color}}">
-            {% endif %}
-            {{game.opponent}}
-            {% if game.opponent.color %}
-                </span>
-            {% endif %}
-        {% endif %}
-        </h2>
+        <h2>{{ game.get_matchup | safe}}</h2>
         {% if game.get_result %}
             <h2 class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</h2>
         {% endif %}

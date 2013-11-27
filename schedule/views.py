@@ -29,12 +29,14 @@ def game(request, slug):
 
 def team(request, slug):
     team = get_object_or_404(Team, slug=slug)
+    games = Game.objects.filter(opponent=team)
 
     team.get_news()
 
     return render(request, 'schedule/team.html', {
         'title': team.name,
-        'team': team
+        'team': team,
+        'games': games,
     })
 
 def ical(request):

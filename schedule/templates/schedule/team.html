@@ -33,6 +33,9 @@
         </div>
     {% endif %}
     <div class="column">
+        {% for game in games %}
+            <a href="{{game.get_absolute_url}}">{{game.get_short_matchup}}</a>
+        {% endfor %}
         {% if team.conference %}
             <h3>{{team.conference}} Conference</h3>
         {% endif %}

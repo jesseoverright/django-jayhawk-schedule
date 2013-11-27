@@ -153,6 +153,12 @@ class Team(models.Model):
                     else:
                         self.news.append(article)
 
+    def get_colored_name(self):
+        if self.color():
+            return u'<span style="color:#%s">%s %s</span>' % (self.color(), self.name, self.mascot)
+
+        return self
+
     def espn_link(self):
         return self._get_espn_api_team_details()['links']['web']['teams']['href']
 
@@ -198,7 +204,13 @@ class Game(models.Model):
     def get_endtime(self):
         return self.date + datetime.timedelta(0,9000)
 
-    def get_summary(self):
+    def get_matchup(self):
+        if self.location == "Allen Fieldhouse, Lawrence, KS":
+            return '%s at Kansas Jayhawks' % self.opponent.get_colored_name()
+        
+        return 'Kansas Jayhawks vs %s' % self.opponent.get_colored_name()
+
+    def get_ical_summary(self):
         if self.get_result() != False:
             summary = self.get_result()[0].upper() + ' ' + str(self.score) + '-' + str(self.opponent_score) + ' '
         else:
