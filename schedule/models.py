@@ -156,7 +156,7 @@ class Team(models.Model):
     def espn_link(self):
         return self._get_espn_api_team_details()['links']['web']['teams']['href']
 
-    def team_color(self):
+    def color(self):
         return self._get_espn_api_team_details()['color']
 
     def get_news(self):

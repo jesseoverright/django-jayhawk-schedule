@@ -10,11 +10,11 @@
             <h2 class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</h2>
         {% endif %}
         <h2><a href="{{game.get_absolute_url}}">
-        {% if game.opponent.team_color %}
-            <span style="color:#{{game.opponent.team_color}}">
+        {% if game.opponent.color %}
+            <span style="color:#{{game.opponent.color}}">
         {% endif %}
         {{game.opponent}}
-        {% if game.opponent.team_color %}
+        {% if game.opponent.color %}
             </span>
         {% endif %}
         </a></h2>
