@@ -33,7 +33,9 @@
         </div>
     {% endif %}
     <div class="column">
-        <h3>{{team.conference}} Conference</h3>
+        {% if team.conference %}
+            <h3>{{team.conference}} Conference</h3>
+        {% endif %}
         {% if team.espn_link %}
             <br /><h3><a href="{{team.espn_link}}">{{team}} ESPN Team Page</a></h3>
         {% endif %}
