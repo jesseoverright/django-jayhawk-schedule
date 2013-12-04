@@ -4,7 +4,9 @@ from django.core.cache import cache
 from django.conf import settings
 
 from django.test import TestCase
-from schedule.models import Team, Game, EspnApi, TwitterApi
+from schedule.models import Team, Game
+from schedule.apis.espn import EspnApi
+from schedule.apis.twitter import TwitterApi
 
 import re
 
@@ -46,7 +48,7 @@ class GamesTest(TestCase):
         self.assertIsNotNone(self.game.opponent.espn_link)
 
     def test_is_team_color_correct(self):
-        self.assertEqual(self.game.opponent.team_color(), '002447')
+        self.assertEqual(self.game.opponent.color(), '002447')
 
     def test_has_team_articles(self):
         self.game.opponent.get_news()
