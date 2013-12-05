@@ -2,8 +2,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 import datetime
 
-from schedule.apis.espn import EspnApi
-from schedule.apis.twitter import TwitterApi
+from schedule.apis import EspnApi, TwitterApi
 
 
 GAME_TYPES = (
