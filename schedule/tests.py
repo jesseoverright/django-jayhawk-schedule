@@ -4,7 +4,9 @@ from django.core.cache import cache
 from django.conf import settings
 
 from django.test import TestCase
-from schedule.models import Team, Game, EspnApi, TwitterApi
+from schedule.models import Team, Game
+from schedule.apis.espn import EspnApi
+from schedule.apis.twitter import TwitterApi
 
 import re
 
