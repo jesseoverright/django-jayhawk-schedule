@@ -42,7 +42,7 @@
 {% endif %}
 <div class="column">
     {% if game.opponent.espn_link %}
-        <h3><a href="{{game.opponent.espn_link}}">{{game.opponent}} ESPN Team Page</a></h3><br />
+        <h3><a href="{{game.opponent.espn_link}}" style="color:#{{game.opponent.color}}">{{game.opponent}} ESPN Team Page</a></h3>
     {% endif %}
     
     {% if game.opponent.news %}

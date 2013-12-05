@@ -103,6 +103,14 @@ li img {
     margin-bottom: 10px;
 }
 
+.column h3 {
+    margin-top: 0.85em;
+}
+
+.column h3:first-child {
+    margin-top: 0;
+}
+
 /* the even divs, after .content-header, will be left .column */
 .column:nth-child(2n) {
     width: 60%;
