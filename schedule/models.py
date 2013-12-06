@@ -51,7 +51,7 @@ class Team(models.Model):
         if self.color():
             return u'<span style="color:#%s">%s %s</span>' % (self.color(), self.name, self.mascot)
 
-        return u'%s' % self
+        return u'%s %s' % (self.name, self.mascot)
 
     def espn_link(self):
         return self._get_espn_api_team_details()['links']['web']['teams']['href']
