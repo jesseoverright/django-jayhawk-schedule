@@ -50,8 +50,15 @@ class GamesTest(TestCase):
     def test_is_team_color_correct(self):
         self.assertEqual(self.game.opponent.color(), '002447')
 
-    def test_is_html_matchup_correct(self):
+    def test_is_team_colored_name_correct(self):
         self.assertEqual(self.game.opponent.get_colored_name(), u'<span style="color:#002447">Memphis Tigers</span>')
+        no_api_team = Team.objects.create(
+            name='Harlem',
+            mascot='Globetrotters',
+            slug='harlem-globetrotters',
+            )
+        self.assertEqual(u'%s' % no_api_team.get_colored_name(), 'Harlem Globetrotters')
+
 
     def test_has_team_articles(self):
         self.game.opponent.get_news()

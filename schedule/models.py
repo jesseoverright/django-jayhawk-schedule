@@ -21,7 +21,7 @@ class Team(models.Model):
     name = models.CharField(max_length=255)
     mascot = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, max_length=255)
-    conference = models.CharField(max_length=255)
+    conference = models.CharField(blank=True,max_length=255)
     _espn_api_team_details = None
     news = None
     videos = None
@@ -51,13 +51,16 @@ class Team(models.Model):
         if self.color():
             return u'<span style="color:#%s">%s %s</span>' % (self.color(), self.name, self.mascot)
 
-        return u'%s %s' % (self.name, self.mascot)
+        return self
 
     def espn_link(self):
         return self._get_espn_api_team_details()['links']['web']['teams']['href']
 
     def color(self):
-        return self._get_espn_api_team_details()['color']
+        if self._get_espn_api_team_details():
+            return self._get_espn_api_team_details()['color']
+
+        return False
 
     def get_news(self):
         if self.news is None and self.videos is None:
