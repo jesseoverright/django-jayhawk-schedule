@@ -6,7 +6,7 @@ from datetime import date
 def index(request):
     games = Game.objects.order_by('date')
 
-    next_game = Game.objects.filter(date__gt = date.today())
+    next_game = Game.objects.filter(date__gt = date.today()).order_by('date')
 
     record = {}
     record['wins'] = 0
