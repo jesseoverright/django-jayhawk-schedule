@@ -21,7 +21,7 @@ class Team(models.Model):
     name = models.CharField(max_length=255)
     mascot = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, max_length=255)
-    conference = models.CharField(max_length=255)
+    conference = models.CharField(blank=True,max_length=255)
     _espn_api_team_details = None
     news = None
     videos = None
@@ -47,11 +47,20 @@ class Team(models.Model):
                     else:
                         self.news.append(article)
 
+    def get_colored_name(self):
+        if self.color():
+            return u'<span style="color:#%s">%s %s</span>' % (self.color(), self.name, self.mascot)
+
+        return self
+
     def espn_link(self):
         return self._get_espn_api_team_details()['links']['web']['teams']['href']
 
     def color(self):
-        return self._get_espn_api_team_details()['color']
+        if self._get_espn_api_team_details():
+            return self._get_espn_api_team_details()['color']
+
+        return False
 
     def get_news(self):
         if self.news is None and self.videos is None:
@@ -92,7 +101,13 @@ class Game(models.Model):
     def get_endtime(self):
         return self.date + datetime.timedelta(0,9000)
 
-    def get_summary(self):
+    def get_matchup(self):
+        if self.location == "Allen Fieldhouse, Lawrence, KS":
+            return '%s at Kansas Jayhawks' % self.opponent.get_colored_name()
+        
+        return 'Kansas Jayhawks vs %s' % self.opponent.get_colored_name()
+
+    def get_ical_summary(self):
         if self.get_result() != False:
             summary = self.get_result()[0].upper() + ' ' + str(self.score) + '-' + str(self.opponent_score) + ' '
         else:

@@ -3,111 +3,88 @@
 {% block title %}{{title}}{% endblock %}
 
 {% block content %}
-<div id="single-game">
-    <div class="content-header">
-        <h2>
-        {% if game.location == "Allen Fieldhouse, Lawrence, KS" %}
-            {% if game.opponent.color %}
-                <span style="color:#{{game.opponent.color}}">
-            {% endif %}
-            {{game.opponent}}
-            {% if game.opponent.color %}
-                </span>
-            {% endif %}
-            at Kansas Jayhawks
-        {% else %}
-            Kansas Jayhawks vs
-            {% if game.opponent.color %}
-                <span style="color:#{{game.opponent.color}}">
-            {% endif %}
-            {{game.opponent}}
-            {% if game.opponent.color %}
-                </span>
-            {% endif %}
-        {% endif %}
-        </h2>
-        {% if game.get_result %}
-            <h2 class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</h2>
-        {% endif %}
-    </div>
-    {% if game.opponent.videos %}
-        <div class="column">
-            <h3>ESPN video for {{game.opponent}}</h3>
-            
-            <ul>
-            {% for video in game.opponent.videos %}
-                <li>
-                    <div class="video">
-                        <div id="{{video.id}}">
-                        {% with video.images|first as image %}
-                            <img src="{{image.url}}" alt="{{image.caption}}">
-                        {% endwith %}
-                        </div>
+<div class="content-header">
+    <h2>{{ game.get_matchup | safe}}</h2>
+    {% if game.get_result %}
+        <h2 class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</h2>
+    {% endif %}
+    <h3>{{game.date}}
+    {% if game.television %}
+        on {{game.television}}
+    {% endif %}
+    </h3>
+    <h3>{{game.location}}</h3>
+</div>
+{% if game.opponent.videos %}
+    <div class="column">
+        <h3>ESPN video for {{game.opponent}}</h3>
+        
+        <ul>
+        {% for video in game.opponent.videos %}
+            <li>
+                <div class="video">
+                    <div id="{{video.id}}">
+                    {% with video.images|first as image %}
+                        <img src="{{image.url}}" alt="{{image.caption}}">
+                    {% endwith %}
                     </div>
-                    <a href="{{video.links.web.href}}">
-                        {% with video.images|first as image %}
-                            <img class="video-thumbnail" src="{{image.url}}" alt="{{image.caption}}">
-                        {% endwith %}
-                        {{video.headline}}
-                    </a>
-                </li>
+                </div>
+                <a href="{{video.links.web.href}}">
+                    {% with video.images|first as image %}
+                        <img class="video-thumbnail" src="{{image.url}}" alt="{{image.caption}}">
+                    {% endwith %}
+                    {{video.headline}}
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+<div class="column">
+    {% if game.opponent.espn_link %}
+        <h3><a href="{{game.opponent.espn_link}}" style="color:#{{game.opponent.color}}">{{game.opponent}} ESPN Team Page</a></h3>
+    {% endif %}
+    
+    {% if game.opponent.news %}
+        <h3>ESPN News for {{game.opponent}}</h3>
+        <ul>
+        {% for article in game.opponent.news %}
+            <li>
+                <a href="{{article.links.web.href}}">
+                    {% with article.images|first as image %}
+                        {% if image.width >= 576 %} 
+                            <img src="{{image.url}}" alt="{{image.caption}}">
+                        {% endif %}
+                    {% endwith %}
+                    {{article.headline}}
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+<div class="column">
+    {% if game.opponent.get_tweets %}
+        <div class="twitter-timeline">
+            <h4>Tweets about {{game.opponent}}</h4>
+            <div class="tweets">
+                {% for tweet in game.opponent.get_tweets %}
+                <div class="tweet">
+                    <div class="tweet-image">
+                        <img src="{{tweet.user.profile_image_url_https}}">
+                    </div>
+                    <div class="tweet-profile">
+                        <p class="time">{{tweet.created_at|date:"M d"}}</p>
+                        <p>
+                            <span class="profile"><strong>{{tweet.user.name}}</strong></span>
+                            <span class="handle">@{{tweet.user.screen_name}}</span>
+                        </p>
+                        <p>{{tweet.text|safe}}</p>
+                    </div>
+                </div>
             {% endfor %}
-            </ul>
+            </div>
         </div>
     {% endif %}
-    <div class="column">
-        <h3 class="date">{{game.date}}
-        {% if game.television %}
-            on {{game.television}}
-        {% endif %}
-        </h3>
-        <h3 class="location">{{game.location}}</h3>
-
-        {% if game.opponent.espn_link %}
-            <br /><h3><a href="{{game.opponent.espn_link}}">{{game.opponent}} ESPN Team Page</a></h3>
-        {% endif %}
-        
-        {% if game.opponent.news %}
-            <br /><h3>ESPN News for {{game.opponent}}</h3>
-            <ul>
-            {% for article in game.opponent.news %}
-                <li>
-                    <a href="{{article.links.web.href}}">
-                        {% with article.images|first as image %}
-                            {% if image.width >= 576 %} 
-                                <img src="{{image.url}}" alt="{{image.caption}}">
-                            {% endif %}
-                        {% endwith %}
-                        {{article.headline}}
-                    </a>
-                </li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
-    <div class="column">
-        {% if game.opponent.get_tweets %}
-            <div class="twitter-timeline">
-                <h4>Tweets about {{game.opponent}}</h4>
-                <div class="tweets">
-                    {% for tweet in game.opponent.get_tweets %}
-                    <div class="tweet">
-                        <div class="tweet-image">
-                            <img src="{{tweet.user.profile_image_url_https}}">
-                        </div>
-                        <div class="tweet-profile">
-                            <p class="time">{{tweet.created_at|date:"M d"}}</p>
-                            <p>
-                                <span class="profile"><strong>{{tweet.user.name}}</strong></span>
-                                <span class="handle">@{{tweet.user.screen_name}}</span>
-                            </p>
-                            <p>{{tweet.text|safe}}</p>
-                        </div>
-                    </div>
-                {% endfor %}
-                </div>
-            </div>
-        {% endif %}
-    </div>
 </div>
 {% endblock %}

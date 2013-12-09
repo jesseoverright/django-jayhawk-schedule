@@ -88,11 +88,7 @@ li img {
     min-height: 100px;
 }
 
-#single-game {
-    clear: both;
-}
-
-#single-game .final-score {
+.final-score {
     text-align: center;
     width: 45%;
     margin: 0.5em auto;
@@ -100,21 +96,29 @@ li img {
     padding: 10px;
 }
 
-#single-game .column {
+.column {
     float: left;
     min-height: 30px;
     width: 34%;
     margin-bottom: 10px;
 }
 
+.column h3 {
+    margin-top: 0.85em;
+}
+
+.column h3:first-child {
+    margin-top: 0;
+}
+
 /* the even divs, after .content-header, will be left .column */
-#single-game .column:nth-child(2n) {
+.column:nth-child(2n) {
     width: 60%;
     margin-right: 6%;
 }
 
 /* css hack to get left columns lined up vertically */
-#single-game .column:nth-child(2n+1) {
+.column:nth-child(2n+1) {
     float: right;
 }
 
@@ -169,13 +173,10 @@ li img {
 .content-header {
     overflow: hidden;
     margin-bottom: 20px;
-}
-
-.content-header h2:first-child {
     text-align: center;
     border-bottom: 2px solid #dbdbdb;
     padding-bottom: 0.25em;
-    margin-bottom: 0.5em;
+    margin-bottom: 2em;
 }
 
 .video {
@@ -279,7 +280,7 @@ li img {
         width: 225px;
     }
 
-    #single-game .column, #single-game .column:nth-child(2n) {
+    .column, .column:nth-child(2n) {
         width: 100%;
         margin-bottom: 20px;
     }

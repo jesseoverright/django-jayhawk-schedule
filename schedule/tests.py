@@ -15,7 +15,7 @@ class GamesTest(TestCase):
         team = Team.objects.create(
             name='Memphis',
             mascot='Tigers',
-            slug='memphis'
+            slug='memphis-tigers'
             )
         self.game = Game.objects.create(
             opponent=team,
@@ -34,21 +34,31 @@ class GamesTest(TestCase):
         response = self.client.get('/2008-championship/')
         self.assertTemplateUsed(response, 'schedule/game.html')
 
-    #def test_team_page_renders_correct_template(self):
-    #    response = self.client.get('/memphis')
-    #    self.assertTemplateUsed(response,'schedule/team.html') 
+    def test_team_page_renders_correct_template(self):
+        response = self.client.get('/team/memphis-tigers/')
+        self.assertTemplateUsed(response,'schedule/team.html') 
 
     def test_is_game_result_accurate(self):
         self.assertEqual(self.game.get_result(), 'win') 
 
-    def test_game_summary(self):
-        self.assertEqual(self.game.get_summary(), 'W 75-68 KU vs Memphis')
+    def test_ical_summary(self):
+        self.assertEqual(self.game.get_ical_summary(), 'W 75-68 KU vs Memphis')
 
     def test_has_ESPN_link(self):
         self.assertIsNotNone(self.game.opponent.espn_link)
 
     def test_is_team_color_correct(self):
         self.assertEqual(self.game.opponent.color(), '002447')
+
+    def test_is_team_colored_name_correct(self):
+        self.assertEqual(self.game.opponent.get_colored_name(), u'<span style="color:#002447">Memphis Tigers</span>')
+        no_api_team = Team.objects.create(
+            name='Harlem',
+            mascot='Globetrotters',
+            slug='harlem-globetrotters',
+            )
+        self.assertEqual(u'%s' % no_api_team.get_colored_name(), 'Harlem Globetrotters')
+
 
     def test_has_team_articles(self):
         self.game.opponent.get_news()
