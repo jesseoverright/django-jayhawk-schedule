@@ -1,8 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from schedule.models import Game, Team
 
+from datetime import date
+
 def index(request):
     games = Game.objects.order_by('date')
+
+    next_game = Game.objects.filter(date__gt = date.today())
 
     record = {}
     record['wins'] = 0
@@ -14,7 +18,7 @@ def index(request):
         if game.get_result() == 'loss' and game.game_type != 'Exhibition':
             record['losses'] += 1
 
-    return render(request, 'schedule/index.html', {'games': games, 'record': record})
+    return render(request, 'schedule/index.html', {'games': games, 'record': record, 'next_game': next_game[0]})
 
 
 def game(request, slug):
