@@ -38,7 +38,7 @@ def team(request, slug):
     team.get_news()
 
     return render(request, 'schedule/team.html', {
-        'title': team.name,
+        'title': '%s Team Page' % team,
         'team': team,
         'games': games,
     })
