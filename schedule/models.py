@@ -72,6 +72,9 @@ class Team(models.Model):
     def get_tweets(self):
         return twitter_api.get_team_tweets(self.name, self.mascot)
 
+    def get_absolute_url(self):
+        return reverse('schedule.views.team', args=[self.slug])
+
 
 # a Game on KU's schedule includes opponent, date, location and tv details
 class Game(models.Model):
