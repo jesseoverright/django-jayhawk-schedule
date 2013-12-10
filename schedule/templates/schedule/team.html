@@ -32,10 +32,6 @@
         </div>
     {% endif %}
     <div class="column">
-        {% if team.conference %}
-            <h3>{{team.conference}} Conference</h3>
-        {% endif %}
-
         {% if games %}
             <h3>KU vs {{team.get_colored_name | safe}}</h3>
             <ul>
@@ -43,6 +39,10 @@
                 <li><a href="{{game.get_absolute_url}}">{{game.get_ical_summary}}</a></li>
             {% endfor %}
             </ul>
+        {% endif %}
+
+        {% if team.conference %}
+            <h3>{{team.conference}} Conference</h3>
         {% endif %}
 
         {% if team.espn_link %}
