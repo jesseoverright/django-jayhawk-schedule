@@ -6,7 +6,14 @@ from datetime import date
 def index(request):
     games = Game.objects.order_by('date')
 
-    next_game = Game.objects.filter(date__gt = date.today()).order_by('date')
+    next_games = Game.objects.filter(date__gt = date.today()).order_by('date')
+    if next_games.count() > 0:
+        if next_games[0].get_result() != False:
+            next_game = next_games[1]
+        else:
+            next_game = next_games[0]
+    else:
+        next_game = False
 
     record = {}
     record['wins'] = 0
@@ -18,7 +25,7 @@ def index(request):
         if game.get_result() == 'loss' and game.game_type != 'Exhibition':
             record['losses'] += 1
 
-    return render(request, 'schedule/index.html', {'games': games, 'record': record, 'next_game': next_game[0]})
+    return render(request, 'schedule/index.html', {'games': games, 'record': record, 'next_game': next_game})
 
 
 def game(request, slug):

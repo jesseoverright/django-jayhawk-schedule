@@ -5,7 +5,9 @@
 {% block content %}
     <div class="content-header">
         <h2>Record: {{record.wins}}-{{record.losses}}</h2>
-        <h3>Next Game: <a href="{{next_game.get_absolute_url}}">{{next_game.opponent.get_colored_name | safe}}</a></h3>
+        {% if next_game != False %}
+            <h3>Next Game: <a href="{{next_game.get_absolute_url}}">{{next_game.opponent.get_colored_name | safe}}</a></h3>
+        {% endif %}
     </div>
     {% for game in games %}
     <div class="game">
