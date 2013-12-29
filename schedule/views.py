@@ -51,7 +51,7 @@ def team(request, slug):
     })
 
 def category(request, slug):
-    games = get_list_or_404(Game.objects.filter(game_type__contains=slug).order_by('date'))
+    games = get_list_or_404(Game.objects.filter(game_type__iexact=slug).order_by('date'))
 
     return render(request, 'schedule/category.html', {'game_type': slug, 'games': games})
 
