@@ -8,7 +8,7 @@
     {% if game.get_result %}
         <h2 class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</h2>
     {% endif %}
-    <h3>{{game.date}}
+    <h3>{{game.date|date:"g:i a F jS, Y"}}
     {% if game.television %}
         on {{game.television}}
     {% endif %}
@@ -18,7 +18,7 @@
 {% if game.opponent.videos %}
     <div class="column">
         <h3>ESPN video for {{game.opponent}}</h3>
-        
+
         <ul>
         {% for video in game.opponent.videos %}
             <li>
@@ -45,7 +45,7 @@
     {% if game.opponent.espn_link %}
         <h3><a href="{{game.opponent.espn_link}}" style="color:#{{game.opponent.color}}">{{game.opponent}} ESPN Team Page</a></h3>
     {% endif %}
-    
+
     {% if game.opponent.news %}
         <h3>ESPN News for {{game.opponent}}</h3>
         <ul>
@@ -53,7 +53,7 @@
             <li>
                 <a href="{{article.links.web.href}}">
                     {% with article.images|first as image %}
-                        {% if image.width >= 576 %} 
+                        {% if image.width >= 576 %}
                             <img src="{{image.url}}" alt="{{image.caption}}">
                         {% endif %}
                     {% endwith %}

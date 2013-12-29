@@ -9,7 +9,7 @@
     {% if team.videos %}
         <div class="column">
             <h3>ESPN video for {{team}}</h3>
-            
+
             <ul>
             {% for video in team.videos %}
                 <li>
@@ -36,7 +36,7 @@
             <h3>KU vs {{team.get_colored_name | safe}}</h3>
             <ul>
             {% for game in games %}
-                <li><a href="{{game.get_absolute_url}}">{{game.get_ical_summary}}</a></li>
+                <li><a href="{{game.get_absolute_url}}">{{game.date|date:"n/j"}} - {{game.get_ical_summary}}</a></li>
             {% endfor %}
             </ul>
         {% endif %}
@@ -47,8 +47,8 @@
 
         {% if team.espn_link %}
             <h3><a href="{{team.espn_link}}" style="color:#{{team.color}}">{{team}} ESPN Team Page</a></h3>
-        {% endif %}       
-        
+        {% endif %}
+
         {% if team.news %}
             <h3>ESPN News for {{team}}</h3>
             <ul>
@@ -56,7 +56,7 @@
                 <li>
                     <a href="{{article.links.web.href}}">
                         {% with article.images|first as image %}
-                            {% if image.width >= 576 %} 
+                            {% if image.width >= 576 %}
                                 <img src="{{image.url}}" alt="{{image.caption}}">
                             {% endif %}
                         {% endwith %}
