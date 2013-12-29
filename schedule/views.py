@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from schedule.models import Game, Team
 
 from datetime import date
@@ -49,6 +49,11 @@ def team(request, slug):
         'team': team,
         'games': games,
     })
+
+def category(request, slug):
+    games = get_list_or_404(Game.objects.filter(game_type__contains=slug).order_by('date'))
+
+    return render(request, 'schedule/category.html', {'game_type': slug, 'games': games})
 
 def ical(request):
     games = Game.objects.order_by('date')
