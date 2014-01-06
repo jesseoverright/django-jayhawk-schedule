@@ -86,7 +86,7 @@ class Game(models.Model):
     game_type = models.CharField(max_length=25, choices=GAME_TYPES)
     score = models.IntegerField(null=True, blank=True)
     opponent_score = models.IntegerField(null=True, blank=True)
-    
+
     class Meta:
         ordering = ['-date']
 
@@ -107,7 +107,7 @@ class Game(models.Model):
     def get_matchup(self):
         if self.location == "Allen Fieldhouse, Lawrence, KS":
             return '%s at Kansas Jayhawks' % self.opponent.get_colored_name()
-        
+
         return 'Kansas Jayhawks vs %s' % self.opponent.get_colored_name()
 
     def get_ical_summary(self):
@@ -127,4 +127,3 @@ class Game(models.Model):
         return reverse('schedule.views.game', args=[self.slug])
 
 
-    

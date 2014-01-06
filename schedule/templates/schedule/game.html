@@ -43,7 +43,7 @@
 <div class="column">
     <h3><a href="{{game.opponent.get_absolute_url}}" style="color:#{{game.opponent.color}}">{{game.opponent}} Team Page</a></h3>
     {% if game.opponent.espn_link %}
-        <h3><a href="{{game.opponent.espn_link}}" style="color:#{{game.opponent.color}}">{{game.opponent}} ESPN Team Page</a></h3>
+        <h3><a href="{{game.opponent.espn_link}}" style="color:#{{game.opponent.color}}">{{game.opponent.mascot}} ESPN Team Page</a></h3>
     {% endif %}
 
     {% if game.opponent.news %}
