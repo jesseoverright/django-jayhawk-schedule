@@ -1,307 +1,433 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+/* line 17, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+/* line 8, ../../../sass/jayhawks.scss */
 body {
-    font-family: helvetica;
-    margin: 0;
-    padding: 0;
-    background: #3b74ff;
+  font-family: helvetica;
+  margin: 0;
+  padding: 0;
+  background: #3b74ff;
 }
 
+/* line 15, ../../../sass/jayhawks.scss */
 a, a:visited {
-    color: #3b74ff;
-    text-decoration: none;
+  color: #3b74ff;
+  text-decoration: none;
 }
 
+/* line 20, ../../../sass/jayhawks.scss */
 h1, h2, h3, h4, p {
-    margin: 0 0 0.25em;
+  margin: 0 0 0.25em;
 }
 
+/* line 24, ../../../sass/jayhawks.scss */
 h1 {
-    font-size: 2em;
+  font-size: 2em;
 }
 
+/* line 28, ../../../sass/jayhawks.scss */
 h2 {
-    font-size: 1.5em;
+  font-size: 1.5em;
 }
 
+/* line 32, ../../../sass/jayhawks.scss */
 h3 {
-    font-size: 1.17em;
+  font-size: 1.17em;
 }
 
+/* line 36, ../../../sass/jayhawks.scss */
 h4, p {
-    font-size: 1em;
+  font-size: 1em;
 }
 
+/* line 40, ../../../sass/jayhawks.scss */
 ul {
-    padding: 0;
+  padding: 0;
 }
 
+/* line 44, ../../../sass/jayhawks.scss */
 li {
-    list-style-type: none;
-    margin-bottom: 10px;
+  list-style-type: none;
+  margin-bottom: 10px;
 }
 
+/* line 49, ../../../sass/jayhawks.scss */
 li a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
+/* line 53, ../../../sass/jayhawks.scss */
 li img {
-    width: 100%;
+  width: 100%;
 }
 
+/* line 57, ../../../sass/jayhawks.scss */
 #container {
-    max-width: 1000px;
-    width: 80%;
-    margin: 30px auto;
-    box-shadow: 5px 5px #ff0a27;
-    padding: 10px;
-    background: #ffffff;
+  max-width: 1000px;
+  width: 80%;
+  margin: 30px auto;
+  box-shadow: 5px 5px #ff0a27;
+  padding: 10px;
+  background: #ffffff;
 }
 
+/* line 66, ../../../sass/jayhawks.scss */
 #header {
-    background: #dbdbdb;
-    background: -moz-linear-gradient(top,  #dbdbdb 0%, #ddf1f9 35%, #3b74ff 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dbdbdb), color-stop(35%,#ddf1f9), color-stop(100%,#3b74ff));
-    background: -webkit-linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
-    background: -o-linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
-    background: -ms-linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
-    background: linear-gradient(to bottom,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
+  background: #dbdbdb;
+  background: -moz-linear-gradient(top, #dbdbdb 0%, #ddf1f9 35%, #3b74ff 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dbdbdb), color-stop(35%, #ddf1f9), color-stop(100%, #3b74ff));
+  background: -webkit-linear-gradient(top, #dbdbdb 0%, #ddf1f9 35%, #3b74ff 100%);
+  background: -o-linear-gradient(top, #dbdbdb 0%, #ddf1f9 35%, #3b74ff 100%);
+  background: -ms-linear-gradient(top, #dbdbdb 0%, #ddf1f9 35%, #3b74ff 100%);
+  background: linear-gradient(to bottom, #dbdbdb 0%, #ddf1f9 35%, #3b74ff 100%);
 }
 
+/* line 76, ../../../sass/jayhawks.scss */
 #header img {
-    width: 100%;
-    height: auto;
+  width: 100%;
+  height: auto;
 }
 
+/* line 81, ../../../sass/jayhawks.scss */
 #header h1 {
-    margin-top: 0;
-    padding: 5px 20px 10px;
-    font-size: 1.6em;
-    text-shadow: 2px 2px #000;
+  margin-top: 0;
+  padding: 5px 20px 10px;
+  font-size: 1.6em;
+  text-shadow: 2px 2px #000;
 }
 
+/* line 88, ../../../sass/jayhawks.scss */
 #header a {
-    color: #fff;
-
+  color: #fff;
 }
 
+/* line 93, ../../../sass/jayhawks.scss */
 #content {
-    padding: 5px 20px 10px;
-    min-height: 100px;
+  padding: 5px 20px 10px;
+  min-height: 100px;
 }
 
+/* line 98, ../../../sass/jayhawks.scss */
 .final-score {
-    text-align: center;
-    width: 45%;
-    margin: 0.5em auto;
-    min-width: 80px;
-    padding: 10px;
+  text-align: center;
+  width: 45%;
+  margin: 0.5em auto;
+  min-width: 80px;
+  padding: 10px;
 }
 
+/* line 106, ../../../sass/jayhawks.scss */
 .column {
-    float: left;
-    min-height: 30px;
-    width: 34%;
-    margin-bottom: 10px;
+  float: left;
+  min-height: 30px;
+  width: 34%;
+  margin-bottom: 10px;
 }
 
+/* line 113, ../../../sass/jayhawks.scss */
 .column h3 {
-    margin-top: 0.85em;
+  margin-top: 0.85em;
 }
 
+/* line 117, ../../../sass/jayhawks.scss */
 .column h3:first-child {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 /* the even divs, after .content-header, will be left .column */
+/* line 122, ../../../sass/jayhawks.scss */
 .column:nth-child(2n) {
-    width: 60%;
-    margin-right: 6%;
+  width: 60%;
+  margin-right: 6%;
 }
 
 /* css hack to get left columns lined up vertically */
+/* line 128, ../../../sass/jayhawks.scss */
 .column:nth-child(2n+1) {
-    float: right;
+  float: right;
 }
 
+/* line 132, ../../../sass/jayhawks.scss */
 #footer {
-    border-top: 2px solid #3b74ff;
-    padding: 20px;
-    clear: both;
+  border-top: 2px solid #3b74ff;
+  padding: 20px;
+  clear: both;
 }
 
+/* line 138, ../../../sass/jayhawks.scss */
 #footer strong {
-    float: right;
+  float: right;
 }
 
+/* line 142, ../../../sass/jayhawks.scss */
 .game {
-    padding-bottom: 5px;
-    margin-bottom: 5px;
-    border-bottom: 2px solid #dbdbdb;
-    clear: both;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: 2px solid #dbdbdb;
+  clear: both;
 }
 
+/* line 149, ../../../sass/jayhawks.scss */
 .game p {
-    line-height: 1.65em;
+  line-height: 1.65em;
 }
 
+/* line 153, ../../../sass/jayhawks.scss */
 .game .game-type {
-    background-color: #ddd;
-    padding: 5px 8px;
-    margin: 0 4px;
-    border-radius: 6px;
+  background-color: #ddd;
+  padding: 5px 8px;
+  margin: 0 4px;
+  border-radius: 6px;
 }
 
+/* line 160, ../../../sass/jayhawks.scss */
 .game:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
+/* line 164, ../../../sass/jayhawks.scss */
 .game .final-score {
-    float: right;
-    padding: 14px;
-    width: 75px;
-    text-align: center;
-    margin: 0 0 0 20px;
+  float: right;
+  padding: 14px;
+  width: 75px;
+  text-align: center;
+  margin: 0 0 0 20px;
 }
 
+/* line 172, ../../../sass/jayhawks.scss */
 .win {
-    background-color: #6df25c;
+  background-color: #6df25c;
 }
 
+/* line 176, ../../../sass/jayhawks.scss */
 .loss {
-    background-color: #f28c8c;
+  background-color: #f28c8c;
 }
 
+/* line 180, ../../../sass/jayhawks.scss */
 .content-header {
-    overflow: hidden;
-    margin-bottom: 20px;
-    text-align: center;
-    border-bottom: 2px solid #dbdbdb;
-    padding-bottom: 0.25em;
-    margin-bottom: 2em;
+  overflow: hidden;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid #dbdbdb;
+  padding-bottom: 0.25em;
+  margin-bottom: 2em;
 }
 
+/* line 189, ../../../sass/jayhawks.scss */
 .video {
-    position: relative;
-    padding-bottom: 56.25%;
-    height: 0;
-    margin-bottom: 5px;
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  margin-bottom: 5px;
 }
 
+/* line 196, ../../../sass/jayhawks.scss */
 .video object, .video div {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
 }
 
+/* line 204, ../../../sass/jayhawks.scss */
 .video-thumbnail {
-    /* suppress when video content displays */
-    display: none;
+  /* suppress when video content displays */
+  display: none;
 }
 
+/* line 209, ../../../sass/jayhawks.scss */
 .twitter-timeline {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
+/* line 213, ../../../sass/jayhawks.scss */
 .twitter-timeline h4 {
-    border-radius: 6px 6px 0 0;
-    border: 1px solid #e8e8e8;
-    padding:12px;
-    margin: 0 0 -1px 0;
+  border-radius: 6px 6px 0 0;
+  border: 1px solid #e8e8e8;
+  padding: 12px;
+  margin: 0 0 -1px 0;
 }
 
+/* line 220, ../../../sass/jayhawks.scss */
 .twitter-timeline .tweets {
-    max-height: 550px;
-    overflow-y: scroll;
+  max-height: 550px;
+  overflow-y: scroll;
 }
 
+/* line 225, ../../../sass/jayhawks.scss */
 .tweet {
-    font-size: 0.9em;
-    line-height: 1.1em;
-    border: 1px solid #e8e8e8;
-    padding: 12px;
-    margin-bottom: -1px;
+  font-size: 0.9em;
+  line-height: 1.1em;
+  border: 1px solid #e8e8e8;
+  padding: 12px;
+  margin-bottom: -1px;
 }
 
+/* line 233, ../../../sass/jayhawks.scss */
 .tweet:last-child {
-    margin-bottom: 0px;
+  margin-bottom: 0px;
 }
 
+/* line 237, ../../../sass/jayhawks.scss */
 .tweet-profile {
-    overflow: hidden;
+  overflow: hidden;
 }
 
+/* line 241, ../../../sass/jayhawks.scss */
 .tweet-profile .handle {
-    font-size: 0.8em;
-    color: #707070;
+  font-size: 0.8em;
+  color: #707070;
 }
 
+/* line 246, ../../../sass/jayhawks.scss */
 .tweet-image {
-    float: left;
-    margin-right: 9px;
+  float: left;
+  margin-right: 9px;
 }
 
+/* line 251, ../../../sass/jayhawks.scss */
 .tweet-image img {
-    border-radius: 4px;
+  border-radius: 4px;
 }
 
+/* line 255, ../../../sass/jayhawks.scss */
 .tweet .time {
-    float: right;
-    font-size: 0.75em;
+  float: right;
+  font-size: 0.75em;
 }
 
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
-    #container {
-        width: 85%;
-    }
-    .video {
-        display: none;
-    }
-    .video-thumbnail {
-        display: block;
-    }
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  /* line 261, ../../../sass/jayhawks.scss */
+  #container {
+    width: 85%;
+  }
+
+  /* line 264, ../../../sass/jayhawks.scss */
+  .video {
+    display: none;
+  }
+
+  /* line 267, ../../../sass/jayhawks.scss */
+  .video-thumbnail {
+    display: block;
+  }
 }
+@media screen and (max-device-width: 568px), all and (max-width: 568px) {
+  /* line 273, ../../../sass/jayhawks.scss */
+  #container {
+    width: 90%;
+  }
 
-@media screen and (max-device-width: 568px), all and (max-width:568px)  {
-    #container {
-        width: 90%;
-    }
+  /* line 277, ../../../sass/jayhawks.scss */
+  #header h1 {
+    text-shadow: 3px 3px #000;
+  }
 
-    #header h1 {
-        text-shadow: 3px 3px #000;
-    }
+  /* line 281, ../../../sass/jayhawks.scss */
+  .game {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+  }
 
-    .game {
-        margin-bottom: 15px;
-        padding-bottom: 15px;
-    }
+  /* line 286, ../../../sass/jayhawks.scss */
+  .game .final-score {
+    width: 225px;
+  }
 
-    .game .final-score {
-        width: 225px;
-    }
-
-    .column, .column:nth-child(2n) {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
+  /* line 290, ../../../sass/jayhawks.scss */
+  .column, .column:nth-child(2n) {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 }
-
 @media only screen and (max-device-width: 568px) {
-    body {
-        font-size: 240%;
-    }
-    /* hide video on mobile devices */
-    .video {
-        display: none;
-    }
+  /* line 298, ../../../sass/jayhawks.scss */
+  body {
+    font-size: 240%;
+  }
 
-    /* display video thumbnail on mobile devices */
-    .video-thumbnail {
-        display: block;
-    }
+  /* hide video on mobile devices */
+  /* line 302, ../../../sass/jayhawks.scss */
+  .video {
+    display: none;
+  }
 
-    .twitter-timeline .tweets {
-        max-height: 800px;
-    }
+  /* display video thumbnail on mobile devices */
+  /* line 307, ../../../sass/jayhawks.scss */
+  .video-thumbnail {
+    display: block;
+  }
+
+  /* line 311, ../../../sass/jayhawks.scss */
+  .twitter-timeline .tweets {
+    max-height: 800px;
+  }
 }

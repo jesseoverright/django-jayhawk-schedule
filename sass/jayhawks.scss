@@ -1,0 +1,314 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+
+body {
+    font-family: helvetica;
+    margin: 0;
+    padding: 0;
+    background: #3b74ff;
+}
+
+a, a:visited {
+    color: #3b74ff;
+    text-decoration: none;
+}
+
+h1, h2, h3, h4, p {
+    margin: 0 0 0.25em;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.17em;
+}
+
+h4, p {
+    font-size: 1em;
+}
+
+ul {
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
+    margin-bottom: 10px;
+}
+
+li a:hover {
+    text-decoration: underline;
+}
+
+li img {
+    width: 100%;
+}
+
+#container {
+    max-width: 1000px;
+    width: 80%;
+    margin: 30px auto;
+    box-shadow: 5px 5px #ff0a27;
+    padding: 10px;
+    background: #ffffff;
+}
+
+#header {
+    background: #dbdbdb;
+    background: -moz-linear-gradient(top,  #dbdbdb 0%, #ddf1f9 35%, #3b74ff 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dbdbdb), color-stop(35%,#ddf1f9), color-stop(100%,#3b74ff));
+    background: -webkit-linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
+    background: -o-linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
+    background: -ms-linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
+    background: linear-gradient(to bottom,  #dbdbdb 0%,#ddf1f9 35%,#3b74ff 100%);
+}
+
+#header img {
+    width: 100%;
+    height: auto;
+}
+
+#header h1 {
+    margin-top: 0;
+    padding: 5px 20px 10px;
+    font-size: 1.6em;
+    text-shadow: 2px 2px #000;
+}
+
+#header a {
+    color: #fff;
+
+}
+
+#content {
+    padding: 5px 20px 10px;
+    min-height: 100px;
+}
+
+.final-score {
+    text-align: center;
+    width: 45%;
+    margin: 0.5em auto;
+    min-width: 80px;
+    padding: 10px;
+}
+
+.column {
+    float: left;
+    min-height: 30px;
+    width: 34%;
+    margin-bottom: 10px;
+}
+
+.column h3 {
+    margin-top: 0.85em;
+}
+
+.column h3:first-child {
+    margin-top: 0;
+}
+
+/* the even divs, after .content-header, will be left .column */
+.column:nth-child(2n) {
+    width: 60%;
+    margin-right: 6%;
+}
+
+/* css hack to get left columns lined up vertically */
+.column:nth-child(2n+1) {
+    float: right;
+}
+
+#footer {
+    border-top: 2px solid #3b74ff;
+    padding: 20px;
+    clear: both;
+}
+
+#footer strong {
+    float: right;
+}
+
+.game {
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 2px solid #dbdbdb;
+    clear: both;
+}
+
+.game p {
+    line-height: 1.65em;
+}
+
+.game .game-type {
+    background-color: #ddd;
+    padding: 5px 8px;
+    margin: 0 4px;
+    border-radius: 6px;
+}
+
+.game:last-child {
+    border-bottom: none;
+}
+
+.game .final-score {
+    float: right;
+    padding: 14px;
+    width: 75px;
+    text-align: center;
+    margin: 0 0 0 20px;
+}
+
+.win {
+    background-color: #6df25c;
+}
+
+.loss {
+    background-color: #f28c8c;
+}
+
+.content-header {
+    overflow: hidden;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #dbdbdb;
+    padding-bottom: 0.25em;
+    margin-bottom: 2em;
+}
+
+.video {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    margin-bottom: 5px;
+}
+
+.video object, .video div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.video-thumbnail {
+    /* suppress when video content displays */
+    display: none;
+}
+
+.twitter-timeline {
+    margin-bottom: 10px;
+}
+
+.twitter-timeline h4 {
+    border-radius: 6px 6px 0 0;
+    border: 1px solid #e8e8e8;
+    padding:12px;
+    margin: 0 0 -1px 0;
+}
+
+.twitter-timeline .tweets {
+    max-height: 550px;
+    overflow-y: scroll;
+}
+
+.tweet {
+    font-size: 0.9em;
+    line-height: 1.1em;
+    border: 1px solid #e8e8e8;
+    padding: 12px;
+    margin-bottom: -1px;
+}
+
+.tweet:last-child {
+    margin-bottom: 0px;
+}
+
+.tweet-profile {
+    overflow: hidden;
+}
+
+.tweet-profile .handle {
+    font-size: 0.8em;
+    color: #707070;
+}
+
+.tweet-image {
+    float: left;
+    margin-right: 9px;
+}
+
+.tweet-image img {
+    border-radius: 4px;
+}
+
+.tweet .time {
+    float: right;
+    font-size: 0.75em;
+}
+
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+    #container {
+        width: 85%;
+    }
+    .video {
+        display: none;
+    }
+    .video-thumbnail {
+        display: block;
+    }
+}
+
+@media screen and (max-device-width: 568px), all and (max-width:568px)  {
+    #container {
+        width: 90%;
+    }
+
+    #header h1 {
+        text-shadow: 3px 3px #000;
+    }
+
+    .game {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+    }
+
+    .game .final-score {
+        width: 225px;
+    }
+
+    .column, .column:nth-child(2n) {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+}
+
+@media only screen and (max-device-width: 568px) {
+    body {
+        font-size: 240%;
+    }
+    /* hide video on mobile devices */
+    .video {
+        display: none;
+    }
+
+    /* display video thumbnail on mobile devices */
+    .video-thumbnail {
+        display: block;
+    }
+
+    .twitter-timeline .tweets {
+        max-height: 800px;
+    }
+}
