@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="content-header">
-        <h2>{{team.get_colored_name | safe}}</h2>
+        <h2>{{team.get_styled_name | safe}}</h2>
     </div>
     {% if team.videos %}
         <div class="column">
@@ -33,7 +33,7 @@
     {% endif %}
     <div class="column">
         {% if games %}
-            <h3>KU vs {{team.get_colored_name | safe}}</h3>
+            <h3>KU vs {{team.get_styled_name | safe}}</h3>
             <ul>
             {% for game in games %}
                 <li><a href="{{game.get_absolute_url}}">{{game.date|date:"n/j"}} - {{game.get_ical_summary}}</a></li>
