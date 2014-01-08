@@ -18,7 +18,7 @@ class KenpomApi(object):
 
             kenpom_csv = open('kenpom.csv','rU')
 
-            csv_reader = csv.Dictcsv_Reader(kenpom_csv)
+            csv_reader = csv.DictReader(kenpom_csv)
 
             # try a request
             #try:
@@ -27,7 +27,7 @@ class KenpomApi(object):
             #except request.exceptions.HTTPError as error:
             #    kenpom_stats = False
 
-            data = json.dumps([row for row in reader])
+            data = json.dumps([row for row in csv_reader])
             kenpom_stats = json.loads(data)
 
             cache.set(cache_key, kenpom_stats)
