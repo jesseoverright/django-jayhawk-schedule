@@ -5,6 +5,8 @@
 {% block content %}
     <div class="content-header">
         <h2>{{team.get_styled_name | safe}}</h2>
+        <h3>Offensive Rank: {{team.get_offensive_rank}} ({{team.get_offensive_efficiency|floatformat:3}} ppp)</h3>
+        <h3>Defensive Rank: {{team.get_defensive_rank}} ({{team.get_defensive_efficiency|floatformat:3}} ppp)</h3>
     </div>
     {% if team.videos %}
         <div class="column">

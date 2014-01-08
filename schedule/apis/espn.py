@@ -14,7 +14,7 @@ class EspnApi(object):
 
         if all_teams:
             self.teams =  all_teams['sports'][0]['leagues'][0]['teams']
-        else: 
+        else:
             self.teams = []
 
     def _get_results(self, url, params):
@@ -27,7 +27,7 @@ class EspnApi(object):
             try:
                 response = requests.get(url, params=params)
                 json_results = response.json()
-            except request.exceptions.HTTPError as error:
+            except requests.exceptions.HTTPError as error:
                 json_results = False
 
             cache.set(cache_key, json_results)

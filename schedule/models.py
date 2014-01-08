@@ -62,6 +62,32 @@ class Team(models.Model):
         else:
             return ''
 
+    def get_offensive_efficiency(self):
+        if self._get_kenpom_stats():
+            per_possession = float(self._get_kenpom_stats()['AdjOE']) / 100
+            return per_possession
+        else:
+            return ''
+
+    def get_defensive_efficiency(self):
+        if self._get_kenpom_stats():
+            per_possession = float(self._get_kenpom_stats()['AdjDE']) / 100
+            return per_possession
+        else:
+            return ''
+
+    def get_offensive_rank(self):
+        if self._get_kenpom_stats():
+            return self._get_kenpom_stats()['RankAdjOE']
+        else:
+            return ''
+
+    def get_defensive_rank(self):
+        if self._get_kenpom_stats():
+            return self._get_kenpom_stats()['RankAdjDE']
+        else:
+            return ''
+
     def get_styled_name(self):
         if self.color():
             if self.get_ranking():
