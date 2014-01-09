@@ -37,6 +37,7 @@ class KenpomApi(object):
         return kenpom_stats
 
     def get_team(self, team_name):
+        team_name = team_name.replace("State", "St.")
         for team in self.kenpom_stats:
             if team['TeamName'] == team_name:
                 return team

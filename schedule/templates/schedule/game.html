@@ -15,6 +15,49 @@
     </h3>
     <h3>{{game.location}}</h3>
 </div>
+<div class="column">
+    <table>
+        <tr>
+            <th></th>
+            <th>{{ku.get_styled_name | safe}}</th>
+            <th>{{game.opponent.get_styled_name | safe}}</th>
+        </tr>
+        <tr>
+            <th>Offense</th>
+            <td>{{ku.get_offensive_rank}}</td>
+            <td>{{game.opponent.get_offensive_rank}}</td>
+        </tr>
+        <tr>
+            <th>Defense</th>
+            <td>{{ku.get_defensive_rank}}</td>
+            <td>{{game.opponent.get_defensive_rank}}</td>
+        </tr>
+    </table>
+</div>
+<div class="column">
+    <h3><a href="{{game.opponent.get_absolute_url}}" style="color:#{{game.opponent.color}}">{{game.opponent}} Team Page</a></h3>
+    {% if game.opponent.espn_link %}
+        <h3><a href="{{game.opponent.espn_link}}" style="color:#{{game.opponent.color}}">{{game.opponent.mascot}} ESPN Team Page</a></h3>
+    {% endif %}
+
+    {% if game.opponent.news %}
+        <h3>ESPN News for {{game.opponent}}</h3>
+        <ul>
+        {% for article in game.opponent.news %}
+            <li>
+                <a href="{{article.links.web.href}}">
+                    {% with article.images|first as image %}
+                        {% if image.width >= 576 %}
+                            <img src="{{image.url}}" alt="{{image.caption}}">
+                        {% endif %}
+                    {% endwith %}
+                    {{article.headline}}
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</div>
 {% if game.opponent.videos %}
     <div class="column">
         <h3>ESPN video for {{game.opponent}}</h3>
