@@ -19,18 +19,40 @@
     <table>
         <tr>
             <th></th>
-            <th>{{ku.get_styled_name | safe}}</th>
-            <th>{{game.opponent.get_styled_name | safe}}</th>
+            <td>{{ku.get_styled_name | safe}}</td>
+            <td>{{game.opponent.get_styled_name | safe}}</td>
         </tr>
         <tr>
-            <th>Offense</th>
-            <td>{{ku.get_offensive_rank}}</td>
-            <td>{{game.opponent.get_offensive_rank}}</td>
+            <th>Offensive Rank</th>
+            {% if ku.get_offensive_rank > game.opponent.get_offensive_rank %}
+            <td class="win">
+            {% else %}
+            <td class="loss">
+            {% endif %}
+                {{ku.get_offensive_rank}}
+            </td>
+           {% if ku.get_offensive_rank < game.opponent.get_offensive_rank %}
+            <td class="win">
+            {% else %}
+            <td class="loss">
+            {% endif %}
+                {{game.opponent.get_offensive_rank}}
+            </td>
         </tr>
         <tr>
-            <th>Defense</th>
+            <th>Defensive Rank</th>
             <td>{{ku.get_defensive_rank}}</td>
             <td>{{game.opponent.get_defensive_rank}}</td>
+        </tr>
+        <tr>
+            <th>{{ku.name}} Ball</th>
+            <td>{{ku.get_offensive_efficiency|floatformat:3}}</td>
+            <td>{{game.opponent.get_defensive_efficiency|floatformat:3}}</td>
+        </tr>
+        <tr>
+            <th>{{team.opponent.name}} Ball</th>
+            <td>{{ku.get_defensive_efficiency|floatformat:3}}</td>
+            <td>{{game.opponent.get_offensive_efficiency|floatformat:3}}</td>
         </tr>
     </table>
 </div>
@@ -83,30 +105,6 @@
         </ul>
     </div>
 {% endif %}
-<div class="column">
-    <h3><a href="{{game.opponent.get_absolute_url}}" style="color:#{{game.opponent.color}}">{{game.opponent}} Team Page</a></h3>
-    {% if game.opponent.espn_link %}
-        <h3><a href="{{game.opponent.espn_link}}" style="color:#{{game.opponent.color}}">{{game.opponent.mascot}} ESPN Team Page</a></h3>
-    {% endif %}
-
-    {% if game.opponent.news %}
-        <h3>ESPN News for {{game.opponent}}</h3>
-        <ul>
-        {% for article in game.opponent.news %}
-            <li>
-                {% with article.images|first as image %}
-                    {% if image.width >= 576 %}
-                        <div><img src="{{image.url}}" alt="{{image.caption}}">
-                    {% endif %}
-                {% endwith %}
-                <a href="{{article.links.web.href}}">
-                    {{article.headline}}
-                </a>
-            </li>
-        {% endfor %}
-        </ul>
-    {% endif %}
-</div>
 <div class="column">
     {% if game.opponent.get_tweets %}
         <div class="twitter-timeline">
