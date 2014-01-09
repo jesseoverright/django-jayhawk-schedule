@@ -1,6 +1,7 @@
 from django.core.cache import cache
 import csv
 import json
+import os
 #import requests
 
 
@@ -15,8 +16,9 @@ class KenpomApi(object):
         kenpom_stats = cache.get(cache_key)
 
         if not kenpom_stats:
+            directory = os.path.dirname(__file__)
 
-            kenpom_csv = open('kenpom.csv','rU')
+            kenpom_csv = open(directory + '/kenpom.csv','rU')
 
             csv_reader = csv.DictReader(kenpom_csv)
 
