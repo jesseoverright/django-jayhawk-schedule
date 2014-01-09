@@ -6,16 +6,16 @@
     <div class="content-header">
         <h2>Record: {{record.wins}}-{{record.losses}}</h2>
         {% if next_game != False %}
-            <h3>
+            <p>
                 Next Game: <a href="{{next_game.get_absolute_url}}">{{next_game.opponent.get_colored_name | safe}}</a>
                 <br />{{next_game.date|date:"l, F jS"}}
-            </h3>
+            </p>
         {% endif %}
     </div>
     {% for game in games %}
     <div class="game">
         {% if game.get_result %}
-            <h2 class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</h2>
+            <div class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</div>
         {% endif %}
         <h2><a href="{{game.get_absolute_url}}">{{game.opponent.get_colored_name | safe}}</a></h2>
         <p><span class="game-type">{{game.game_type}}</span>{{game.date|date:"g:i a l, N j, Y"}}

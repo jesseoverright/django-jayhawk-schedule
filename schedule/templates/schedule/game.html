@@ -51,12 +51,12 @@
         <ul>
         {% for article in game.opponent.news %}
             <li>
+                {% with article.images|first as image %}
+                    {% if image.width >= 576 %}
+                        <div><img src="{{image.url}}" alt="{{image.caption}}">
+                    {% endif %}
+                {% endwith %}
                 <a href="{{article.links.web.href}}">
-                    {% with article.images|first as image %}
-                        {% if image.width >= 576 %}
-                            <img src="{{image.url}}" alt="{{image.caption}}">
-                        {% endif %}
-                    {% endwith %}
                     {{article.headline}}
                 </a>
             </li>

@@ -7,9 +7,17 @@
 @import 'compass/css3';
 
 $jayhawk_blue: #3b74ff;
+$padding-size: 10px;
+$font-size: 16px;
+
+@mixin paragraph($font-size) {
+    font-size: $font-size;
+    line-height: 1.25em;
+}
 
 body {
-    font-family: helvetica;
+    font-family: Helvetica;
+    font-size: $font-size;
     margin: 0;
     padding: 0;
     background: $jayhawk_blue;
@@ -20,24 +28,25 @@ a, a:visited {
     text-decoration: none;
 }
 
-h1, h2, h3, h4, p {
-    margin: 0 0 0.25em;
-}
-
 h1 {
-    font-size: 2em;
+    @include paragraph(2em);
 }
 
 h2 {
-    font-size: 1.5em;
+    @include paragraph(1.5em);
 }
 
 h3 {
-    font-size: 1.17em;
+    @include paragraph(1.17em);
 }
 
-h4, p {
-    font-size: 1em;
+h4 {
+    @include paragraph(1em);
+    font-weight: bold;
+}
+
+p {
+    @include paragraph(1em);
 }
 
 ul {
@@ -46,7 +55,7 @@ ul {
 
 li {
     list-style-type: none;
-    margin-bottom: 10px;
+    padding-bottom: $padding-size;
 }
 
 li a:hover {
@@ -62,7 +71,7 @@ li img {
     width: 80%;
     margin: 30px auto;
     @include box-shadow(5px 5px #ff0a27);
-    padding: 10px;
+    padding: $padding-size;
     background: #ffffff;
 }
 
@@ -77,7 +86,7 @@ li img {
 
     h1 {
         margin-top: 0;
-        padding: 5px 20px 10px;
+        padding: 5px 20px $padding-size;
         font-size: 1.6em;
         text-shadow: 2px 2px #000;
     }
@@ -87,7 +96,7 @@ li img {
 }
 
 #content {
-    padding: 5px 20px 10px;
+    padding: 5px 20px $padding-size;
     min-height: 100px;
 }
 
@@ -96,21 +105,17 @@ li img {
     width: 45%;
     margin: 0.5em auto;
     min-width: 80px;
-    padding: 10px;
+    padding: $padding-size;
 }
 
 .column {
     float: left;
     min-height: 30px;
     width: 34%;
-    margin-bottom: 10px;
+    margin-bottom: $padding-size;
 
     h3 {
-        margin-top: 0.85em;
-
-        &:first-child {
-            margin-top: 0;
-        }
+        padding-bottom: $padding-size;
     }
 
     /* the even divs, after .content-header, will be left .column */
@@ -158,6 +163,7 @@ li img {
 
     .final-score {
         float: right;
+        font-size: 1.5em;
         padding: 14px;
         width: 75px;
         text-align: center;
@@ -203,7 +209,7 @@ li img {
 }
 
 .twitter-timeline {
-    margin-bottom: 10px;
+    margin-bottom: $padding-size;
 
     h4 {
         @include border-radius(6px 6px 0 0);
@@ -222,6 +228,10 @@ li img {
             border: 1px solid #e8e8e8;
             padding: 12px;
             margin-bottom: -1px;
+
+            p {
+                padding-bottom: 0;
+            }
 
             &:last-child {
                 margin-bottom: 0px;
