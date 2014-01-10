@@ -4,7 +4,8 @@
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
 @import "compass/reset";
-@import 'compass/css3';
+@import "compass/css3";
+@import "compass/utilities/tables/borders";
 
 $jayhawk_blue: #3b74ff;
 $padding-size: 10px;
@@ -64,6 +65,25 @@ li a:hover {
 
 li img {
     width: 100%;
+}
+
+table {
+    @include outer-table-borders(0);
+    @include inner-table-borders(0);
+    width: 100%;
+    margin-bottom: $padding-size;
+
+    tr {
+        td {
+            padding: $padding-size;
+            text-align: center;
+        }
+        th {
+            @extend td;
+            text-align: left;
+            padding-left: 0;
+        }
+    }
 }
 
 #container {

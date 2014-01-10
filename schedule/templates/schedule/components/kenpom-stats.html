@@ -1,0 +1,76 @@
+<table>
+    <tr>
+        <th></th>
+        <td><span style="color:#{{ku.color}}">{{ku.get_ranking}} {{ku.name}}</span></td>
+        <td><span style="color:#{{team.color}}">{{team.get_ranking}} {{team.name}}</span></td>
+    </tr>
+    <tr>
+        <th>Offensive Rank</th>
+        {% if ku.get_offensive_rank < team.get_offensive_rank %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{ku.get_offensive_rank}}
+        </td>
+       {% if ku.get_offensive_rank > team.get_offensive_rank %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{team.get_offensive_rank}}
+        </td>
+    </tr>
+    <tr>
+        <th>Defensive Rank</th>
+        {% if ku.get_defensive_rank < team.get_defensive_rank %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{ku.get_defensive_rank}}
+        </td>
+        {% if ku.get_defensive_rank > team.get_defensive_rank %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{team.get_defensive_rank}}
+        </td>
+    </tr>
+    <tr>
+        <th>{{ku.name}} Offense</th>
+        {% if ku.get_offensive_efficiency > team.get_defensive_efficiency %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{ku.get_offensive_efficiency|floatformat:3}}
+        </td>
+        {% if ku.get_offensive_efficiency < team.get_defensive_efficiency %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{team.get_defensive_efficiency|floatformat:3}}
+        </td>
+    </tr>
+    <tr>
+        <th>{{team.name}} Offense</th>
+        {% if ku.get_defensive_efficiency > team.get_offensive_efficiency %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{ku.get_defensive_efficiency|floatformat:3}}
+        </td>
+        {% if ku.get_defensive_efficiency < team.get_offensive_efficiency %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{team.get_offensive_efficiency|floatformat:3}}
+        </td>
+    </tr>
+
+</table>

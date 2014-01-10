@@ -30,12 +30,15 @@ def index(request):
 
 def game(request, slug):
     game = get_object_or_404(Game, slug=slug)
+    ku = Team.objects.filter(slug='kansas-jayhawks')
 
     game.opponent.get_news()
 
     return render(request, 'schedule/game.html', {
         'title': 'KU vs %s' % game.opponent,
-        'game': game
+        'game': game,
+        'ku': ku[0],
+        'team': game.opponent,
     })
 
 def team(request, slug):

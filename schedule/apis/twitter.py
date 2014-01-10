@@ -40,7 +40,7 @@ class TwitterApi(object):
 
         return tweet_results
 
-    def get_team_tweets(self, team_name, team_mascot): 
+    def get_team_tweets(self, team_name, team_mascot):
         params = {'q': team_name + ' ' + team_mascot,
                   'count': 15,
                   'result_type': 'popular'
@@ -58,5 +58,5 @@ class TwitterApi(object):
             # convert date to relative date
             # Sun Nov 17 18:00:04 +0000 2013
             tweet['created_at'] = datetime.datetime.strptime(tweet['created_at'][0:19], '%a %b %d %H:%M:%S')
-        
+
         return statuses

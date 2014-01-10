@@ -2,7 +2,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 import datetime
 
-from schedule.apis import EspnApi, TwitterApi
+from schedule.apis import EspnApi, TwitterApi, KenpomApi
 
 
 GAME_TYPES = (
@@ -16,6 +16,7 @@ GAME_TYPES = (
 
 espn_api = EspnApi()
 twitter_api = TwitterApi()
+kenpom_api = KenpomApi()
 
 class Team(models.Model):
     name = models.CharField(max_length=255)
@@ -23,11 +24,19 @@ class Team(models.Model):
     slug = models.SlugField(unique=True, max_length=255)
     conference = models.CharField(blank=True,max_length=255)
     _espn_api_team_details = None
+    kenpom_stats = None
     news = None
     videos = None
 
     def __unicode__(self):
         return u'%s %s' % (self.name, self.mascot)
+
+    def _get_kenpom_stats(self):
+        if self.kenpom_stats is None:
+            self.kenpom_stats = kenpom_api.get_team(self.name)
+            return self.kenpom_stats
+        else:
+            return self.kenpom_stats
 
     def _get_espn_api_team_details(self):
         if self._espn_api_team_details is None:
@@ -47,9 +56,45 @@ class Team(models.Model):
                     else:
                         self.news.append(article)
 
-    def get_colored_name(self):
+    def get_ranking(self):
+        if self._get_kenpom_stats():
+            return int(self._get_kenpom_stats()['RankPythag'])
+        else:
+            return ''
+
+    def get_offensive_efficiency(self):
+        if self._get_kenpom_stats():
+            per_possession = float(self._get_kenpom_stats()['AdjOE']) / 100
+            return per_possession
+        else:
+            return ''
+
+    def get_defensive_efficiency(self):
+        if self._get_kenpom_stats():
+            per_possession = float(self._get_kenpom_stats()['AdjDE']) / 100
+            return per_possession
+        else:
+            return ''
+
+    def get_offensive_rank(self):
+        if self._get_kenpom_stats():
+            return int(self._get_kenpom_stats()['RankAdjOE'])
+        else:
+            return ''
+
+    def get_defensive_rank(self):
+        if self._get_kenpom_stats():
+            return int(self._get_kenpom_stats()['RankAdjDE'])
+        else:
+            return ''
+
+    def get_styled_name(self):
         if self.color():
-            return u'<span style="color:#%s">%s %s</span>' % (self.color(), self.name, self.mascot)
+            if self.get_ranking():
+                return u'<span style="color:#%s">%s %s %s</span>' % (self.color(), self.get_ranking(), self.name, self.mascot)
+            else:
+                return u'<span style="color:#%s">%s %s</span>' % (self.color(), self.name, self.mascot)
+
 
         return self
 
@@ -106,9 +151,9 @@ class Game(models.Model):
 
     def get_matchup(self):
         if self.location == "Allen Fieldhouse, Lawrence, KS":
-            return '%s at Kansas Jayhawks' % self.opponent.get_colored_name()
+            return '%s at Kansas Jayhawks' % self.opponent.get_styled_name()
 
-        return 'Kansas Jayhawks vs %s' % self.opponent.get_colored_name()
+        return 'Kansas Jayhawks vs %s' % self.opponent.get_styled_name()
 
     def get_ical_summary(self):
         if self.get_result() != False:
