@@ -1,3 +1,4 @@
+{% if team.get_ranking %}
 <table>
     <tr>
         <th></th>
@@ -72,5 +73,5 @@
             {{team.get_offensive_efficiency|floatformat:3}}
         </td>
     </tr>
-
 </table>
+{% endif %}
