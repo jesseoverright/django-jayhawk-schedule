@@ -1,0 +1,25 @@
+{% if team.videos %}
+<div class="column">
+    <h3>ESPN video for {{team}}</h3>
+
+    <ul>
+    {% for video in team.videos %}
+        <li>
+            <div class="video">
+                <div id="{{video.id}}">
+                {% with video.images|first as image %}
+                    <img src="{{image.url}}" alt="{{image.caption}}">
+                {% endwith %}
+                </div>
+            </div>
+            <a href="{{video.links.web.href}}">
+                {% with video.images|first as image %}
+                    <img class="video-thumbnail" src="{{image.url}}" alt="{{image.caption}}">
+                {% endwith %}
+                {{video.headline}}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}

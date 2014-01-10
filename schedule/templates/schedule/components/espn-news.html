@@ -1,0 +1,17 @@
+{% if team.news %}
+    <h3>ESPN News for {{team}}</h3>
+    <ul>
+    {% for article in team.news %}
+        <li>
+            <a href="{{article.links.web.href}}">
+                {% with article.images|first as image %}
+                    {% if image.width >= 576 %}
+                        <img src="{{image.url}}" alt="{{image.caption}}">
+                    {% endif %}
+                {% endwith %}
+                {{article.headline}}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}

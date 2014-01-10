@@ -38,6 +38,7 @@ def game(request, slug):
         'title': 'KU vs %s' % game.opponent,
         'game': game,
         'ku': ku[0],
+        'team': game.opponent,
     })
 
 def team(request, slug):

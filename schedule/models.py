@@ -58,7 +58,7 @@ class Team(models.Model):
 
     def get_ranking(self):
         if self._get_kenpom_stats():
-            return self._get_kenpom_stats()['RankPythag']
+            return int(self._get_kenpom_stats()['RankPythag'])
         else:
             return ''
 
@@ -78,13 +78,13 @@ class Team(models.Model):
 
     def get_offensive_rank(self):
         if self._get_kenpom_stats():
-            return self._get_kenpom_stats()['RankAdjOE']
+            return int(self._get_kenpom_stats()['RankAdjOE'])
         else:
             return ''
 
     def get_defensive_rank(self):
         if self._get_kenpom_stats():
-            return self._get_kenpom_stats()['RankAdjDE']
+            return int(self._get_kenpom_stats()['RankAdjDE'])
         else:
             return ''
 
