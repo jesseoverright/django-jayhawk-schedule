@@ -20,11 +20,11 @@
         {% endif %}
 
         {% if team.conference %}
-            <h3>{{team.conference}} Conference</h3>
+            <h4>{{team.conference}} Conference</h4>
         {% endif %}
 
         {% if team.espn_link %}
-            <h3><a href="{{team.espn_link}}" style="color:#{{team.color}}">{{team.mascot}} ESPN Team Page</a></h3>
+            <h4><a href="{{team.espn_link}}" style="color:#{{team.color}}">{{team.mascot}} ESPN Team Page</a></h4>
         {% endif %}
 
         {% include 'schedule/components/espn-news.html' %}

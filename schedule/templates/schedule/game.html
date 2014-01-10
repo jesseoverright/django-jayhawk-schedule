@@ -6,7 +6,7 @@
 <div class="content-header">
     <h2>{{ game.get_matchup | safe}}</h2>
     {% if game.get_result %}
-        <h2 class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</h2>
+        <div class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</div>
     {% endif %}
     <h3>{{game.date|date:"g:i a F jS, Y"}}
     {% if game.television %}
@@ -18,9 +18,9 @@
 {% include 'schedule/components/espn-videos.html' %}
 <div class="column">
     {% include 'schedule/components/kenpom-stats.html' %}
-    <h3><a href="{{game.opponent.get_absolute_url}}" style="color:#{{game.opponent.color}}">{{game.opponent}} Team Page</a></h3>
+    <h4><a href="{{game.opponent.get_absolute_url}}" style="color:#{{game.opponent.color}}">{{game.opponent}} Team Page</a></h4>
     {% if game.opponent.espn_link %}
-        <h3><a href="{{game.opponent.espn_link}}" style="color:#{{game.opponent.color}}">{{game.opponent.mascot}} ESPN Team Page</a></h3>
+        <h4><a href="{{game.opponent.espn_link}}" style="color:#{{game.opponent.color}}">{{game.opponent.mascot}} ESPN Team Page</a></h4>
     {% endif %}
 
     {% include 'schedule/components/espn-news.html' %}

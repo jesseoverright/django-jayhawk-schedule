@@ -34,7 +34,7 @@ h1 {
 }
 
 h2 {
-    @include paragraph(1.5em);
+    @include paragraph(1.75em);
 }
 
 h3 {
@@ -120,12 +120,21 @@ table {
     min-height: 100px;
 }
 
-.final-score {
-    text-align: center;
-    width: 45%;
-    margin: 0.5em auto;
-    min-width: 80px;
-    padding: $padding-size;
+.content-header {
+    overflow: hidden;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #dbdbdb;
+    padding-bottom: 0.25em;
+    margin-bottom: 2em;
+
+    .final-score {
+        text-align: center;
+        width: 34%;
+        font-size: 1.75em;
+        min-width: 80px;
+        padding: $padding-size 0;
+        float: right;
+    }
 }
 
 .column {
@@ -134,7 +143,7 @@ table {
     width: 34%;
     margin-bottom: $padding-size;
 
-    h3 {
+    h3, h4 {
         padding-bottom: $padding-size;
     }
 
@@ -184,7 +193,7 @@ table {
     .final-score {
         float: right;
         font-size: 1.5em;
-        padding: 14px;
+        padding: 15px;
         width: 75px;
         text-align: center;
         margin: 0 0 0 20px;
@@ -197,15 +206,6 @@ table {
 
 .loss {
     background-color: #f28c8c;
-}
-
-.content-header {
-    overflow: hidden;
-    margin-bottom: 20px;
-    text-align: center;
-    border-bottom: 2px solid #dbdbdb;
-    padding-bottom: 0.25em;
-    margin-bottom: 2em;
 }
 
 .video {
@@ -309,7 +309,10 @@ table {
     }
 
     .game .final-score {
-        width: 225px;
+        width: 100%;
+        float: none;
+        margin: 0;
+        padding: 15px 0;
     }
 
     .column, .column:nth-child(2n) {
