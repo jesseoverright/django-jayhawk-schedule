@@ -40,14 +40,14 @@
     </tr>
     <tr>
         <th>{{ku.name}} Offense</th>
-        {% if ku.get_offensive_efficiency > team.get_defensive_efficiency %}
+        {% if ku.get_offensive_difference > team.get_defensive_difference %}
         <td class="win">
         {% else %}
         <td class="loss">
         {% endif %}
             {{ku.get_offensive_efficiency|floatformat:3}}
         </td>
-        {% if ku.get_offensive_efficiency < team.get_defensive_efficiency %}
+        {% if ku.get_offensive_difference < team.get_defensive_difference %}
         <td class="win">
         {% else %}
         <td class="loss">
@@ -57,14 +57,14 @@
     </tr>
     <tr>
         <th>{{team.name}} Offense</th>
-        {% if ku.get_defensive_efficiency > team.get_offensive_efficiency %}
+        {% if ku.get_defensive_difference > team.get_offensive_difference %}
         <td class="win">
         {% else %}
         <td class="loss">
         {% endif %}
             {{ku.get_defensive_efficiency|floatformat:3}}
         </td>
-        {% if ku.get_defensive_efficiency < team.get_offensive_efficiency %}
+        {% if ku.get_defensive_difference < team.get_offensive_difference %}
         <td class="win">
         {% else %}
         <td class="loss">

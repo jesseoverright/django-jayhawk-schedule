@@ -69,12 +69,18 @@ class Team(models.Model):
         else:
             return ''
 
+    def get_offensive_difference(self):
+        return self.get_offensive_efficiency() - 1
+
     def get_defensive_efficiency(self):
         if self._get_kenpom_stats():
             per_possession = float(self._get_kenpom_stats()['AdjDE']) / 100
             return per_possession
         else:
             return ''
+
+    def get_defensive_difference(self):
+        return 1 - self.get_defensive_efficiency()
 
     def get_offensive_rank(self):
         if self._get_kenpom_stats():
