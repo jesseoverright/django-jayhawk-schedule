@@ -5,8 +5,7 @@ from django.conf import settings
 
 from django.test import TestCase
 from schedule.models import Team, Game
-from schedule.apis.espn import EspnApi
-from schedule.apis.twitter import TwitterApi
+from schedule.apis import KenpomApi, EspnApi, TwitterApi
 
 import re
 
@@ -71,7 +70,12 @@ class GamesTest(TestCase):
     def test_espn_api_team_dictionary(self):
         self.espn_api = EspnApi()
 
-        self.assertEqual(self.espn_api.teams['Kansas']['name'],'Jayhawks');
+        self.assertEqual(self.espn_api.teams[self.game.opponent.name]['name'],'Tigers');
+
+    def test_kenpom_team_dictionary(self):
+        self.kenpom_api = KenpomApi()
+
+        self.assertEqual(self.kenpom_api.teams[self.game.opponent.name]['TeamName'], 'Memphis')
 
     def test_is_espn_api_result_caching(self):
         self.espn_api = EspnApi()

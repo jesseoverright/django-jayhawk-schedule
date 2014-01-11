@@ -10,22 +10,26 @@ class EspnApi(object):
                   'limit': 351,
                   }
 
+        # load cached team dictionary if it exists
         team_cache_key = u'Team-Dictionary'
         self.teams = cache.get(team_cache_key)
 
         if not self.teams:
             all_teams = self._get_results(url, params)
 
+            self.teams = {}
+
             if all_teams:
                 team_list =  all_teams['sports'][0]['leagues'][0]['teams']
-                self.teams = {}
+
+                # iterate over list of json objects and create a dictionary using key: team location
+                # this allows us to access teams by key value instead of iterating over entire list of objects
                 for team in team_list:
                     self.teams[team['location']] = team
                 cache.set(team_cache_key, self.teams)
-            else:
-                self.teams = []
 
     def _get_results(self, url, params):
+        # only access espn api if results of particular query are not already cached
         cache_key = u'%s%s' % (url, str(params))
         cache_key = cache_key.replace(' ','')
         json_results = cache.get(cache_key)
