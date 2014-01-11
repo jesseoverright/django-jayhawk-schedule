@@ -10,12 +10,20 @@ class EspnApi(object):
                   'limit': 351,
                   }
 
-        all_teams = self._get_results(url, params)
+        team_cache_key = u'Team-Dictionary'
+        self.teams = cache.get(team_cache_key)
 
-        if all_teams:
-            self.teams =  all_teams['sports'][0]['leagues'][0]['teams']
-        else:
-            self.teams = []
+        if not self.teams:
+            all_teams = self._get_results(url, params)
+
+            if all_teams:
+                team_list =  all_teams['sports'][0]['leagues'][0]['teams']
+                self.teams = {}
+                for team in team_list:
+                    self.teams[team['location']] = team
+                cache.set(team_cache_key, self.teams)
+            else:
+                self.teams = []
 
     def _get_results(self, url, params):
         cache_key = u'%s%s' % (url, str(params))
@@ -35,9 +43,8 @@ class EspnApi(object):
         return json_results
 
     def get_team(self, team_name, mascot):
-        for team in self.teams:
-            if team['name'] == mascot and team['location'] == team_name:
-                return team
+        if team_name in self.teams:
+            return self.teams[team_name]
 
         return False
 

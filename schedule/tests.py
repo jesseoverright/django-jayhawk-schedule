@@ -21,7 +21,7 @@ class GamesTest(TestCase):
             opponent=team,
             slug='2008-championship',
             location='Alamodome, San Antonio, TX',
-            date=timezone.make_aware(datetime.datetime(2008, 04, 07), timezone.get_default_timezone()),
+            date=timezone.make_aware(datetime.datetime(2008, 04, 07, 8), timezone.get_default_timezone()),
             score=75,
             opponent_score=68,
             )
@@ -51,7 +51,7 @@ class GamesTest(TestCase):
         self.assertEqual(self.game.opponent.color(), '002447')
 
     def test_is_team_styled_name_correct(self):
-        self.assertEqual(self.game.opponent.get_styled_name(), u'<span style="color:#002447">Memphis Tigers</span>')
+        self.assertEqual(self.game.opponent.get_styled_name(), u'<span style="color:#002447">37 Memphis Tigers</span>')
         no_api_team = Team.objects.create(
             name='Harlem',
             mascot='Globetrotters',
@@ -68,6 +68,11 @@ class GamesTest(TestCase):
     def test_game_title(self):
         self.assertEqual(u'%s' % self.game, u'Memphis Apr 07')
 
+    def test_espn_api_team_dictionary(self):
+        self.espn_api = EspnApi()
+
+        self.assertEqual(self.espn_api.teams['Kansas']['name'],'Jayhawks');
+
     def test_is_espn_api_result_caching(self):
         self.espn_api = EspnApi()
 
@@ -78,7 +83,12 @@ class GamesTest(TestCase):
         cache_key = u'%s%s' % (url, str(params))
         cache_key = cache_key.replace(' ','')
 
-        self.assertEqual(cache.get(cache_key)['sports'][0]['leagues'][0]['teams'], self.espn_api.teams)
+        team_list =  cache.get(cache_key)['sports'][0]['leagues'][0]['teams']
+        cache_teams = {}
+        for team in team_list:
+            cache_teams[team['location']] = team
+
+        self.assertEqual(cache_teams, self.espn_api.teams)
 
     def test_is_twitter_api_result_caching(self):
         self.twitter_api = TwitterApi()
