@@ -10,14 +10,26 @@ class EspnApi(object):
                   'limit': 351,
                   }
 
-        all_teams = self._get_results(url, params)
+        # load cached team dictionary if it exists
+        team_cache_key = u'Team-Dictionary'
+        self.teams = cache.get(team_cache_key)
 
-        if all_teams:
-            self.teams =  all_teams['sports'][0]['leagues'][0]['teams']
-        else:
-            self.teams = []
+        if not self.teams:
+            all_teams = self._get_results(url, params)
+
+            self.teams = {}
+
+            if all_teams:
+                team_list =  all_teams['sports'][0]['leagues'][0]['teams']
+
+                # iterate over list of json objects and create a dictionary using key: team location
+                # this allows us to access teams by key value instead of iterating over entire list of objects
+                for team in team_list:
+                    self.teams[team['location']] = team
+                cache.set(team_cache_key, self.teams)
 
     def _get_results(self, url, params):
+        # only access espn api if results of particular query are not already cached
         cache_key = u'%s%s' % (url, str(params))
         cache_key = cache_key.replace(' ','')
         json_results = cache.get(cache_key)
@@ -35,9 +47,8 @@ class EspnApi(object):
         return json_results
 
     def get_team(self, team_name, mascot):
-        for team in self.teams:
-            if team['name'] == mascot and team['location'] == team_name:
-                return team
+        if team_name in self.teams:
+            return self.teams[team_name]
 
         return False
 
