@@ -30,7 +30,7 @@ def index(request):
 
 def game(request, slug):
     game = get_object_or_404(Game, slug=slug)
-    ku = Team.objects.get_or_create(slug='kansas-jayhawks')
+    ku, created = Team.objects.get_or_create(slug='kansas-jayhawks')
 
     game.opponent.get_news()
 
