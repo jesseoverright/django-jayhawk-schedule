@@ -18,12 +18,19 @@ def index(request):
     record = {}
     record['wins'] = 0
     record['losses'] = 0
+    record['conference_wins'] = 0
+    record['conference_losses'] = 0
+
 
     for game in games:
         if game.get_result() == 'win' and game.game_type != 'Exhibition':
             record['wins'] += 1
+            if game.game_type == 'Conference':
+                record['conference_wins'] += 1
         if game.get_result() == 'loss' and game.game_type != 'Exhibition':
             record['losses'] += 1
+            if game.game_type == 'Conference':
+                record['conference_losses'] += 1
 
     return render(request, 'schedule/index.html', {'games': games, 'record': record, 'next_game': next_game})
 

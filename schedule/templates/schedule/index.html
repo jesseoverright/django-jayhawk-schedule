@@ -4,11 +4,11 @@
 
 {% block content %}
     <div class="content-header main-header">
-        <h2>Record: {{record.wins}}-{{record.losses}}</h2>
+        <h2>Record: {{record.wins}}-{{record.losses}} ({{record.conference_wins}}-{{record.conference_losses}})</h2>
         {% if next_game != False %}
             <p>
                 Next Game: <a href="{{next_game.get_absolute_url}}">{{next_game.opponent.get_styled_name | safe}}</a>
-                <br />{{next_game.date|date:"l, F jS"}}
+                <br />{{next_game.date|date:"l, F jS g:i a"}}
             </p>
         {% endif %}
     </div>
