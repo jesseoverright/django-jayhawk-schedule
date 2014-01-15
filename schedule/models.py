@@ -14,6 +14,11 @@ GAME_TYPES = (
     ('NCAA Tournament', 'NCAA Tournament'),
 )
 
+CONFERENCES = (
+    ('Big 12', 'Big 12'),
+    ('ACC', 'ACC'),
+)
+
 espn_api = EspnApi()
 twitter_api = TwitterApi()
 kenpom_api = KenpomApi()
@@ -22,7 +27,7 @@ class Team(models.Model):
     name = models.CharField(max_length=255)
     mascot = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, max_length=255)
-    conference = models.CharField(blank=True,max_length=255)
+    conference = models.CharField(blank=True,max_length=255,choices=CONFERENCES)
     _espn_api_team_details = None
     kenpom_stats = None
     news = None
