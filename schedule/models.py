@@ -17,6 +17,10 @@ GAME_TYPES = (
 CONFERENCES = (
     ('Big 12', 'Big 12'),
     ('ACC', 'ACC'),
+    ('PAC 12', 'PAC 12'),
+    ('SEC', 'SEC'),
+    ('Big 10', 'Big 10'),
+    ('Big East', 'Big East'),
 )
 
 espn_api = EspnApi()
