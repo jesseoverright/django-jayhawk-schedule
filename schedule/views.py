@@ -34,6 +34,10 @@ def index(request):
 
     return render(request, 'schedule/index.html', {'games': games, 'record': record, 'next_game': next_game})
 
+def all_teams(request):
+    teams = Team.objects.order_by('name')
+
+    return render(request, 'schedule/teams.html', {'teams': teams})
 
 def game(request, slug):
     game = get_object_or_404(Game, slug=slug)
