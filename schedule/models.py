@@ -21,6 +21,8 @@ CONFERENCES = (
     ('SEC', 'SEC'),
     ('Big 10', 'Big 10'),
     ('Big East', 'Big East'),
+    ('Mountain West', 'Mountain West'),
+    ('Conference USA', 'Conference USA'),
 )
 
 espn_api = EspnApi()
