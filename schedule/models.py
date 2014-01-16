@@ -185,6 +185,9 @@ class Game(models.Model):
 
         return u'%s' % summary
 
+    def get_tweets(self):
+        return twitter_api.get_game_tweets(self.opponent.name, self.opponent.mascot, self.date)
+
     def get_absolute_url(self):
         return reverse('schedule.views.game', args=[self.slug])
 

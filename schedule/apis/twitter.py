@@ -38,17 +38,7 @@ class TwitterApi(object):
 
             cache.set(cache_key, tweet_results)
 
-        return tweet_results
-
-    def get_team_tweets(self, team_name, team_mascot):
-        params = {'q': team_name + ' ' + team_mascot,
-                  'count': 15,
-                  'result_type': 'popular'
-                  }
-
-        statuses = self._get_tweets(params)
-
-        for tweet in statuses:
+        for tweet in tweet_results:
             # add anchor tags to links in tweet
             tweet['text'] = re.sub(r'((https?|s?ftp|ssh)\:\/\/[^"\s\<\>]*[^.,;\'">\:\s\<\>\)\]\!])', r'<a href="\1">\1</a>', tweet['text'])
             # add anchor tags to hashtags
@@ -59,4 +49,21 @@ class TwitterApi(object):
             # Sun Nov 17 18:00:04 +0000 2013
             tweet['created_at'] = datetime.datetime.strptime(tweet['created_at'][0:19], '%a %b %d %H:%M:%S')
 
-        return statuses
+        return tweet_results
+
+    def get_team_tweets(self, team_name, team_mascot):
+        params = {'q': team_name + ' ' + team_mascot,
+                  'count': 15,
+                  'result_type': 'popular'
+                  }
+
+        return self._get_tweets(params)
+
+    def get_game_tweets(self, team_name, team_mascot, game_date):
+        limit_date = game_date + datetime.timedelta(days=2)
+        params = {'q': 'KU OR Kansas Jayhawks AND ' + team_name + ' ' + team_mascot,
+                  'count': 15,
+                  'result_type': 'popular'
+                  }
+
+        return self._get_tweets(params)
