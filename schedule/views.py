@@ -54,7 +54,7 @@ def game(request, slug):
 
 def team(request, slug):
     team = get_object_or_404(Team, slug=slug)
-    games = Game.objects.filter(opponent=team)
+    games = Game.objects.filter(opponent=team).order_by('date')
 
     team.get_news()
 
