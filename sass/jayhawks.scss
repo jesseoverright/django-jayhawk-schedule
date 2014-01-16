@@ -75,13 +75,12 @@ table {
 
     tr {
         td {
-            padding: $padding-size;
+            padding: $padding-size 0;
             text-align: center;
         }
         th {
             @extend td;
             text-align: left;
-            padding-left: 0;
         }
     }
 }
@@ -310,13 +309,22 @@ table {
     .game {
         margin-bottom: 15px;
         padding-bottom: 15px;
+
+        .final-score {
+            width: 100%;
+            float: none;
+            margin: 0 0 10px 0;
+            padding: 15px 0;
+        }
     }
 
-    .game .final-score {
-        width: 100%;
-        float: none;
-        margin: 0;
-        padding: 15px 0;
+    .content-header {
+        .final-score {
+            width: 100%;
+            float: none;
+            margin: 0 0 10px 0;
+            padding: 15px 0;
+        }
     }
 
     .column, .column:nth-child(2n) {
