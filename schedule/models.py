@@ -61,7 +61,7 @@ class Team(models.Model):
             news = espn_api.get_team_news(self._get_espn_api_team_details()['id'])
             video_count = 0
 
-            if news:
+            if 'feed' in news.keys():
                 for article in news['feed']:
                     if 'type' in article.keys() and article['type'] == "Media" and video_count < 2:
                         self.videos.append(article)
