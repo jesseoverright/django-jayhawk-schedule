@@ -79,9 +79,8 @@ STATIC_ROOT = ''
 STATIC_URL = '/static/'
 
 # Additional locations of static files
-STATICFILES_DIRS = (
-   '/Users/joverright/Sites/jayhawkschedule/jayhawkschedule/static/',
-)
+#STATICFILES_DIRS = (
+#)
 
 # List of finder classes that know how to find static files in
 # various locations.
