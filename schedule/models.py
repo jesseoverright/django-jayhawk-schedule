@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 import datetime
+from helpers import dedupe_lists
 
 from schedule.apis import EspnApi, TwitterApi, KenpomApi
 
@@ -154,6 +155,9 @@ class Game(models.Model):
     game_type = models.CharField(max_length=25, choices=GAME_TYPES)
     score = models.IntegerField(null=True, blank=True)
     opponent_score = models.IntegerField(null=True, blank=True)
+    news = None
+    videos = None
+    podcasts = None
 
     class Meta:
         ordering = ['-date']
@@ -190,6 +194,21 @@ class Game(models.Model):
             summary += 'KU vs ' + self.opponent.name
 
         return u'%s' % summary
+
+    def get_news(self, count, team):
+        self.opponent.get_news(6)
+        team.get_news(6)
+        self.news = dedupe_lists(self.opponent.news, team.news, count)
+
+    def get_videos(self, count, team):
+        self.opponent.get_videos(4)
+        team.get_videos(4)
+        self.videos = dedupe_lists(self.opponent.videos, team.videos, count)
+
+    def get_podcasts(self, count, team):
+        self.opponent.get_podcasts(3)
+        team.get_podcasts(3)
+        self.podcasts = dedupe_lists(self.opponent.podcasts, team.podcasts, count)
 
     def get_tweets(self):
         return twitter_api.get_game_tweets(self.opponent.name, self.opponent.mascot, self.date)

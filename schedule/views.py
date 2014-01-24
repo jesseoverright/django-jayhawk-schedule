@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, get_list_or_404
 from schedule.models import Game, Team
 
 from datetime import date
+from helpers import dedupe_lists
 
 def index(request):
     games = Game.objects.order_by('date')
@@ -43,17 +44,14 @@ def game(request, slug):
     game = get_object_or_404(Game, slug=slug)
     team, created = Team.objects.get_or_create(slug='kansas-jayhawks')
 
-    game.opponent.get_news(6)
-    game.opponent.get_videos(2)
-    game.opponent.get_podcasts(4)
-
-    team.get_videos(1)
+    game.get_news(8, team)
+    game.get_videos(4, team)
+    game.get_podcasts(8, team)
 
     return render(request, 'schedule/game.html', {
         'title': '%s vs %s' % (team, game.opponent),
         'game': game,
         'team': team,
-        'videos': game.opponent.videos + team.videos,
     })
 
 def team(request, slug):
