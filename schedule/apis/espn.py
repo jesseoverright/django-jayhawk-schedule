@@ -52,35 +52,13 @@ class EspnApi(object):
 
         return False
 
-    def get_team_news(self, team_id, limit=7):
+    def get_team_updates(self, team_id, content='blog,podcast,story,video', limit=7):
         url = "http://api.espn.com/v1/now"
         params = {'leagues': 'mens-college-basketball',
                   'teams': team_id,
                   'apikey': self.key,
                   'limit': limit,
-                  'content': 'blog,story',
-                  }
-
-        return self._get_results(url, params)
-
-    def get_team_videos(self, team_id, limit=2):
-        url = "http://api.espn.com/v1/now"
-        params = {'leagues': 'mens-college-basketball',
-                  'teams': team_id,
-                  'apikey': self.key,
-                  'limit': limit,
-                  'content': 'video',
-                  }
-
-        return self._get_results(url, params)
-
-    def get_team_podcasts(self, team_id, limit=4):
-        url = "http://api.espn.com/v1/now"
-        params = {'leagues': 'mens-college-basketball',
-                  'teams': team_id,
-                  'apikey': self.key,
-                  'limit': limit,
-                  'content': 'podcast',
+                  'content': content,
                   }
 
         return self._get_results(url, params)

@@ -57,29 +57,16 @@ class Team(models.Model):
         else:
             return self._espn_api_team_details
 
-    def _get_espn_api_news(self, limit):
+    def _get_espn_api_updates(self, content, limit):
+        results = []
         if self._get_espn_api_team_details() != False:
-            news = espn_api.get_team_news(self._get_espn_api_team_details()['id'], limit)
+            updates = espn_api.get_team_updates(self._get_espn_api_team_details()['id'], content, limit)
 
-            if 'feed' in news.keys():
-                for article in news['feed']:
-                    self.news.append(article)
+            if 'feed' in updates.keys():
+                for item in updates['feed']:
+                    results.append(item)
 
-    def _get_espn_api_videos(self, limit):
-        if self._get_espn_api_team_details() != False:
-            videos = espn_api.get_team_videos(self._get_espn_api_team_details()['id'], limit)
-
-            if 'feed' in videos.keys():
-                for video in videos['feed']:
-                    self.videos.append(video)
-
-    def _get_espn_api_podcasts(self, limit):
-        if self._get_espn_api_team_details() != False:
-            podcasts = espn_api.get_team_podcasts(self._get_espn_api_team_details()['id'], limit)
-
-            if 'feed' in podcasts.keys():
-                for podcast in podcasts['feed']:
-                    self.podcasts.append(podcast)
+        return results
 
     def get_ranking(self):
         if self._get_kenpom_stats():
@@ -140,21 +127,15 @@ class Team(models.Model):
 
     def get_news(self, limit=4):
         if self.news is None:
-            self.news = []
-
-            self._get_espn_api_news(limit)
+            self.news = self._get_espn_api_updates('story,blog', limit)
 
     def get_videos(self, limit=2):
         if self.videos is None:
-            self.videos = []
-
-            self._get_espn_api_videos(limit)
+            self.videos = self._get_espn_api_updates('video', limit)
 
     def get_podcasts(self, limit=1):
         if self.podcasts is None:
-            self.podcasts = []
-
-            self._get_espn_api_podcasts(limit)
+            self.podcasts = self._get_espn_api_updates('podcast', limit)
 
     def get_tweets(self):
         return twitter_api.get_team_tweets(self.name, self.mascot)
