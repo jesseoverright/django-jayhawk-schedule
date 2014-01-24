@@ -10,7 +10,7 @@
         <h3>Defensive Rank: {{team.get_defensive_rank}} ({{team.get_defensive_efficiency|floatformat:3}} ppp)</h3>
         {% endif %}
     </div>
-    {% include 'schedule/components/espn-videos.html' %}
+    {% include 'schedule/components/espn-videos.html' with videos=team.videos title=team%}
     <div class="column">
         {% if games %}
             <h3>KU vs {{team.get_styled_name | safe}}</h3>
@@ -29,7 +29,8 @@
             <h4><a href="{{team.espn_link}}" style="color:#{{team.color}}">{{team.mascot}} ESPN Team Page</a></h4>
         {% endif %}
 
-        {% include 'schedule/components/espn-news.html' %}
+        {% include 'schedule/components/espn-news.html' with news=team.news title=team %}
+        {% include 'schedule/components/espn-podcasts.html' with podcasts=team.podcasts title=team %}
     </div>
-    {% include 'schedule/components/tweets.html' %}
+    {% include 'schedule/components/tweets.html' with tweets=team.get_tweets title=team %}
 {% endblock %}

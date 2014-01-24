@@ -15,15 +15,16 @@
     </h3>
     <h3>{{game.location}}</h3>
 </div>
-{% include 'schedule/components/espn-videos.html' %}
+{% include 'schedule/components/espn-videos.html' with videos=videos %}
 <div class="column">
-    {% include 'schedule/components/kenpom-stats.html' %}
+    {% include 'schedule/components/kenpom-stats.html' with team=team opponent=game.opponent %}
     <h4><a href="{{game.opponent.get_absolute_url}}" style="color:#{{game.opponent.color}}">{{game.opponent}} Team Page</a></h4>
     {% if game.opponent.espn_link %}
         <h4><a href="{{game.opponent.espn_link}}" style="color:#{{game.opponent.color}}">{{game.opponent.mascot}} ESPN Team Page</a></h4>
     {% endif %}
 
-    {% include 'schedule/components/espn-news.html' %}
+    {% include 'schedule/components/espn-news.html' with news=game.opponent.news title=game.opponent %}
+    {% include 'schedule/components/espn-podcasts.html' with podcasts=game.opponent.podcasts title=game.opponent %}
 </div>
-{% include 'schedule/components/game-tweets.html' %}
+{% include 'schedule/components/tweets.html' with tweets=game.get_tweets%}
 {% endblock %}
