@@ -201,13 +201,13 @@ class Game(models.Model):
         self.news = dedupe_lists(self.opponent.news, team.news, count)
 
     def get_videos(self, count, team):
-        self.opponent.get_videos(4)
-        team.get_videos(4)
+        self.opponent.get_videos(2)
+        team.get_videos(1)
         self.videos = dedupe_lists(self.opponent.videos, team.videos, count)
 
     def get_podcasts(self, count, team):
-        self.opponent.get_podcasts(3)
-        team.get_podcasts(3)
+        self.opponent.get_podcasts(6)
+        team.get_podcasts(6)
         self.podcasts = dedupe_lists(self.opponent.podcasts, team.podcasts, count)
 
     def get_tweets(self):
