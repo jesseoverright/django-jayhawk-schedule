@@ -1,15 +1,15 @@
-{% if news %}
-    <h3>ESPN News for {{title}}</h3>
+{% if podcasts %}
+    <h3>ESPN Audio for {{title}}</h3>
     <ul>
-    {% for article in news %}
+    {% for podcast in podcasts %}
         <li>
-            <a href="{{article.links.web.href}}">
-                {% with article.images|first as image %}
+            <a href="{{podcast.links.web.href}}">
+                {% with podcast.images|first as image %}
                     {% if image.width >= 576 %}
                         <img src="{{image.url}}" alt="{{image.caption}}">
                     {% endif %}
                 {% endwith %}
-                {{article.headline}}
+                {{podcast.headline}}
             </a>
         </li>
     {% endfor %}
