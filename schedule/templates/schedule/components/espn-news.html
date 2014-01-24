@@ -15,3 +15,20 @@
     {% endfor %}
     </ul>
 {% endif %}
+{% if team.podcasts %}
+    <h3>ESPN Audio for {{team}}</h3>
+    <ul>
+    {% for podcast in team.podcasts %}
+        <li>
+            <a href="{{podcast.links.web.href}}">
+                {% with podcast.images|first as image %}
+                    {% if image.width >= 576 %}
+                        <img src="{{image.url}}" alt="{{image.caption}}">
+                    {% endif %}
+                {% endwith %}
+                {{podcast.headline}}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}

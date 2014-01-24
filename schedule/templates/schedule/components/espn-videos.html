@@ -1,9 +1,9 @@
-{% if team.videos %}
+{% if videos %}
 <div class="column">
-    <h3>ESPN video for {{team}}</h3>
+    <h3>ESPN video for {{name}}</h3>
 
     <ul>
-    {% for video in team.videos %}
+    {% for video in videos %}
         <li>
             <div class="video">
                 <div id="{{video.id}}">

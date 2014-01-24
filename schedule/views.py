@@ -41,22 +41,28 @@ def all_teams(request):
 
 def game(request, slug):
     game = get_object_or_404(Game, slug=slug)
-    ku, created = Team.objects.get_or_create(slug='kansas-jayhawks')
+    team, created = Team.objects.get_or_create(slug='kansas-jayhawks')
 
-    game.opponent.get_news()
+    game.opponent.get_news(6)
+    game.opponent.get_videos(2)
+    game.opponent.get_podcasts(4)
+
+    team.get_videos(1)
 
     return render(request, 'schedule/game.html', {
-        'title': 'KU vs %s' % game.opponent,
+        'title': '%s vs %s' % (team, game.opponent),
         'game': game,
-        'ku': ku,
-        'team': game.opponent,
+        'team': team,
+        'videos': game.opponent.videos + team.videos,
     })
 
 def team(request, slug):
     team = get_object_or_404(Team, slug=slug)
     games = Game.objects.filter(opponent=team).order_by('date')
 
-    team.get_news()
+    team.get_news(8)
+    team.get_videos(3)
+    team.get_podcasts(8)
 
     return render(request, 'schedule/team.html', {
         'title': '%s Team Page' % team,

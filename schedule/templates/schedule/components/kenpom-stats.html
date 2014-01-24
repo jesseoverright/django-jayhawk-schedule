@@ -1,76 +1,76 @@
-{% if team.get_ranking %}
+{% if opponent.get_ranking %}
 <table>
     <tr>
         <th></th>
-        <td><span style="color:#{{ku.color}}">{{ku.get_ranking}} {{ku.name}}</span></td>
         <td><span style="color:#{{team.color}}">{{team.get_ranking}} {{team.name}}</span></td>
+        <td><span style="color:#{{opponent.color}}">{{opponent.get_ranking}} {{opponent.name}}</span></td>
     </tr>
     <tr>
         <th>Offensive Rank</th>
-        {% if ku.get_offensive_rank < team.get_offensive_rank %}
-        <td class="win">
-        {% else %}
-        <td class="loss">
-        {% endif %}
-            {{ku.get_offensive_rank}}
-        </td>
-       {% if ku.get_offensive_rank > team.get_offensive_rank %}
+        {% if team.get_offensive_rank < opponent.get_offensive_rank %}
         <td class="win">
         {% else %}
         <td class="loss">
         {% endif %}
             {{team.get_offensive_rank}}
         </td>
-    </tr>
-    <tr>
-        <th>Defensive Rank</th>
-        {% if ku.get_defensive_rank < team.get_defensive_rank %}
+       {% if team.get_offensive_rank > opponent.get_offensive_rank %}
         <td class="win">
         {% else %}
         <td class="loss">
         {% endif %}
-            {{ku.get_defensive_rank}}
+            {{opponent.get_offensive_rank}}
         </td>
-        {% if ku.get_defensive_rank > team.get_defensive_rank %}
+    </tr>
+    <tr>
+        <th>Defensive Rank</th>
+        {% if team.get_defensive_rank < opponent.get_defensive_rank %}
         <td class="win">
         {% else %}
         <td class="loss">
         {% endif %}
             {{team.get_defensive_rank}}
         </td>
-    </tr>
-    <tr>
-        <th>{{ku.name}} Offense</th>
-        {% if ku.get_offensive_difference > team.get_defensive_difference %}
+        {% if team.get_defensive_rank > opponent.get_defensive_rank %}
         <td class="win">
         {% else %}
         <td class="loss">
         {% endif %}
-            {{ku.get_offensive_efficiency|floatformat:3}}
+            {{opponent.get_defensive_rank}}
         </td>
-        {% if ku.get_offensive_difference < team.get_defensive_difference %}
+    </tr>
+    <tr>
+        <th>{{team.name}} Offense</th>
+        {% if team.get_offensive_difference > opponent.get_defensive_difference %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{team.get_offensive_efficiency|floatformat:3}}
+        </td>
+        {% if team.get_offensive_difference < opponent.get_defensive_difference %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{opponent.get_defensive_efficiency|floatformat:3}}
+        </td>
+    </tr>
+    <tr>
+        <th>{{opponent.name}} Offense</th>
+        {% if team.get_defensive_difference > opponent.get_offensive_difference %}
         <td class="win">
         {% else %}
         <td class="loss">
         {% endif %}
             {{team.get_defensive_efficiency|floatformat:3}}
         </td>
-    </tr>
-    <tr>
-        <th>{{team.name}} Offense</th>
-        {% if ku.get_defensive_difference > team.get_offensive_difference %}
+        {% if team.get_defensive_difference < opponent.get_offensive_difference %}
         <td class="win">
         {% else %}
         <td class="loss">
         {% endif %}
-            {{ku.get_defensive_efficiency|floatformat:3}}
-        </td>
-        {% if ku.get_defensive_difference < team.get_offensive_difference %}
-        <td class="win">
-        {% else %}
-        <td class="loss">
-        {% endif %}
-            {{team.get_offensive_efficiency|floatformat:3}}
+            {{opponent.get_offensive_efficiency|floatformat:3}}
         </td>
     </tr>
 </table>

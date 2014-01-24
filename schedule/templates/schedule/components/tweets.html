@@ -1,9 +1,9 @@
-{% if team.get_tweets %}
+{% if tweets %}
 <div class="column">
     <div class="twitter-timeline">
-        <h4>Tweets about {{team}}</h4>
+        <h4>Tweets about {{title}}</h4>
         <div class="tweets">
-            {% for tweet in team.get_tweets %}
+            {% for tweet in tweets %}
             <div class="tweet">
                 <div class="tweet-image">
                     <img src="{{tweet.user.profile_image_url_https}}">
