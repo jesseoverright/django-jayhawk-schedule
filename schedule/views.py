@@ -41,19 +41,18 @@ def all_teams(request):
 
 def game(request, slug):
     game = get_object_or_404(Game, slug=slug)
-    team, created = Team.objects.get_or_create(slug='kansas-jayhawks')
 
     if game.get_result() == 'win' or game.get_result() == 'loss':
-        game.get_game_news(20, team)
+        game.get_game_news(4)
 
-    game.get_news(8, team)
-    game.get_videos(2, team)
-    game.get_podcasts(8, team)
+    game.get_news(8)
+    game.get_videos(2)
+    game.get_podcasts(8)
 
     return render(request, 'schedule/game.html', {
-        'title': '%s vs %s' % (team, game.opponent),
+        'title': '%s vs %s' % (game.team, game.opponent),
         'game': game,
-        'team': team,
+        'team': game.team,
     })
 
 def team(request, slug):

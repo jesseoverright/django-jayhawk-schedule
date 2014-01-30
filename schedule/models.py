@@ -163,6 +163,7 @@ class Team(models.Model):
 
 # a Game on KU's schedule includes opponent, date, location and tv details
 class Game(models.Model):
+    team, created = Team.objects.get_or_create(slug='kansas-jayhawks')
     opponent = models.ForeignKey(Team)
     slug = models.SlugField(unique=True, max_length=255)
     location = models.CharField(max_length=255)
@@ -212,10 +213,10 @@ class Game(models.Model):
 
         return u'%s' % summary
 
-    def get_game_news(self, count, team):
-        self.opponent.get_news(count, self.date.strftime('%Y%m%d'))
-        team.get_news(count, self.date.strftime('%Y%m%d'))
-        deduped_news = dedupe_lists(self.opponent.news_on_date, team.news_on_date, count)
+    def get_game_news(self, count):
+        self.opponent.get_news(count+2, self.date.strftime('%Y%m%d'))
+        self.team.get_news(count+2, self.date.strftime('%Y%m%d'))
+        deduped_news = dedupe_lists(self.opponent.news_on_date, self.team.news_on_date, count)
         other_news = []
         game_recaps = []
         for news in deduped_news:
@@ -226,20 +227,20 @@ class Game(models.Model):
 
         self.news_on_date = game_recaps + other_news
 
-    def get_news(self, count, team):
-        self.opponent.get_news(6)
-        team.get_news(6)
-        self.news = dedupe_lists(self.opponent.news, team.news, count)
+    def get_news(self, count):
+        self.opponent.get_news(count+3)
+        self.team.get_news(count+3)
+        self.news = dedupe_lists(self.opponent.news, self.team.news, count)
 
-    def get_videos(self, count, team):
-        self.opponent.get_videos(2)
-        team.get_videos(1)
-        self.videos = dedupe_lists(self.opponent.videos, team.videos, count)
+    def get_videos(self, count):
+        self.opponent.get_videos(count)
+        self.team.get_videos(1)
+        self.videos = dedupe_lists(self.opponent.videos, self.team.videos, count)
 
-    def get_podcasts(self, count, team):
-        self.opponent.get_podcasts(6)
-        team.get_podcasts(6)
-        self.podcasts = dedupe_lists(self.opponent.podcasts, team.podcasts, count)
+    def get_podcasts(self, count):
+        self.opponent.get_podcasts(count+3)
+        self.team.get_podcasts(count+3)
+        self.podcasts = dedupe_lists(self.opponent.podcasts, self.team.podcasts, count)
 
     def get_tweets(self):
         return twitter_api.get_game_tweets(self.opponent.name, self.opponent.mascot, self.date)
