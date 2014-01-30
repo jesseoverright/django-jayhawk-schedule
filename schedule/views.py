@@ -43,11 +43,13 @@ def game(request, slug):
     game = get_object_or_404(Game, slug=slug)
 
     if game.get_result() == 'win' or game.get_result() == 'loss':
-        game.get_game_news(4)
+        game.get_game_recaps(4)
+        game.get_news(4)
+    else:
+        game.get_news(8)
 
-    game.get_news(8)
     game.get_videos(2)
-    game.get_podcasts(8)
+    game.get_podcasts(6)
 
     return render(request, 'schedule/game.html', {
         'title': '%s vs %s' % (game.team, game.opponent),

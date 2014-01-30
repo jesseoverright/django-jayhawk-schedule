@@ -38,7 +38,7 @@ class Team(models.Model):
     _espn_api_team_details = None
     kenpom_stats = None
     news = None
-    news_on_date = None
+    game_recaps = None
     videos = None
     podcasts = None
 
@@ -126,7 +126,6 @@ class Team(models.Model):
             else:
                 return u'<span style="color:#%s">%s %s</span>' % (self.color(), self.name, self.mascot)
 
-
         return self
 
     def espn_link(self):
@@ -139,12 +138,8 @@ class Team(models.Model):
         return False
 
     def get_news(self, limit=4, date=None):
-        if date is None:
-            if self.news is None:
-                self.news = self._get_espn_api_updates('story,blog', limit)
-        else:
-            if self.news_on_date is None:
-                self.news_on_date = self._get_updates_from_date(date, limit)
+        if self.news is None:
+            self.news = self._get_espn_api_updates('story,blog', limit)
 
     def get_videos(self, limit=2):
         if self.videos is None:
@@ -154,6 +149,11 @@ class Team(models.Model):
         if self.podcasts is None:
             self.podcasts = self._get_espn_api_updates('podcast', limit)
 
+    def get_game_recaps(self, limit=4, date=None):
+        if self.game_recaps is None:
+            self.game_recaps = self._get_updates_from_date(date, limit)
+
+
     def get_tweets(self):
         return twitter_api.get_team_tweets(self.name, self.mascot)
 
@@ -161,7 +161,8 @@ class Team(models.Model):
         return reverse('schedule.views.team', args=[self.slug])
 
 
-# a Game on KU's schedule includes opponent, date, location and tv details
+# a Game is a matchup between two teams, including team and opponenet, date, location,
+# tv details, game type, scores, news, videos, podcasts and game recaps
 class Game(models.Model):
     team, created = Team.objects.get_or_create(slug='kansas-jayhawks')
     opponent = models.ForeignKey(Team)
@@ -173,7 +174,7 @@ class Game(models.Model):
     score = models.IntegerField(null=True, blank=True)
     opponent_score = models.IntegerField(null=True, blank=True)
     news = None
-    news_on_date = None
+    game_recaps = None
     videos = None
     podcasts = None
 
@@ -213,19 +214,21 @@ class Game(models.Model):
 
         return u'%s' % summary
 
-    def get_game_news(self, count):
-        self.opponent.get_news(count+2, self.date.strftime('%Y%m%d'))
-        self.team.get_news(count+2, self.date.strftime('%Y%m%d'))
-        deduped_news = dedupe_lists(self.opponent.news_on_date, self.team.news_on_date, count)
+    def get_game_recaps(self, count):
+        self.opponent.get_game_recaps(count+2, self.date.strftime('%Y%m%d'))
+        self.team.get_game_recaps(count+2, self.date.strftime('%Y%m%d'))
+        deduped_news = dedupe_lists(self.opponent.game_recaps, self.team.game_recaps, count)
         other_news = []
         game_recaps = []
+
+        # sort list with game recaps first
         for news in deduped_news:
             if news['type'] == 'Recap':
                 game_recaps.append(news)
             else:
                 other_news.append(news)
 
-        self.news_on_date = game_recaps + other_news
+        self.game_recaps = game_recaps + other_news
 
     def get_news(self, count):
         self.opponent.get_news(count+3)
