@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.cache import cache
 import requests
+from datetime import datetime
 
 class EspnApi(object):
     def __init__(self):
@@ -59,6 +60,15 @@ class EspnApi(object):
                   'apikey': self.key,
                   'limit': limit,
                   'content': content,
+                  }
+
+        return self._get_results(url, params)
+
+    def get_game_news(self, team_id, date=datetime.now().strftime('%Y%m%d'), limit=7):
+        url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams/%s/news" % team_id
+        params = {'apikey': self.key,
+                  'limit': limit,
+                  'dates': date,
                   }
 
         return self._get_results(url, params)
