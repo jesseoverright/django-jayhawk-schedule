@@ -54,7 +54,8 @@ class TwitterApi(object):
     def get_team_tweets(self, team_name, team_mascot):
         params = {'q': team_name + ' ' + team_mascot,
                   'count': 15,
-                  'result_type': 'popular'
+                  'result_type': 'popular',
+                  'lang': 'en',
                   }
 
         return self._get_tweets(params)
@@ -63,7 +64,8 @@ class TwitterApi(object):
         limit_date = game_date + datetime.timedelta(days=2)
         params = {'q': '(KU OR Kansas OR Jayhawks) AND ("' + team_name + '" OR "' + team_mascot + '")',
                   'count': 15,
-                  'result_type': 'popular'
+                  'result_type': 'popular',
+                  'lang': 'en',
                   }
 
         return self._get_tweets(params)
