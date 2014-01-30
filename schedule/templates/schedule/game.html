@@ -15,6 +15,8 @@
     </h3>
     <h3>{{game.location}}</h3>
 </div>
+{% include 'schedule/components/game-recap.html' with headlines=game.news_on_date title=game %}
+
 {% include 'schedule/components/espn-videos.html' with videos=game.videos %}
 <div class="column">
     {% include 'schedule/components/kenpom-stats.html' with team=team opponent=game.opponent %}

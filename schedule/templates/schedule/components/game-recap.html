@@ -1,0 +1,19 @@
+{% if headlines %}
+<div class="column">
+    <h3>ESPN Recap for {{title}}</h3>
+    <ul>
+    {% for article in headlines %}
+        <li>
+            <a href="{{article.links.web.href}}">
+                {% with article.images|first as image %}
+                    {% if image.width >= 576 %}
+                        <img src="{{image.url}}" alt="{{image.caption}}">
+                    {% endif %}
+                {% endwith %}
+                {{article.headline}}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}

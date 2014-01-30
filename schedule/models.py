@@ -38,6 +38,7 @@ class Team(models.Model):
     _espn_api_team_details = None
     kenpom_stats = None
     news = None
+    news_on_date = None
     videos = None
     podcasts = None
 
@@ -65,6 +66,17 @@ class Team(models.Model):
 
             if 'feed' in updates.keys():
                 for item in updates['feed']:
+                    results.append(item)
+
+        return results
+
+    def _get_updates_from_date(self, date, limit):
+        results = []
+        if self._get_espn_api_team_details() != False:
+            updates = espn_api.get_game_news(self._get_espn_api_team_details()['id'], date, limit)
+
+            if 'headlines' in updates.keys():
+                for item in updates['headlines']:
                     results.append(item)
 
         return results
@@ -126,9 +138,13 @@ class Team(models.Model):
 
         return False
 
-    def get_news(self, limit=4):
-        if self.news is None:
-            self.news = self._get_espn_api_updates('story,blog', limit)
+    def get_news(self, limit=4, date=None):
+        if date is None:
+            if self.news is None:
+                self.news = self._get_espn_api_updates('story,blog', limit)
+        else:
+            if self.news_on_date is None:
+                self.news_on_date = self._get_updates_from_date(date, limit)
 
     def get_videos(self, limit=2):
         if self.videos is None:
@@ -156,6 +172,7 @@ class Game(models.Model):
     score = models.IntegerField(null=True, blank=True)
     opponent_score = models.IntegerField(null=True, blank=True)
     news = None
+    news_on_date = None
     videos = None
     podcasts = None
 
@@ -194,6 +211,20 @@ class Game(models.Model):
             summary += 'KU vs ' + self.opponent.name
 
         return u'%s' % summary
+
+    def get_game_news(self, count, team):
+        self.opponent.get_news(count, self.date.strftime('%Y%m%d'))
+        team.get_news(count, self.date.strftime('%Y%m%d'))
+        deduped_news = dedupe_lists(self.opponent.news_on_date, team.news_on_date, count)
+        other_news = []
+        game_recaps = []
+        for news in deduped_news:
+            if news['type'] == 'Recap':
+                game_recaps.append(news)
+            else:
+                other_news.append(news)
+
+        self.news_on_date = game_recaps + other_news
 
     def get_news(self, count, team):
         self.opponent.get_news(6)

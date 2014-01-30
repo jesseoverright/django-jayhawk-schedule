@@ -43,6 +43,9 @@ def game(request, slug):
     game = get_object_or_404(Game, slug=slug)
     team, created = Team.objects.get_or_create(slug='kansas-jayhawks')
 
+    if game.get_result() == 'win' or game.get_result() == 'loss':
+        game.get_game_news(20, team)
+
     game.get_news(8, team)
     game.get_videos(2, team)
     game.get_podcasts(8, team)
