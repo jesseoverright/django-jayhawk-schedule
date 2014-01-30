@@ -52,7 +52,6 @@ def game(request, slug):
     return render(request, 'schedule/game.html', {
         'title': '%s vs %s' % (game.team, game.opponent),
         'game': game,
-        'team': game.team,
     })
 
 def team(request, slug):
