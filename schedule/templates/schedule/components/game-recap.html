@@ -4,7 +4,7 @@
     <ul>
     {% for recap in game_recaps %}
         {% if recap.video %}
-            {% for highlight in recap.video|slice:":3" %}
+            {% for highlight in recap.video %}
                 {% if highlight.tracking.coverageType == 'Highlight' %}
                     <li>
                         <div class="video">

@@ -154,16 +154,6 @@ class Team(models.Model):
     def get_game_recaps(self, limit=4, date=None):
         self.game_recaps = self._get_updates_from_date(date, limit)
 
-        # remove duplicate videos from game recap
-        video_ids = []
-        for recap in self.game_recaps:
-            if 'video' in recap.keys():
-                for video in recap['video']:
-                    if video['id'] in video_ids:
-                        video = {}
-                    else:
-                        video_ids.append(video['id'])
-
     def get_tweets(self):
         return twitter_api.get_team_tweets(self.name, self.mascot)
 
@@ -236,6 +226,21 @@ class Game(models.Model):
             self.team.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
 
         self.game_recaps = dedupe_lists(self.opponent.game_recaps, self.team.game_recaps, count)
+
+        # remove duplicate videos from game recap
+        video_ids = []
+        recap_index = 0
+        for recap in self.game_recaps:
+            video_index = 0
+            if 'video' in recap.keys():
+                for video in recap['video']:
+                    if video['id'] in video_ids:
+                        self.game_recaps[recap_index]['video'][video_index] = 'test'
+                    else:
+                        video_ids.append(video['id'])
+                    video_index += 1
+            recap_index += 1
+
 
     def get_news(self, count):
         self.opponent.get_news(count+3)
