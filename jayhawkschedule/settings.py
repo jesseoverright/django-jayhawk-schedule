@@ -20,11 +20,13 @@ DATABASES = {
     }
 }
 
+CACHE_TIMEOUT = 60*60*4, # 4 hour caching by default, override in local_settings
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': 'api_cache',
-        'TIMEOUT': 60*60*4, # 4 hour caching
+        'TIMEOUT': CACHE_TIMEOUT,
         'VERSION': 1,
         'OPTIONS': {
             'MAX_ENTRIES': 10000
