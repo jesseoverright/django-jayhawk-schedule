@@ -29,7 +29,7 @@ class EspnApi(object):
                     self.teams[team['location']] = team
                 cache.set(team_cache_key, self.teams)
 
-    def _get_results(self, url, params):
+    def _get_results(self, url, params, cache_timeout=getattr(settings, "CACHE_TIMEOUT", None)):
         # only access espn api if results of particular query are not already cached
         cache_key = u'%s%s' % (url, str(params))
         cache_key = cache_key.replace(' ','')
@@ -43,7 +43,7 @@ class EspnApi(object):
             except requests.exceptions.HTTPError as error:
                 json_results = False
 
-            cache.set(cache_key, json_results)
+            cache.set(cache_key, json_results, cache_timeout)
 
         return json_results
 
@@ -71,4 +71,4 @@ class EspnApi(object):
                   'dates': date,
                   }
 
-        return self._get_results(url, params)
+        return self._get_results(url, params, 60*60*48)

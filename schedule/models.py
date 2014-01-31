@@ -154,6 +154,15 @@ class Team(models.Model):
     def get_game_recaps(self, limit=4, date=None):
         self.game_recaps = self._get_updates_from_date(date, limit)
 
+        # remove duplicate videos from game recap
+        video_ids = []
+        for recap in self.game_recaps:
+            if 'video' in recap.keys():
+                for video in recap['video']:
+                    if video['id'] in video_ids:
+                        video = {}
+                    else:
+                        video_ids.append(video['id'])
 
     def get_tweets(self):
         return twitter_api.get_team_tweets(self.name, self.mascot)
