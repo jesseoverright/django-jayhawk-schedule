@@ -64,7 +64,7 @@ class EspnApi(object):
 
         return self._get_results(url, params)
 
-    def get_game_news(self, team_id, date=datetime.now().strftime('%Y%m%d'), limit=7):
+    def get_game_recaps(self, team_id, date=datetime.now().strftime('%Y%m%d'), limit=7):
         url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams/%s/news" % team_id
         params = {'apikey': self.key,
                   'limit': limit,

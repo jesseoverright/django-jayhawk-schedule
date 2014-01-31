@@ -73,7 +73,7 @@ class Team(models.Model):
     def _get_updates_from_date(self, date, limit):
         results = []
         if self._get_espn_api_team_details() != False:
-            updates = espn_api.get_game_news(self._get_espn_api_team_details()['id'], date, limit)
+            updates = espn_api.get_game_recaps(self._get_espn_api_team_details()['id'], date, limit)
 
             if 'headlines' in updates.keys():
                 for item in updates['headlines']:
