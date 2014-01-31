@@ -47,7 +47,7 @@ class TwitterApi(object):
                 # Sun Nov 17 18:00:04 +0000 2013
                 tweet['created_at'] = datetime.datetime.strptime(tweet['created_at'][0:19], '%a %b %d %H:%M:%S')
 
-            cache.set(cache_key, tweet_results)
+            cache.set(cache_key, tweet_results, 60*15)
 
         return tweet_results
 

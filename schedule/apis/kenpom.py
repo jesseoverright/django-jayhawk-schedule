@@ -21,7 +21,7 @@ class KenpomApi(object):
             if kenpom_stats:
                 for team in kenpom_stats:
                     self.teams[team['TeamName']] = team
-                cache.set(stats_cache_key, self.teams)
+                cache.set(stats_cache_key, self.teams, 60*60*24)
 
     def _get_kenpom_stats(self, url):
         # only ingest kenpom file if results are not already cached
