@@ -150,8 +150,7 @@ class Team(models.Model):
             self.podcasts = self._get_espn_api_updates('podcast', limit)
 
     def get_game_recaps(self, limit=4, date=None):
-        if self.game_recaps is None:
-            self.game_recaps = self._get_updates_from_date(date, limit)
+        self.game_recaps = self._get_updates_from_date(date, limit)
 
 
     def get_tweets(self):
@@ -217,6 +216,14 @@ class Game(models.Model):
     def get_game_recaps(self, count):
         self.opponent.get_game_recaps(count+2, self.date.strftime('%Y%m%d'))
         self.team.get_game_recaps(count+2, self.date.strftime('%Y%m%d'))
+
+        # if no results exist for either team, incrementally check the next day
+        next_day = self.date
+        while not self.opponent.game_recaps and not self.team.game_recaps:
+            next_day = next_day + datetime.timedelta(1)
+            self.opponent.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
+            self.team.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
+
         deduped_news = dedupe_lists(self.opponent.game_recaps, self.team.game_recaps, count)
         other_news = []
         game_recaps = []
