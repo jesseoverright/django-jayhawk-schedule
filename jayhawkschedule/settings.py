@@ -20,7 +20,7 @@ DATABASES = {
     }
 }
 
-CACHE_TIMEOUT = 60*60*4, # 4 hour caching by default, override in local_settings
+CACHE_TIMEOUT = 60*60*4 # 4 hour caching by default, override in local_settings
 
 CACHES = {
     'default': {
