@@ -77,7 +77,9 @@ class Team(models.Model):
 
             if 'headlines' in updates.keys():
                 for item in updates['headlines']:
-                    results.append(item)
+                    if 'type' in item.keys():
+                        if item['type'] == 'Recap':
+                            results.append(item)
 
         return results
 
@@ -224,18 +226,7 @@ class Game(models.Model):
             self.opponent.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
             self.team.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
 
-        deduped_news = dedupe_lists(self.opponent.game_recaps, self.team.game_recaps, count)
-        other_news = []
-        game_recaps = []
-
-        # sort list with game recaps first
-        for news in deduped_news:
-            if news['type'] == 'Recap':
-                game_recaps.append(news)
-            else:
-                other_news.append(news)
-
-        self.game_recaps = game_recaps + other_news
+        self.game_recaps = dedupe_lists(self.opponent.game_recaps, self.team.game_recaps, count)
 
     def get_news(self, count):
         self.opponent.get_news(count+3)
