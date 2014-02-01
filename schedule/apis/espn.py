@@ -27,7 +27,7 @@ class EspnApi(object):
                 # this allows us to access teams by key value instead of iterating over entire list of objects
                 for team in team_list:
                     self.teams[team['location']] = team
-                cache.set(team_cache_key, self.teams, 60*60*30)
+                cache.set(team_cache_key, self.teams, 60*60*24*30)
 
     def _get_results(self, url, params, cache_timeout=getattr(settings, "CACHE_TIMEOUT", None)):
         # only access espn api if results of particular query are not already cached
@@ -71,4 +71,4 @@ class EspnApi(object):
                   'dates': date,
                   }
 
-        return self._get_results(url, params, 60*60*48)
+        return self._get_results(url, params, 60*60*24*2)
