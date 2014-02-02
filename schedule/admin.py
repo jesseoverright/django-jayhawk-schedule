@@ -8,7 +8,7 @@ class GameAdmin(admin.ModelAdmin):
     ordering = ('date',)
     save_on_top = True
     prepopulated_fields = {'slug': ('date',)}
-    
+
 class TeamAdmin(admin.ModelAdmin):
     list_display = ['name', 'mascot', 'conference']
     search_fields = ['name', 'mascot','conference']
