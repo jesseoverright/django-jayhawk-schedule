@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.utils import timezone
 from schedule.models import Game, Team
 
 from datetime import date
@@ -6,7 +7,7 @@ from datetime import date
 def index(request):
     games = Game.objects.order_by('date')
 
-    next_games = Game.objects.filter(date__gt = date.today()).order_by('date')
+    next_games = Game.objects.filter(date__gt = timezone.now()).order_by('date')
     if next_games.count() > 0:
         if next_games[0].get_result() != False:
             next_game = next_games[1]

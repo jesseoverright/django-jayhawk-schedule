@@ -50,7 +50,7 @@ class GamesTest(TestCase):
         self.assertEqual(self.game.opponent.color(), '002447')
 
     def test_is_team_styled_name_correct(self):
-        self.assertEqual(self.game.opponent.get_styled_name(), u'<span style="color:#002447">25 Memphis Tigers</span>')
+        self.assertEqual(self.game.opponent.get_styled_name(), u'<span style="color:#002447">36 Memphis Tigers</span>')
         no_api_team = Team.objects.create(
             name='Harlem',
             mascot='Globetrotters',
@@ -62,8 +62,10 @@ class GamesTest(TestCase):
     def test_has_team_articles(self):
         self.game.opponent.get_news(1)
         self.game.opponent.get_videos(1)
+        self.game.opponent.get_podcasts(1)
         self.assertIsNotNone(self.game.opponent.videos)
         self.assertIsNotNone(self.game.opponent.news)
+        self.assertIsNotNone(self.game.opponent.podcasts)
 
     def test_game_title(self):
         self.assertEqual(u'%s' % self.game, u'Memphis Apr 07')
@@ -88,7 +90,9 @@ class GamesTest(TestCase):
         cache_key = u'%s%s' % (url, str(params))
         cache_key = cache_key.replace(' ','')
 
-        team_list =  cache.get(cache_key)['sports'][0]['leagues'][0]['teams']
+        team_list = cache.get(cache_key)
+        if 'sports' in team_list.keys():
+            team_list = team_list['sports'][0]['leagues'][0]['teams']
         cache_teams = {}
         for team in team_list:
             cache_teams[team['location']] = team
@@ -107,7 +111,9 @@ class GamesTest(TestCase):
         cache_key = u'%s' % str(params)
         cache_key = cache_key.replace(' ','')
 
-        self.assertEqual(cache.get(cache_key), self.twitter_api._get_tweets(params))
+        tweets = self.twitter_api._get_tweets(params)
+
+        self.assertEqual(cache.get(cache_key), tweets)
 
     def test_regex_for_web_links(self):
         tweet = "A closer look at Duke's first national ranking since Dec. 6, 1994. One writer had the Blue Devils as high as No. 21 https://t.co/1VJegEg3CY"

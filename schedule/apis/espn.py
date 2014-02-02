@@ -20,7 +20,7 @@ class EspnApi(object):
 
             self.teams = {}
 
-            if all_teams:
+            if all_teams and 'sports' in all_teams.keys():
                 team_list =  all_teams['sports'][0]['leagues'][0]['teams']
 
                 # iterate over list of json objects and create a dictionary using key: team location
