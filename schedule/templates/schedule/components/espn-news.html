@@ -9,7 +9,7 @@
                         <img src="{{image.url}}" alt="{{image.caption}}">
                     {% endif %}
                 {% endwith %}
-                {{article.headline}}
+                {{article.headline|safe}}
             </a>
         </li>
     {% endfor %}
