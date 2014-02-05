@@ -9,7 +9,83 @@ from schedule.apis import KenpomApi, EspnApi, TwitterApi
 
 import re
 
-class GamesTest(TestCase):
+class KenpomTests(TestCase):
+    def setUp(self):
+        self.team = Team.objects.create(
+            name='Kansas',
+            mascot='Jayhawks',
+            slug='kansas-jayhawks'
+            )
+
+    def test_kenpom_team_dictionary(self):
+        self.kenpom_api = KenpomApi()
+
+        self.assertEqual(self.kenpom_api.teams[self.team.name]['TeamName'], 'Kansas')
+
+class EspnApiTests(TestCase):
+    def setUp(self):
+        self.team = Team.objects.create(
+            name='Kansas',
+            mascot='Jayhawks',
+            slug='kansas-jayhawks'
+            )
+
+    def test_is_espn_api_result_caching(self):
+        self.espn_api = EspnApi()
+
+        url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams"
+        params = {'apikey': getattr(settings, "ESPN_API_KEY", None),
+                  'limit': 351,
+                  }
+        cache_key = u'%s%s' % (url, str(params))
+        cache_key = cache_key.replace(' ','')
+
+        team_list = cache.get(cache_key)
+        if 'sports' in team_list.keys():
+            team_list = team_list['sports'][0]['leagues'][0]['teams']
+        cache_teams = {}
+        for team in team_list:
+            cache_teams[team['location']] = team
+
+        self.assertEqual(cache_teams, self.espn_api.teams)
+
+    def test_espn_api_team_dictionary(self):
+        self.espn_api = EspnApi()
+
+        self.assertEqual(self.espn_api.teams[self.team.name]['name'],'Jayhawks')
+
+class TwitterApiTests(TestCase):
+    def setUp(self):
+        self.team = Team.objects.create(
+            name='Kansas',
+            mascot='Jayhawks',
+            slug='kansas-jayhawks'
+            )
+
+    def test_is_twitter_api_result_caching(self):
+        self.twitter_api = TwitterApi()
+        self.team.get_tweets()
+
+        params = {'q': self.team.name + ' ' + self.team.mascot,
+                  'count': 15,
+                  'result_type': 'popular'
+                  }
+
+        cache_key = u'%s' % str(params)
+        cache_key = cache_key.replace(' ','')
+
+        tweets = self.twitter_api._get_tweets(params)
+
+        self.assertEqual(cache.get(cache_key), tweets)
+
+    def test_regex_for_web_links(self):
+        tweet = "A closer look at Duke's first national ranking since Dec. 6, 1994. One writer had the Blue Devils as high as No. 21 https://t.co/1VJegEg3CY"
+
+        tweet = re.sub(r'((https?|s?ftp|ssh)\:\/\/[^"\s\<\>]*[^.,;\'">\:\s\<\>\)\]\!])', r'<a href="\1">\1</a>', tweet)
+
+        self.assertEqual(tweet, "A closer look at Duke's first national ranking since Dec. 6, 1994. One writer had the Blue Devils as high as No. 21 <a href=\"https://t.co/1VJegEg3CY\">https://t.co/1VJegEg3CY</a>")
+
+class GameTests(TestCase):
     def setUp(self):
         team = Team.objects.create(
             name='Memphis',
@@ -58,7 +134,6 @@ class GamesTest(TestCase):
             )
         self.assertEqual(u'%s' % no_api_team.get_styled_name(), 'Harlem Globetrotters')
 
-
     def test_has_team_articles(self):
         self.game.opponent.get_news(1)
         self.game.opponent.get_videos(1)
@@ -69,55 +144,3 @@ class GamesTest(TestCase):
 
     def test_game_title(self):
         self.assertEqual(u'%s' % self.game, u'Memphis Apr 07')
-
-    def test_espn_api_team_dictionary(self):
-        self.espn_api = EspnApi()
-
-        self.assertEqual(self.espn_api.teams[self.game.opponent.name]['name'],'Tigers');
-
-    def test_kenpom_team_dictionary(self):
-        self.kenpom_api = KenpomApi()
-
-        self.assertEqual(self.kenpom_api.teams[self.game.opponent.name]['TeamName'], 'Memphis')
-
-    def test_is_espn_api_result_caching(self):
-        self.espn_api = EspnApi()
-
-        url = "http://api.espn.com/v1/sports/basketball/mens-college-basketball/teams"
-        params = {'apikey': getattr(settings, "ESPN_API_KEY", None),
-                  'limit': 351,
-                  }
-        cache_key = u'%s%s' % (url, str(params))
-        cache_key = cache_key.replace(' ','')
-
-        team_list = cache.get(cache_key)
-        if 'sports' in team_list.keys():
-            team_list = team_list['sports'][0]['leagues'][0]['teams']
-        cache_teams = {}
-        for team in team_list:
-            cache_teams[team['location']] = team
-
-        self.assertEqual(cache_teams, self.espn_api.teams)
-
-    def test_is_twitter_api_result_caching(self):
-        self.twitter_api = TwitterApi()
-        self.game.opponent.get_tweets()
-
-        params = {'q': self.game.opponent.name + ' ' + self.game.opponent.mascot,
-                  'count': 15,
-                  'result_type': 'popular'
-                  }
-
-        cache_key = u'%s' % str(params)
-        cache_key = cache_key.replace(' ','')
-
-        tweets = self.twitter_api._get_tweets(params)
-
-        self.assertEqual(cache.get(cache_key), tweets)
-
-    def test_regex_for_web_links(self):
-        tweet = "A closer look at Duke's first national ranking since Dec. 6, 1994. One writer had the Blue Devils as high as No. 21 https://t.co/1VJegEg3CY"
-
-        tweet = re.sub(r'((https?|s?ftp|ssh)\:\/\/[^"\s\<\>]*[^.,;\'">\:\s\<\>\)\]\!])', r'<a href="\1">\1</a>', tweet)
-
-        self.assertEqual(tweet, "A closer look at Duke's first national ranking since Dec. 6, 1994. One writer had the Blue Devils as high as No. 21 <a href=\"https://t.co/1VJegEg3CY\">https://t.co/1VJegEg3CY</a>")
