@@ -218,9 +218,9 @@ class Game(models.Model):
         self.opponent.get_game_recaps(count+2, self.date.strftime('%Y%m%d'))
         self.team.get_game_recaps(count+2, self.date.strftime('%Y%m%d'))
 
-        # if no results exist for either team, incrementally check the next day
+        # if no results exist for either team, incrementally check the next 3 days
         next_day = self.date
-        while not self.opponent.game_recaps and not self.team.game_recaps:
+        while not self.opponent.game_recaps and not self.team.game_recaps and next_day < (self.date + datetime.timedelta(3)):
             next_day = next_day + datetime.timedelta(1)
             self.opponent.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
             self.team.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
