@@ -35,10 +35,10 @@ kenpom_api = KenpomApi()
 class Team(models.Model):
     name = models.CharField(max_length=255)
     mascot = models.CharField(max_length=255)
-    nickname = models.CharField(max_length=255)
+    nickname = models.CharField(max_length=255, blank=True)
     slug = models.SlugField(unique=True, max_length=255)
     conference = models.CharField(blank=True,max_length=255,choices=CONFERENCES)
-    home_arena = models.CharField(max_length=512)
+    home_arena = models.CharField(max_length=512, blank=True)
     _espn_api_team_details = None
     kenpom_stats = None
     news = None
@@ -171,8 +171,8 @@ class Game(models.Model):
     team, created = Team.objects.get_or_create(slug=settings.SCHEDULE_SETTINGS['team']['slug'])
     opponent = models.ForeignKey(Team)
     slug = models.SlugField(unique=True, max_length=255)
-    location = models.CharField(max_length=255)
-    television = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, blank=True)
+    television = models.CharField(max_length=255, blank=True)
     date = models.DateTimeField()
     game_type = models.CharField(max_length=25, choices=GAME_TYPES)
     score = models.IntegerField(null=True, blank=True)
