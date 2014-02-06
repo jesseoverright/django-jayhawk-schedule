@@ -93,7 +93,7 @@ def category(request, slug):
 
 def ical(request):
     games = Game.objects.order_by('date')
-    schedule_settings = settigns.SCHEDULE_SETTINGS
+    schedule_settings = settings.SCHEDULE_SETTINGS
 
     title = '%s %s Schedule' % (schedule_settings['team']['name'], schedule_settings['year'])
 
