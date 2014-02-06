@@ -168,7 +168,7 @@ class Team(models.Model):
 # a Game is a matchup between two teams, including team and opponenet, date, location,
 # tv details, game type, scores, news, videos, podcasts and game recaps
 class Game(models.Model):
-    team, created = Team.objects.get_or_create(slug=getattr(settings, 'TEAM_SLUG', 'kansas-jayhawks'))
+    team, created = Team.objects.get_or_create(slug=settings.SCHEDULE_SETTINGS['team']['slug'])
     opponent = models.ForeignKey(Team)
     slug = models.SlugField(unique=True, max_length=255)
     location = models.CharField(max_length=255)
