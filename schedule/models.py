@@ -183,7 +183,8 @@ class Game(models.Model):
         ordering = ['-date']
 
     def __unicode__(self):
-        return u'%s %s' % (self.opponent.name, self.date.strftime('%b %d'))
+        game_date = timezone.localtime(self.date)
+        return u'%s %s' % (self.opponent.name, game_date.strftime('%b %d'))
 
     def get_result(self):
         if self.score > self.opponent_score:
@@ -216,12 +217,13 @@ class Game(models.Model):
         return u'%s' % summary
 
     def get_game_recaps(self, count):
-        self.opponent.get_game_recaps(count+2, self.date.strftime('%Y%m%d'))
-        self.team.get_game_recaps(count+2, self.date.strftime('%Y%m%d'))
+        game_date = timezone.localtime(self.date)
+        self.opponent.get_game_recaps(count+2, game_date.strftime('%Y%m%d'))
+        self.team.get_game_recaps(count+2, game_date.strftime('%Y%m%d'))
 
         # if no results exist for either team, incrementally check the next 3 days
-        next_day = self.date
-        while not self.opponent.game_recaps and not self.team.game_recaps and next_day < (self.date + datetime.timedelta(2)) and next_day < timezone.now():
+        next_day = game_date
+        while not self.opponent.game_recaps and not self.team.game_recaps and next_day < (game_date + datetime.timedelta(2)) and next_day < timezone.now():
             next_day = next_day + datetime.timedelta(1)
             self.opponent.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
             self.team.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
