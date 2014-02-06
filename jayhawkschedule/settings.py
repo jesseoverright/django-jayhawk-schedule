@@ -7,6 +7,16 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+SCHEDULE_SETTINGS = {
+    'team': {
+        'name': 'Kansas Jayhawks',
+        'slug': 'kansas-jayhawks',
+    },
+    'css': 'jayhawks.css',
+    'header': 'ku-header.jpg',
+    'year': '2013-14',
+}
+
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -117,7 +127,6 @@ ROOT_URLCONF = 'jayhawkschedule.urls'
 WSGI_APPLICATION = 'jayhawkschedule.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/Users/joverright/Sites/jayhawkschedule/schedule/templates',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

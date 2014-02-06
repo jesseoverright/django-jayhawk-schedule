@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>{% block title %}{% endblock %}</title>
-        <link rel="stylesheet" href="{{STATIC_URL}}css/jayhawks.css" />
+        <link rel="stylesheet" href="{{STATIC_URL}}css/{{schedule_settings.css}}" />
         <link rel="icon" href="{{STATIC_URL}}images/favicon.ico" />
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script src="{{STATIC_URL}}js/load-videos.js" /></script>
@@ -10,8 +10,8 @@
     <body>
         <div id="container">
             <div id="header">
-                <img src="{{STATIC_URL}}/images/ku-header.jpg" alt="Kansas Jayhawks 2013-14 Basketball Schedule" />
-                <h1><a href="/">Kansas Jayhawks 2013-14 Basketball Schedule</a></h1>
+                <img src="{{STATIC_URL}}/images/{{schedule_settings.header}}" alt="{{schedule_settings.team.name}} {{schedule_settings.year}} Basketball Schedule" />
+                <h1><a href="/">{{schedule_settings.team.name}} {{schedule_settings.year}} Basketball Schedule</a></h1>
             </div>
             <div id="content">
             {% block content %}

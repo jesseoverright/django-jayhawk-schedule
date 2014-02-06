@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.utils import timezone
+from django.conf import settings
 from schedule.models import Game, Team
 
 from datetime import date
@@ -33,12 +34,20 @@ def index(request):
             if game.game_type == 'Conference':
                 record['conference_losses'] += 1
 
-    return render(request, 'schedule/index.html', {'games': games, 'record': record, 'next_game': next_game})
+    return render(request, 'schedule/index.html', {
+        'games': games,
+        'record': record,
+        'next_game': next_game,
+        'schedule_settings': settings.SCHEDULE_SETTINGS,
+    })
 
 def all_teams(request):
     teams = Team.objects.order_by('name')
 
-    return render(request, 'schedule/teams.html', {'teams': teams})
+    return render(request, 'schedule/teams.html', {
+        'teams': teams,
+        'schedule_settings': settings.SCHEDULE_SETTINGS
+    })
 
 def game(request, slug):
     game = get_object_or_404(Game, slug=slug)
@@ -55,6 +64,7 @@ def game(request, slug):
     return render(request, 'schedule/game.html', {
         'title': '%s vs %s' % (game.team, game.opponent),
         'game': game,
+        'schedule_settings': settings.SCHEDULE_SETTINGS,
     })
 
 def team(request, slug):
@@ -69,21 +79,28 @@ def team(request, slug):
         'title': '%s Team Page' % team,
         'team': team,
         'games': games,
+        'schedule_settings': settings.SCHEDULE_SETTINGS,
     })
 
 def category(request, slug):
     games = get_list_or_404(Game.objects.filter(game_type__iexact=slug).order_by('date'))
 
-    return render(request, 'schedule/category.html', {'game_type': slug, 'games': games})
+    return render(request, 'schedule/category.html', {
+        'game_type': slug,
+        'games': games,
+        'schedule_settings': settings.SCHEDULE_SETTINGS,
+    })
 
 def ical(request):
     games = Game.objects.order_by('date')
+    schedule_settings = settigns.SCHEDULE_SETTINGS
 
-    title = 'Kansas Jayhawks 2013-14 Schedule'
+    title = '%s %s Schedule' % (schedule_settings['team']['name'], schedule_settings['year'])
 
     response = render(request, 'schedule/ical.html', {
         'title': title,
         'games': games,
+        'schedule_settings': settings.SCHEDULE_SETTINGS,
     })
 
     response['Content-type'] = 'text/calendar; charset=utf-8'

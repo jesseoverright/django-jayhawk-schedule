@@ -126,7 +126,7 @@ class GameTests(TestCase):
         self.assertEqual(self.game.opponent.color(), '002447')
 
     def test_is_team_styled_name_correct(self):
-        self.assertEqual(self.game.opponent.get_styled_name(), u'<span style="color:#002447">36 Memphis Tigers</span>')
+        self.assertEqual(self.game.opponent.get_styled_name(), u'<span style="color:#002447">25 Memphis Tigers</span>')
         no_api_team = Team.objects.create(
             name='Harlem',
             mascot='Globetrotters',

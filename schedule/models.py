@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 import datetime
@@ -34,8 +35,10 @@ kenpom_api = KenpomApi()
 class Team(models.Model):
     name = models.CharField(max_length=255)
     mascot = models.CharField(max_length=255)
+    nickname = models.CharField(max_length=255, blank=True)
     slug = models.SlugField(unique=True, max_length=255)
     conference = models.CharField(blank=True,max_length=255,choices=CONFERENCES)
+    home_arena = models.CharField(max_length=512, blank=True)
     _espn_api_team_details = None
     kenpom_stats = None
     news = None
@@ -165,11 +168,11 @@ class Team(models.Model):
 # a Game is a matchup between two teams, including team and opponenet, date, location,
 # tv details, game type, scores, news, videos, podcasts and game recaps
 class Game(models.Model):
-    team, created = Team.objects.get_or_create(slug='kansas-jayhawks')
+    team, created = Team.objects.get_or_create(slug=settings.SCHEDULE_SETTINGS['team']['slug'])
     opponent = models.ForeignKey(Team)
     slug = models.SlugField(unique=True, max_length=255)
-    location = models.CharField(max_length=255)
-    television = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, blank=True)
+    television = models.CharField(max_length=255, blank=True)
     date = models.DateTimeField()
     game_type = models.CharField(max_length=25, choices=GAME_TYPES)
     score = models.IntegerField(null=True, blank=True)
@@ -198,10 +201,10 @@ class Game(models.Model):
         return self.date + datetime.timedelta(0,9000)
 
     def get_matchup(self):
-        if self.location == "Allen Fieldhouse, Lawrence, KS":
-            return '%s at Kansas Jayhawks' % self.opponent.get_styled_name()
+        if self.location == self.team.home_arena:
+            return '%s at %s' % (self.opponent.get_styled_name(), self.team.get_styled_name())
 
-        return 'Kansas Jayhawks vs %s' % self.opponent.get_styled_name()
+        return '%s vs %s' % (self.team.get_styled_name(), self.opponent.get_styled_name())
 
     def get_ical_summary(self):
         if self.get_result() != False:
@@ -209,10 +212,10 @@ class Game(models.Model):
         else:
             summary = ''
 
-        if self.location == "Allen Fieldhouse, Lawrence, KS":
-            summary += self.opponent.name + ' at KU'
+        if self.location == self.team.home_arena:
+            summary += self.opponent.name + ' at ' + self.team.nickname
         else:
-            summary += 'KU vs ' + self.opponent.name
+            summary += self.team.nickname + ' vs ' + self.opponent.name
 
         return u'%s' % summary
 
@@ -238,7 +241,7 @@ class Game(models.Model):
             if 'video' in recap.keys():
                 for video in recap['video']:
                     if video['id'] in video_ids:
-                        self.game_recaps[recap_index]['video'][video_index] = 'test'
+                        self.game_recaps[recap_index]['video'][video_index] = 'duplicate'
                     else:
                         video_ids.append(video['id'])
                     video_index += 1
@@ -261,7 +264,7 @@ class Game(models.Model):
         self.podcasts = dedupe_lists(self.opponent.podcasts, self.team.podcasts, count)
 
     def get_tweets(self):
-        return twitter_api.get_game_tweets(self.opponent.name, self.opponent.mascot, self.date)
+        return twitter_api.get_game_tweets(self.team.name, self.team.mascot, self.team.nickname, self.opponent.name, self.opponent.mascot, self.date)
 
     def get_absolute_url(self):
         return reverse('schedule.views.game', args=[self.slug])
