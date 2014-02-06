@@ -7,7 +7,11 @@
 @import "compass/css3";
 @import "compass/utilities/tables/borders";
 
-$jayhawk_blue: #3b74ff;
+$jayhawk-blue: #3b74ff;
+$jayhawk-red: #ff0a27;
+
+$primary-color: $jayhawk-blue;
+$border-color: $jayhawk-red;
 $padding-size: 10px;
 $font-size: 16px;
 
@@ -21,11 +25,11 @@ body {
     font-size: $font-size;
     margin: 0;
     padding: 0;
-    background: $jayhawk_blue;
+    background: $primary-color;
 }
 
 a, a:visited {
-    color: $jayhawk_blue;
+    color: $primary-color;
     text-decoration: none;
 }
 
@@ -89,14 +93,14 @@ table {
     max-width: 1000px;
     width: 80%;
     margin: 30px auto;
-    @include box-shadow(5px 5px #ff0a27);
+    @include box-shadow(5px 5px $border-color);
     padding: $padding-size;
     background: #ffffff;
 }
 
 #header {
     background: #dbdbdb;
-    @include background-image(linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,$jayhawk_blue 100%));
+    @include background-image(linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,$primary-color 100%));
 
     img {
         width: 100%;
@@ -163,7 +167,7 @@ table {
 }
 
 #footer {
-    border-top: 2px solid $jayhawk_blue;
+    border-top: 2px solid $primary-color;
     padding: 20px;
     clear: both;
 
