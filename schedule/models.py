@@ -264,7 +264,7 @@ class Game(models.Model):
         self.podcasts = dedupe_lists(self.opponent.podcasts, self.team.podcasts, count)
 
     def get_tweets(self):
-        return twitter_api.get_game_tweets(self.opponent.name, self.opponent.mascot, self.date)
+        return twitter_api.get_game_tweets(self.team.name, self.team.mascot, self.team.nickname, self.opponent.name, self.opponent.mascot, self.date)
 
     def get_absolute_url(self):
         return reverse('schedule.views.game', args=[self.slug])
