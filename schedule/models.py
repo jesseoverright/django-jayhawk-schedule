@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.utils import timezone
 import datetime
 from helpers import dedupe_lists
 
@@ -220,7 +221,7 @@ class Game(models.Model):
 
         # if no results exist for either team, incrementally check the next 3 days
         next_day = self.date
-        while not self.opponent.game_recaps and not self.team.game_recaps and next_day < (self.date + datetime.timedelta(3)):
+        while not self.opponent.game_recaps and not self.team.game_recaps and next_day < (self.date + datetime.timedelta(2)) and next_day < timezone.now():
             next_day = next_day + datetime.timedelta(1)
             self.opponent.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
             self.team.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
