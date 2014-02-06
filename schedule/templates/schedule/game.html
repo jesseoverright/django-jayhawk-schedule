@@ -17,7 +17,7 @@
 </div>
 {% include 'schedule/components/game-recap.html' with game_recaps=game.game_recaps title=game %}
 
-{% include 'schedule/components/espn-videos.html' with videos=game.videos title='KU vs '|add:game.opponent.name|add:" "|add:game.opponent.mascot %}
+{% include 'schedule/components/espn-videos.html' with videos=game.videos title=game.team.nickname|add:' vs '|add:game.opponent.name|add:" "|add:game.opponent.mascot %}
 <div class="column">
     {% include 'schedule/components/kenpom-stats.html' with team=game.team opponent=game.opponent %}
     <h4><a href="{{game.opponent.get_absolute_url}}" style="color:#{{game.opponent.color}}">{{game.opponent}} Team Page</a></h4>
@@ -25,8 +25,8 @@
         <h4><a href="{{game.opponent.espn_link}}" style="color:#{{game.opponent.color}}">{{game.opponent.mascot}} ESPN Team Page</a></h4>
     {% endif %}
 
-    {% include 'schedule/components/espn-news.html' with news=game.news title='KU vs '|add:game.opponent.name|add:" "|add:game.opponent.mascot %}
-    {% include 'schedule/components/espn-podcasts.html' with podcasts=game.podcasts title='KU vs '|add:game.opponent.name|add:" "|add:game.opponent.mascot %}
+    {% include 'schedule/components/espn-news.html' with news=game.news title=game.team.nickname|add:' vs '|add:game.opponent.name|add:" "|add:game.opponent.mascot %}
+    {% include 'schedule/components/espn-podcasts.html' with podcasts=game.podcasts title=game.team.nickname|add:' vs '|add:game.opponent.name|add:" "|add:game.opponent.mascot %}
 </div>
-{% include 'schedule/components/tweets.html' with tweets=game.get_tweets title='KU vs '|add:game.opponent.name|add:" "|add:game.opponent.mascot %}
+{% include 'schedule/components/tweets.html' with tweets=game.get_tweets title=game.team.nickname|add:' vs '|add:game.opponent.name|add:" "|add:game.opponent.mascot %}
 {% endblock %}

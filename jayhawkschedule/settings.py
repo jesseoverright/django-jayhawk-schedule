@@ -7,6 +7,8 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+TEAM_SLUG = 'kansas-jayhawks'
+
 MANAGERS = ADMINS
 
 DATABASES = {
