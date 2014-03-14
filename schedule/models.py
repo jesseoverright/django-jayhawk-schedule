@@ -17,6 +17,12 @@ GAME_TYPES = (
     ('NCAA Tournament', 'NCAA Tournament'),
 )
 
+GAME_LOCATIONS = (
+    ('Home', 'Home'),
+    ('Road', 'Road'),
+    ('Neutral', 'Neutral'),
+)
+
 CONFERENCES = (
     ('Big 12', 'Big 12'),
     ('ACC', 'ACC'),
@@ -172,6 +178,7 @@ class Game(models.Model):
     opponent = models.ForeignKey(Team)
     slug = models.SlugField(unique=True, max_length=255)
     location = models.CharField(max_length=255, blank=True)
+    location_details = models.CharField(max_length=10, choices=GAME_LOCATIONS)
     television = models.CharField(max_length=255, blank=True)
     date = models.DateTimeField()
     game_type = models.CharField(max_length=25, choices=GAME_TYPES)

@@ -21,7 +21,7 @@
             </div>
         {% endif %}
         <h2><a href="{{game.get_absolute_url}}">{{game.opponent.get_styled_name | safe}}</a></h2>
-        <p><span class="game-type">{{game.game_type}}</span>{{game.date|date:"g:i a l, N j, Y"}}
+        <p><span class="game-type">{{game.game_type}} ({{game.location_details}})</span>{{game.date|date:"g:i a l, N j, Y"}}
         {% if game.television %}
             on {{game.television}}
         {% endif %}
