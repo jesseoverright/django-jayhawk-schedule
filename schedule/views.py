@@ -11,7 +11,10 @@ def index(request):
     next_games = Game.objects.filter(date__gt = timezone.now()).order_by('date')
     if next_games.count() > 0:
         if next_games[0].get_result() != False:
-            next_game = next_games[1]
+            if next_games.count() > 1:
+                next_game = next_games[1]
+            else:
+                next_game = False
         else:
             next_game = next_games[0]
     else:

@@ -6,7 +6,10 @@
 <div class="content-header">
     <h2>{{ game.get_matchup | safe}}</h2>
     {% if game.get_result %}
-        <div class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</div>
+        <div class="final-score {{game.get_result}}">
+            {{game.score}} - {{game.opponent_score}}
+            {% if game.overtime %} (OT){% endif %}
+        </div>
     {% endif %}
     <h3>{{game.date|date:"g:i a F jS, Y"}}
     {% if game.television %}

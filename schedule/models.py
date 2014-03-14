@@ -177,6 +177,7 @@ class Game(models.Model):
     game_type = models.CharField(max_length=25, choices=GAME_TYPES)
     score = models.IntegerField(null=True, blank=True)
     opponent_score = models.IntegerField(null=True, blank=True)
+    overtime = models.BooleanField()
     news = None
     game_recaps = None
     videos = None
@@ -211,6 +212,9 @@ class Game(models.Model):
             summary = self.get_result()[0].upper() + ' ' + str(self.score) + '-' + str(self.opponent_score) + ' '
         else:
             summary = ''
+
+        if self.overtime:
+            summary += ' (OT) '
 
         if self.location == self.team.home_arena:
             summary += self.opponent.name + ' at ' + self.team.nickname

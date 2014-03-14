@@ -15,7 +15,10 @@
     {% for game in games %}
     <div class="game">
         {% if game.get_result %}
-            <div class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</div>
+            <div class="final-score {{game.get_result}}">
+                {{game.score}} - {{game.opponent_score}}
+                {% if game.overtime %} (OT){% endif %}
+            </div>
         {% endif %}
         <h2><a href="{{game.get_absolute_url}}">{{game.opponent.get_styled_name | safe}}</a></h2>
         <p><span class="game-type">{{game.game_type}}</span>{{game.date|date:"g:i a l, N j, Y"}}
