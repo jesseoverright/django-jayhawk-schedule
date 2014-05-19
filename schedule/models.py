@@ -30,6 +30,7 @@ CONFERENCES = (
 
 SEASONS = (
     ('2013-14', '2013-14'),
+    ('2014-15', '2014-15'),
 )
 
 espn_api = EspnApi()
@@ -276,6 +277,6 @@ class Game(models.Model):
         return twitter_api.get_game_tweets(self.team.name, self.team.mascot, self.team.nickname, self.opponent.name, self.opponent.mascot, self.date)
 
     def get_absolute_url(self):
-        return reverse('schedule.views.game', args=[self.slug])
+        return reverse('schedule.views.game', args=[self.season, self.slug])
 
 

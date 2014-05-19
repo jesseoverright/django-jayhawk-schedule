@@ -6,9 +6,9 @@ from schedule.models import Game, Team
 from datetime import date
 
 def index(request):
-    games = Game.objects.order_by('date')
+    games = Game.objects.filter(season = settings.SCHEDULE_SETTINGS['year']).order_by('date')
 
-    next_games = Game.objects.filter(date__gt = timezone.now()).order_by('date')
+    next_games = Game.objects.filter(date__gt = timezone.now(), season = settings.SCHEDULE_SETTINGS['year']).order_by('date')
     if next_games.count() > 0:
         if next_games[0].get_result() != False:
             if next_games.count() > 1:
@@ -52,7 +52,7 @@ def all_teams(request):
         'schedule_settings': settings.SCHEDULE_SETTINGS
     })
 
-def game(request, slug):
+def game(request, season, slug):
     game = get_object_or_404(Game, slug=slug)
 
     if game.get_result() == 'win' or game.get_result() == 'loss':
