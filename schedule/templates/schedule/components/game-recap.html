@@ -1,0 +1,41 @@
+{% if game_recaps %}
+<div class="column">
+    <h3>Game recap for {{title}}</h3>
+    <ul>
+    {% for recap in game_recaps %}
+        {% if recap.video %}
+            {% for highlight in recap.video %}
+                {% if highlight.tracking.coverageType == 'Highlight' %}
+                    <li>
+                        <div class="video">
+                            <div id="{{highlight.id}}">
+                            {% with recap.images|first as image %}
+                                <img src="{{image.url}}" alt="{{image.caption}}">
+                            {% endwith %}
+                            </div>
+                        </div>
+                        <a href="{{recap.links.web.href}}">
+                            {% with recap.images|first as image %}
+                                <img class="video-thumbnail" src="{{image.url}}" alt="{{image.caption}}">
+                            {% endwith %}
+                            {{recap.headline}}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <li>
+                <a href="{{recap.links.web.href}}">
+                    {% with recap.images|first as image %}
+                        {% if image.width >= 576 %}
+                            <img src="{{image.url}}" alt="{{image.caption}}">
+                        {% endif %}
+                    {% endwith %}
+                    {{recap.headline}}
+                </a>
+            </li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}

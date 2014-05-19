@@ -7,6 +7,16 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+SCHEDULE_SETTINGS = {
+    'team': {
+        'name': 'Kansas Jayhawks',
+        'slug': 'kansas-jayhawks',
+    },
+    'css': 'jayhawks.min.css',
+    'header': 'ku-header.jpg',
+    'year': '2013-14',
+}
+
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -20,11 +30,13 @@ DATABASES = {
     }
 }
 
+CACHE_TIMEOUT = 60*60*4 # 4 hour caching by default, override in local_settings
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': 'api_cache',
-        'TIMEOUT': 60*60*4, # 4 hour caching
+        'TIMEOUT': CACHE_TIMEOUT,
         'VERSION': 1,
         'OPTIONS': {
             'MAX_ENTRIES': 10000
@@ -79,9 +91,7 @@ STATIC_ROOT = ''
 STATIC_URL = '/static/'
 
 # Additional locations of static files
-STATICFILES_DIRS = (
-   '/Users/joverright/Sites/jayhawkschedule/jayhawkschedule/static/',
-)
+STATICFILES_DIRS = ()
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -92,7 +102,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'gh89#*l6^6luz%kl1@y=lul7g8o5!fcgj+e$*hg7dgpo9^9y)i'
+SECRET_KEY = ''
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -117,7 +127,6 @@ ROOT_URLCONF = 'jayhawkschedule.urls'
 WSGI_APPLICATION = 'jayhawkschedule.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/Users/joverright/Sites/jayhawkschedule/schedule/templates',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

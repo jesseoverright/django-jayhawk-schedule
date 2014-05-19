@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %} All Teams Kansas Jayhawks Basketball Schedule{% endblock %}
+
+{% block content %}
+    <div class="content-header main-header">
+        <h2>All Teams</h2>
+    </div>
+    {% for team in teams %}
+    <div class="game">
+        <h2><a href="{{team.get_absolute_url}}">{{team.get_styled_name | safe}}</a></h2>
+        {% if team.conference %}
+            <p>{{ team.conference}} Conference</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+{% endblock %}

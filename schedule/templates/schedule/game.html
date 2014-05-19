@@ -6,7 +6,10 @@
 <div class="content-header">
     <h2>{{ game.get_matchup | safe}}</h2>
     {% if game.get_result %}
-        <h2 class="final-score {{game.get_result}}">{{game.score}} - {{game.opponent_score}}</h2>
+        <div class="final-score {{game.get_result}}">
+            {{game.score}} - {{game.opponent_score}}
+            {% if game.overtime %} (OT){% endif %}
+        </div>
     {% endif %}
     <h3>{{game.date|date:"g:i a F jS, Y"}}
     {% if game.television %}
@@ -15,77 +18,18 @@
     </h3>
     <h3>{{game.location}}</h3>
 </div>
-{% if game.opponent.videos %}
-    <div class="column">
-        <h3>ESPN video for {{game.opponent}}</h3>
+{% include 'schedule/components/game-recap.html' with game_recaps=game.game_recaps title=game %}
 
-        <ul>
-        {% for video in game.opponent.videos %}
-            <li>
-                <div class="video">
-                    <div id="{{video.id}}">
-                    {% with video.images|first as image %}
-                        <img src="{{image.url}}" alt="{{image.caption}}">
-                    {% endwith %}
-                    </div>
-                </div>
-                <a href="{{video.links.web.href}}">
-                    {% with video.images|first as image %}
-                        <img class="video-thumbnail" src="{{image.url}}" alt="{{image.caption}}">
-                    {% endwith %}
-                    {{video.headline}}
-                </a>
-            </li>
-        {% endfor %}
-        </ul>
-    </div>
-{% endif %}
+{% include 'schedule/components/espn-videos.html' with videos=game.videos title=game.team.nickname|add:' vs '|add:game.opponent.name|add:" "|add:game.opponent.mascot %}
 <div class="column">
-    <h3><a href="{{game.opponent.get_absolute_url}}" style="color:#{{game.opponent.color}}">{{game.opponent}} Team Page</a></h3>
+    {% include 'schedule/components/kenpom-stats.html' with team=game.team opponent=game.opponent %}
+    <h4><a href="{{game.opponent.get_absolute_url}}" style="color:#{{game.opponent.color}}">{{game.opponent}} Team Page</a></h4>
     {% if game.opponent.espn_link %}
-        <h3><a href="{{game.opponent.espn_link}}" style="color:#{{game.opponent.color}}">{{game.opponent}} ESPN Team Page</a></h3>
+        <h4><a href="{{game.opponent.espn_link}}" style="color:#{{game.opponent.color}}">{{game.opponent.mascot}} ESPN Team Page</a></h4>
     {% endif %}
 
-    {% if game.opponent.news %}
-        <h3>ESPN News for {{game.opponent}}</h3>
-        <ul>
-        {% for article in game.opponent.news %}
-            <li>
-                <a href="{{article.links.web.href}}">
-                    {% with article.images|first as image %}
-                        {% if image.width >= 576 %}
-                            <img src="{{image.url}}" alt="{{image.caption}}">
-                        {% endif %}
-                    {% endwith %}
-                    {{article.headline}}
-                </a>
-            </li>
-        {% endfor %}
-        </ul>
-    {% endif %}
+    {% include 'schedule/components/espn-news.html' with news=game.news title=game.team.nickname|add:' vs '|add:game.opponent.name|add:" "|add:game.opponent.mascot %}
+    {% include 'schedule/components/espn-podcasts.html' with podcasts=game.podcasts title=game.team.nickname|add:' vs '|add:game.opponent.name|add:" "|add:game.opponent.mascot %}
 </div>
-<div class="column">
-    {% if game.opponent.get_tweets %}
-        <div class="twitter-timeline">
-            <h4>Tweets about {{game.opponent}}</h4>
-            <div class="tweets">
-                {% for tweet in game.opponent.get_tweets %}
-                <div class="tweet">
-                    <div class="tweet-image">
-                        <img src="{{tweet.user.profile_image_url_https}}">
-                    </div>
-                    <div class="tweet-profile">
-                        <p class="time">{{tweet.created_at|date:"M d"}}</p>
-                        <p>
-                            <span class="profile"><strong>{{tweet.user.name}}</strong></span>
-                            <span class="handle">@{{tweet.user.screen_name}}</span>
-                        </p>
-                        <p>{{tweet.text|safe}}</p>
-                    </div>
-                </div>
-            {% endfor %}
-            </div>
-        </div>
-    {% endif %}
-</div>
+{% include 'schedule/components/tweets.html' with tweets=game.get_tweets title=game.team.nickname|add:' vs '|add:game.opponent.name|add:" "|add:game.opponent.mascot %}
 {% endblock %}

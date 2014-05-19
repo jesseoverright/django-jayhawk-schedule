@@ -1,0 +1,77 @@
+{% if opponent.get_ranking %}
+<table>
+    <tr>
+        <th></th>
+        <td><span style="color:#{{team.color}}">{{team.get_ranking}} {{team.name}}</span></td>
+        <td><span style="color:#{{opponent.color}}">{{opponent.get_ranking}} {{opponent.name}}</span></td>
+    </tr>
+    <tr>
+        <th>Offensive Rank</th>
+        {% if team.get_offensive_rank < opponent.get_offensive_rank %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{team.get_offensive_rank}}
+        </td>
+       {% if team.get_offensive_rank > opponent.get_offensive_rank %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{opponent.get_offensive_rank}}
+        </td>
+    </tr>
+    <tr>
+        <th>Defensive Rank</th>
+        {% if team.get_defensive_rank < opponent.get_defensive_rank %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{team.get_defensive_rank}}
+        </td>
+        {% if team.get_defensive_rank > opponent.get_defensive_rank %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{opponent.get_defensive_rank}}
+        </td>
+    </tr>
+    <tr>
+        <th>{{team.name}} Offense</th>
+        {% if team.get_offensive_difference > opponent.get_defensive_difference %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{team.get_offensive_efficiency|floatformat:3}}
+        </td>
+        {% if team.get_offensive_difference < opponent.get_defensive_difference %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{opponent.get_defensive_efficiency|floatformat:3}}
+        </td>
+    </tr>
+    <tr>
+        <th>{{opponent.name}} Offense</th>
+        {% if team.get_defensive_difference > opponent.get_offensive_difference %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{team.get_defensive_efficiency|floatformat:3}}
+        </td>
+        {% if team.get_defensive_difference < opponent.get_offensive_difference %}
+        <td class="win">
+        {% else %}
+        <td class="loss">
+        {% endif %}
+            {{opponent.get_offensive_efficiency|floatformat:3}}
+        </td>
+    </tr>
+</table>
+{% endif %}

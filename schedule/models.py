@@ -1,8 +1,11 @@
 from django.db import models
+from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.utils import timezone
 import datetime
+from helpers import dedupe_lists
 
-from schedule.apis import EspnApi, TwitterApi
+from schedule.apis import EspnApi, TwitterApi, KenpomApi
 
 
 GAME_TYPES = (
@@ -14,24 +17,48 @@ GAME_TYPES = (
     ('NCAA Tournament', 'NCAA Tournament'),
 )
 
+CONFERENCES = (
+    ('Big 12', 'Big 12'),
+    ('ACC', 'ACC'),
+    ('PAC 12', 'PAC 12'),
+    ('SEC', 'SEC'),
+    ('Big 10', 'Big 10'),
+    ('Big East', 'Big East'),
+    ('Mountain West', 'Mountain West'),
+    ('Conference USA', 'Conference USA'),
+)
+
 SEASONS = (
     ('2013-14', '2013-14'),
 )
 
 espn_api = EspnApi()
 twitter_api = TwitterApi()
+kenpom_api = KenpomApi()
 
 class Team(models.Model):
     name = models.CharField(max_length=255)
     mascot = models.CharField(max_length=255)
+    nickname = models.CharField(max_length=255, blank=True)
     slug = models.SlugField(unique=True, max_length=255)
-    conference = models.CharField(blank=True,max_length=255)
+    conference = models.CharField(blank=True,max_length=255,choices=CONFERENCES)
+    home_arena = models.CharField(max_length=512, blank=True)
     _espn_api_team_details = None
+    kenpom_stats = None
     news = None
+    game_recaps = None
     videos = None
+    podcasts = None
 
     def __unicode__(self):
         return u'%s %s' % (self.name, self.mascot)
+
+    def _get_kenpom_stats(self):
+        if self.kenpom_stats is None:
+            self.kenpom_stats = kenpom_api.get_team(self.name)
+            return self.kenpom_stats
+        else:
+            return self.kenpom_stats
 
     def _get_espn_api_team_details(self):
         if self._espn_api_team_details is None:
@@ -40,20 +67,74 @@ class Team(models.Model):
         else:
             return self._espn_api_team_details
 
-    def _get_espn_api_news(self):
+    def _get_espn_api_updates(self, content, limit):
+        results = []
         if self._get_espn_api_team_details() != False:
-            news = espn_api.get_team_news(self._get_espn_api_team_details()['id'])
+            updates = espn_api.get_team_updates(self._get_espn_api_team_details()['id'], content, limit)
 
-            if news:
-                for article in news['feed']:
-                    if 'type' in article.keys() and article['type'] == "Media":
-                        self.videos.append(article)
-                    else:
-                        self.news.append(article)
+            if 'feed' in updates.keys():
+                for item in updates['feed']:
+                    results.append(item)
 
-    def get_colored_name(self):
+        return results
+
+    def _get_updates_from_date(self, date, limit):
+        results = []
+        if self._get_espn_api_team_details() != False:
+            updates = espn_api.get_game_recaps(self._get_espn_api_team_details()['id'], date, limit)
+
+            if 'headlines' in updates.keys():
+                for item in updates['headlines']:
+                    if 'type' in item.keys():
+                        if item['type'] == 'Recap':
+                            results.append(item)
+
+        return results
+
+    def get_ranking(self):
+        if self._get_kenpom_stats():
+            return int(self._get_kenpom_stats()['RankPythag'])
+        else:
+            return ''
+
+    def get_offensive_efficiency(self):
+        if self._get_kenpom_stats():
+            per_possession = float(self._get_kenpom_stats()['AdjOE']) / 100
+            return per_possession
+        else:
+            return ''
+
+    def get_offensive_difference(self):
+        return self.get_offensive_efficiency() - 1
+
+    def get_defensive_efficiency(self):
+        if self._get_kenpom_stats():
+            per_possession = float(self._get_kenpom_stats()['AdjDE']) / 100
+            return per_possession
+        else:
+            return ''
+
+    def get_defensive_difference(self):
+        return 1 - self.get_defensive_efficiency()
+
+    def get_offensive_rank(self):
+        if self._get_kenpom_stats():
+            return int(self._get_kenpom_stats()['RankAdjOE'])
+        else:
+            return ''
+
+    def get_defensive_rank(self):
+        if self._get_kenpom_stats():
+            return int(self._get_kenpom_stats()['RankAdjDE'])
+        else:
+            return ''
+
+    def get_styled_name(self):
         if self.color():
-            return u'<span style="color:#%s">%s %s</span>' % (self.color(), self.name, self.mascot)
+            if self.get_ranking():
+                return u'<span style="color:#%s">%s %s %s</span>' % (self.color(), self.get_ranking(), self.name, self.mascot)
+            else:
+                return u'<span style="color:#%s">%s %s</span>' % (self.color(), self.name, self.mascot)
 
         return self
 
@@ -66,12 +147,20 @@ class Team(models.Model):
 
         return False
 
-    def get_news(self):
-        if self.news is None and self.videos is None:
-            self.news = []
-            self.videos = []
+    def get_news(self, limit=4, date=None):
+        if self.news is None:
+            self.news = self._get_espn_api_updates('story,blog', limit)
 
-            self._get_espn_api_news()
+    def get_videos(self, limit=2):
+        if self.videos is None:
+            self.videos = self._get_espn_api_updates('video', limit)
+
+    def get_podcasts(self, limit=1):
+        if self.podcasts is None:
+            self.podcasts = self._get_espn_api_updates('podcast', limit)
+
+    def get_game_recaps(self, limit=4, date=None):
+        self.game_recaps = self._get_updates_from_date(date, limit)
 
     def get_tweets(self):
         return twitter_api.get_team_tweets(self.name, self.mascot)
@@ -80,23 +169,31 @@ class Team(models.Model):
         return reverse('schedule.views.team', args=[self.slug])
 
 
-# a Game on KU's schedule includes opponent, date, location and tv details
+# a Game is a matchup between two teams, including team and opponenet, date, location,
+# tv details, game type, scores, news, videos, podcasts and game recaps
 class Game(models.Model):
+    team, created = Team.objects.get_or_create(slug=settings.SCHEDULE_SETTINGS['team']['slug'])
     opponent = models.ForeignKey(Team)
     slug = models.SlugField(unique=True, max_length=255)
-    location = models.CharField(max_length=255)
-    television = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, blank=True)
+    television = models.CharField(max_length=255, blank=True)
     date = models.DateTimeField()
     season = models.CharField(max_length=7, choices=SEASONS)
     game_type = models.CharField(max_length=25, choices=GAME_TYPES)
     score = models.IntegerField(null=True, blank=True)
     opponent_score = models.IntegerField(null=True, blank=True)
+    overtime = models.BooleanField()
+    news = None
+    game_recaps = None
+    videos = None
+    podcasts = None
 
     class Meta:
         ordering = ['-date']
 
     def __unicode__(self):
-        return u'%s %s' % (self.opponent.name, self.date.strftime('%b %d'))
+        game_date = timezone.localtime(self.date)
+        return u'%s %s' % (self.opponent.name, game_date.strftime('%b %d'))
 
     def get_result(self):
         if self.score > self.opponent_score:
@@ -110,10 +207,10 @@ class Game(models.Model):
         return self.date + datetime.timedelta(0,9000)
 
     def get_matchup(self):
-        if self.location == "Allen Fieldhouse, Lawrence, KS":
-            return '%s at Kansas Jayhawks' % self.opponent.get_colored_name()
+        if self.location == self.team.home_arena:
+            return '%s at %s' % (self.opponent.get_styled_name(), self.team.get_styled_name())
 
-        return 'Kansas Jayhawks vs %s' % self.opponent.get_colored_name()
+        return '%s vs %s' % (self.team.get_styled_name(), self.opponent.get_styled_name())
 
     def get_ical_summary(self):
         if self.get_result() != False:
@@ -121,12 +218,62 @@ class Game(models.Model):
         else:
             summary = ''
 
-        if self.location == "Allen Fieldhouse, Lawrence, KS":
-            summary += self.opponent.name + ' at KU'
+        if self.overtime:
+            summary += ' (OT) '
+
+        if self.location == self.team.home_arena:
+            summary += self.opponent.name + ' at ' + self.team.nickname
         else:
-            summary += 'KU vs ' + self.opponent.name
+            summary += self.team.nickname + ' vs ' + self.opponent.name
 
         return u'%s' % summary
+
+    def get_game_recaps(self, count):
+        game_date = timezone.localtime(self.date)
+        self.opponent.get_game_recaps(count+2, game_date.strftime('%Y%m%d'))
+        self.team.get_game_recaps(count+2, game_date.strftime('%Y%m%d'))
+
+        # if no results exist for either team, incrementally check the next 3 days
+        next_day = game_date
+        while not self.opponent.game_recaps and not self.team.game_recaps and next_day < (game_date + datetime.timedelta(2)) and next_day < timezone.now():
+            next_day = next_day + datetime.timedelta(1)
+            self.opponent.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
+            self.team.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
+
+        self.game_recaps = dedupe_lists(self.opponent.game_recaps, self.team.game_recaps, count)
+
+        # remove duplicate videos from game recap
+        video_ids = []
+        recap_index = 0
+        for recap in self.game_recaps:
+            video_index = 0
+            if 'video' in recap.keys():
+                for video in recap['video']:
+                    if video['id'] in video_ids:
+                        self.game_recaps[recap_index]['video'][video_index] = 'duplicate'
+                    else:
+                        video_ids.append(video['id'])
+                    video_index += 1
+            recap_index += 1
+
+
+    def get_news(self, count):
+        self.opponent.get_news(count+3)
+        self.team.get_news(count+3)
+        self.news = dedupe_lists(self.opponent.news, self.team.news, count)
+
+    def get_videos(self, count):
+        self.opponent.get_videos(count)
+        self.team.get_videos(1)
+        self.videos = dedupe_lists(self.opponent.videos, self.team.videos, count)
+
+    def get_podcasts(self, count):
+        self.opponent.get_podcasts(count+3)
+        self.team.get_podcasts(count+3)
+        self.podcasts = dedupe_lists(self.opponent.podcasts, self.team.podcasts, count)
+
+    def get_tweets(self):
+        return twitter_api.get_game_tweets(self.team.name, self.team.mascot, self.team.nickname, self.opponent.name, self.opponent.mascot, self.date)
 
     def get_absolute_url(self):
         return reverse('schedule.views.game', args=[self.slug])

@@ -36,27 +36,36 @@ class TwitterApi(object):
 
             tweet_results = api_response.json()['statuses']
 
-            cache.set(cache_key, tweet_results)
+            for tweet in tweet_results:
+                # add anchor tags to links in tweet
+                tweet['text'] = re.sub(r'((https?|s?ftp|ssh)\:\/\/[^"\s\<\>]*[^.,;\'">\:\s\<\>\)\]\!])', r'<a href="\1">\1</a>', tweet['text'])
+                # add anchor tags to hashtags
+                tweet['text'] = re.sub(r'#([_a-zA-Z0-9]+)', r'<a href="http://twitter.com/search?q=\1">#\1</a>', tweet['text'])
+                # add anchor tags to mentions
+                tweet['text'] = re.sub(r'@([_a-zA-Z0-9]+)', r'<a href="http://twitter.com/\1">@\1</a>', tweet['text'])
+                # convert date to relative date
+                # Sun Nov 17 18:00:04 +0000 2013
+                tweet['created_at'] = datetime.datetime.strptime(tweet['created_at'][0:19], '%a %b %d %H:%M:%S')
+
+            cache.set(cache_key, tweet_results, 60*15)
 
         return tweet_results
 
-    def get_team_tweets(self, team_name, team_mascot): 
+    def get_team_tweets(self, team_name, team_mascot):
         params = {'q': team_name + ' ' + team_mascot,
                   'count': 15,
-                  'result_type': 'popular'
+                  'result_type': 'popular',
+                  'lang': 'en',
                   }
 
-        statuses = self._get_tweets(params)
+        return self._get_tweets(params)
 
-        for tweet in statuses:
-            # add anchor tags to links in tweet
-            tweet['text'] = re.sub(r'((https?|s?ftp|ssh)\:\/\/[^"\s\<\>]*[^.,;\'">\:\s\<\>\)\]\!])', r'<a href="\1">\1</a>', tweet['text'])
-            # add anchor tags to hashtags
-            tweet['text'] = re.sub(r'#([_a-zA-Z0-9]+)', r'<a href="http://twitter.com/search?q=\1">#\1</a>', tweet['text'])
-            # add anchor tags to mentions
-            tweet['text'] = re.sub(r'@([_a-zA-Z0-9]+)', r'<a href="http://twitter.com/\1">@\1</a>', tweet['text'])
-            # convert date to relative date
-            # Sun Nov 17 18:00:04 +0000 2013
-            tweet['created_at'] = datetime.datetime.strptime(tweet['created_at'][0:19], '%a %b %d %H:%M:%S')
-        
-        return statuses
+    def get_game_tweets(self, team_name, team_mascot, team_nickname, opponent_name, opponent_mascot, game_date):
+        limit_date = game_date + datetime.timedelta(days=2)
+        params = {'q': '(' + team_nickname + ' OR ' + team_name + ' OR ' + team_mascot + ') AND ("' + opponent_name + '" OR "' + opponent_mascot + '")',
+                  'count': 15,
+                  'result_type': 'popular',
+                  'lang': 'en',
+                  }
+
+        return self._get_tweets(params)

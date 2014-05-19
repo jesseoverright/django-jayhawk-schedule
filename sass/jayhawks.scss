@@ -1,0 +1,358 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+@import "compass/css3";
+@import "compass/utilities/tables/borders";
+
+$jayhawk-blue: #3b74ff;
+$jayhawk-red: #ff0a27;
+
+$primary-color: $jayhawk-blue;
+$border-color: $jayhawk-red;
+$padding-size: 10px;
+$font-size: 16px;
+
+@mixin paragraph($font-size) {
+    font-size: $font-size;
+    line-height: 1.25em;
+}
+
+body {
+    font-family: Helvetica;
+    font-size: $font-size;
+    margin: 0;
+    padding: 0;
+    background: $primary-color;
+}
+
+a, a:visited {
+    color: $primary-color;
+    text-decoration: none;
+}
+
+h1 {
+    @include paragraph(2em);
+}
+
+h2 {
+    @include paragraph(1.75em);
+}
+
+h3 {
+    @include paragraph(1.17em);
+}
+
+h4 {
+    @include paragraph(1em);
+    font-weight: bold;
+}
+
+p {
+    @include paragraph(1em);
+}
+
+ul {
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
+    padding-bottom: $padding-size;
+}
+
+li a:hover {
+    text-decoration: underline;
+}
+
+li img {
+    width: 100%;
+}
+
+table {
+    @include outer-table-borders(0);
+    @include inner-table-borders(0);
+    width: 100%;
+    margin-bottom: $padding-size;
+
+    tr {
+        td {
+            padding: $padding-size 0;
+            text-align: center;
+        }
+        th {
+            @extend td;
+            text-align: left;
+        }
+    }
+}
+
+#container {
+    max-width: 1000px;
+    width: 80%;
+    margin: 30px auto;
+    @include box-shadow(5px 5px $border-color);
+    padding: $padding-size;
+    background: #ffffff;
+}
+
+#header {
+    background: #dbdbdb;
+    @include background-image(linear-gradient(top,  #dbdbdb 0%,#ddf1f9 35%,$primary-color 100%));
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+
+    h1 {
+        margin-top: 0;
+        padding: 5px 20px $padding-size;
+        font-size: 1.6em;
+        text-shadow: 2px 2px #000;
+    }
+    a {
+        color: #fff;
+    }
+}
+
+#content {
+    padding: 5px 20px $padding-size;
+    min-height: 100px;
+}
+
+.content-header {
+    overflow: hidden;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #dbdbdb;
+    padding-bottom: 0.25em;
+    margin-bottom: 2em;
+
+    .final-score {
+        text-align: center;
+        width: 34%;
+        font-size: 1.75em;
+        min-width: 80px;
+        padding: $padding-size 0;
+        float: right;
+    }
+}
+
+.main-header {
+    text-align: center;
+}
+
+.column {
+    float: left;
+    min-height: 30px;
+    width: 34%;
+    margin-bottom: $padding-size;
+
+    h3, h4 {
+        padding-bottom: $padding-size;
+    }
+
+    /* the even divs, after .content-header, will be left .column */
+    &:nth-child(2n) {
+        width: 60%;
+        margin-right: 6%;
+    }
+
+    /* css hack to get left columns lined up vertically */
+    &:nth-child(2n+1) {
+        float: right;
+    }
+}
+
+#footer {
+    border-top: 2px solid $primary-color;
+    padding: 20px;
+    clear: both;
+
+    strong {
+        float: right;
+    }
+}
+
+.game {
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 2px solid #dbdbdb;
+    clear: both;
+
+    p {
+        line-height: 1.65em;
+    }
+
+    .game-type {
+        background-color: #ddd;
+        padding: 5px 8px;
+        margin: 0 4px;
+        @include border-radius(6px);
+    }
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    .final-score {
+        float: right;
+        font-size: 1.5em;
+        padding: 15px;
+        width: 135px;
+        text-align: center;
+        margin: 0 0 0 20px;
+    }
+}
+
+.win {
+    background-color: #6df25c;
+}
+
+.loss {
+    background-color: #f28c8c;
+}
+
+.video {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    margin-bottom: 5px;
+
+    object, div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+.video-thumbnail {
+    /* suppress when video content displays */
+    display: none;
+}
+
+.twitter-timeline {
+    margin-bottom: $padding-size;
+
+    h4 {
+        @include border-radius(6px 6px 0 0);
+        border: 1px solid #e8e8e8;
+        padding:12px;
+        margin: 0 0 -1px 0;
+    }
+
+    .tweets {
+        max-height: 550px;
+        overflow-y: scroll;
+
+        .tweet {
+            font-size: 0.9em;
+            line-height: 1.1em;
+            border: 1px solid #e8e8e8;
+            padding: 12px;
+            margin-bottom: -1px;
+
+            p {
+                padding-bottom: 0;
+            }
+
+            &:last-child {
+                margin-bottom: 0px;
+            }
+
+            .tweet-profile {
+                overflow: hidden;
+                .handle {
+                    font-size: 0.8em;
+                    color: #707070;
+                }
+            }
+
+            .tweet-image {
+                float: left;
+                margin-right: 9px;
+
+                img {
+                    @include border-radius(4px);
+                }
+            }
+
+            .time {
+                float: right;
+                font-size: 0.75em;
+            }
+        }
+    }
+}
+
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+    #container {
+        width: 85%;
+    }
+    .video {
+        display: none;
+    }
+    .video-thumbnail {
+        display: block;
+    }
+}
+
+@media screen and (max-device-width: 568px), all and (max-width:568px)  {
+    #container {
+        width: 90%;
+    }
+
+    #header h1 {
+        text-shadow: 3px 3px #000;
+    }
+
+    .game {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+
+        .final-score {
+            width: 100%;
+            float: none;
+            margin: 0 0 10px 0;
+            padding: 15px 0;
+        }
+    }
+
+    .content-header {
+        .final-score {
+            width: 100%;
+            float: none;
+            margin: 0 0 10px 0;
+            padding: 15px 0;
+        }
+    }
+
+    .column, .column:nth-child(2n) {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+}
+
+@media only screen and (max-device-width: 568px) {
+    body {
+        font-size: 240%;
+    }
+    /* hide video on mobile devices */
+    .video {
+        display: none;
+    }
+
+    /* display video thumbnail on mobile devices */
+    .video-thumbnail {
+        display: block;
+    }
+
+    .twitter-timeline .tweets {
+        max-height: 800px;
+    }
+}

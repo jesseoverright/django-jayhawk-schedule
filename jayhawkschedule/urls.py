@@ -9,6 +9,9 @@ urlpatterns = patterns('',
 
     url(r'^team/(?P<slug>[\w\-]+)/$', 'schedule.views.team'),
 
+    url(r'^category/(?P<slug>[\w\- ]+)/$', 'schedule.views.category'),
+
+    url(r'^teams/$', 'schedule.views.all_teams'),
     url(r'^$', 'schedule.views.index'),
     url(r'^(?P<slug>[\w\-]+)/$', 'schedule.views.game')
 )
