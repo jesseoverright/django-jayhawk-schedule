@@ -12,7 +12,7 @@ SCHEDULE_SETTINGS = {
         'name': 'Kansas Jayhawks',
         'slug': 'kansas-jayhawks',
     },
-    'css': 'jayhawks.css',
+    'css': 'jayhawks.min.css',
     'header': 'ku-header.jpg',
     'year': '2013-14',
 }
