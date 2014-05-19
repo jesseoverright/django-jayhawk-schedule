@@ -13,5 +13,5 @@ urlpatterns = patterns('',
 
     url(r'^teams/$', 'schedule.views.all_teams'),
     url(r'^$', 'schedule.views.index'),
-    url(r'^(?P<slug>[\w\-]+)/$', 'schedule.views.game')
+    url(r'^(?P<season>[\w\-]+)/(?P<slug>[\w\-]+)/$', 'schedule.views.game')
 )

@@ -28,6 +28,11 @@ CONFERENCES = (
     ('Conference USA', 'Conference USA'),
 )
 
+SEASONS = (
+    ('2013-14', '2013-14'),
+    ('2014-15', '2014-15'),
+)
+
 espn_api = EspnApi()
 twitter_api = TwitterApi()
 kenpom_api = KenpomApi()
@@ -174,6 +179,7 @@ class Game(models.Model):
     location = models.CharField(max_length=255, blank=True)
     television = models.CharField(max_length=255, blank=True)
     date = models.DateTimeField()
+    season = models.CharField(max_length=7, choices=SEASONS)
     game_type = models.CharField(max_length=25, choices=GAME_TYPES)
     score = models.IntegerField(null=True, blank=True)
     opponent_score = models.IntegerField(null=True, blank=True)
@@ -271,6 +277,6 @@ class Game(models.Model):
         return twitter_api.get_game_tweets(self.team.name, self.team.mascot, self.team.nickname, self.opponent.name, self.opponent.mascot, self.date)
 
     def get_absolute_url(self):
-        return reverse('schedule.views.game', args=[self.slug])
+        return reverse('schedule.views.game', args=[self.season, self.slug])
 
 
