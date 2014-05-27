@@ -9,16 +9,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    cmq: {
-      options: {
-        log: false
-      },
-      your_target: {
-        files: {
-          'jayhawkschedule/static/css': ['sass/compiled/*.css']
-        }
-      }
-    },
     cssmin: {
       minify: {
         expand: true,
@@ -52,6 +42,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  grunt.registerTask('default', ['compass', 'cmq', 'cssmin', 'concat', 'uglify']);
+  grunt.registerTask('default', ['compass', 'cssmin', 'concat', 'uglify']);
 
 };

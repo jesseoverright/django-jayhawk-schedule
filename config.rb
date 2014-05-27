@@ -2,7 +2,7 @@
 
 # Set this to the root of your project when deployed:
 http_path = "/"
-css_dir = "sass/compiled"
+css_dir = "jayhawkschedule/static/css"
 sass_dir = "sass"
 images_dir = "jayhawkschedule/static/images"
 javascripts_dir = "jayhawkschedule/static/js"
