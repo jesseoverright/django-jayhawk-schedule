@@ -139,6 +139,12 @@ class Team(models.Model):
 
         return self
 
+    def get_nickname(self):
+        if self.nickname:
+            return self.nickname
+        else:
+            return self.name
+
     def espn_link(self):
         return self._get_espn_api_team_details()['links']['web']['teams']['href']
 
@@ -223,9 +229,9 @@ class Game(models.Model):
             summary += ' (OT) '
 
         if self.location == self.team.home_arena:
-            summary += self.opponent.name + ' at ' + self.team.nickname
+            summary += self.opponent.get_nickname() + ' at ' + self.team.get_nickname()
         else:
-            summary += self.team.nickname + ' vs ' + self.opponent.name
+            summary += self.team.get_nickname() + ' vs ' + self.opponent.get_nickname()
 
         return u'%s' % summary
 
@@ -274,7 +280,7 @@ class Game(models.Model):
         self.podcasts = dedupe_lists(self.opponent.podcasts, self.team.podcasts, count)
 
     def get_tweets(self):
-        return twitter_api.get_game_tweets(self.team.name, self.team.mascot, self.team.nickname, self.opponent.name, self.opponent.mascot, self.date)
+        return twitter_api.get_game_tweets(self.team.name, self.team.mascot, self.team.get_nickname(), self.opponent.name, self.opponent.mascot, self.date)
 
     def get_absolute_url(self):
         return reverse('schedule.views.game', args=[self.season, self.slug])
