@@ -29,8 +29,8 @@ CONFERENCES = (
 )
 
 SEASONS = (
-    ('2013-14', '2013-14'),
     ('2014-15', '2014-15'),
+    ('2013-14', '2013-14'),
 )
 
 espn_api = EspnApi()
@@ -234,6 +234,16 @@ class Game(models.Model):
             summary += self.team.get_nickname() + ' vs ' + self.opponent.get_nickname()
 
         return u'%s' % summary
+
+    def get_game_type(self):
+        game_type = self.game_type
+        if self.game_type == 'Non Conference' or self.game_type == 'Conference':
+            if self.team.home_arena == self.location:
+                game_type += ' Home Game'
+            else:
+                game_type += ' Away Game'
+
+        return game_type
 
     def get_game_recaps(self, count):
         game_date = timezone.localtime(self.date)
