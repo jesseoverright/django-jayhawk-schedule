@@ -3,7 +3,8 @@
     <head>
         {% load staticfiles %}
         <title>{% block title %}{% endblock %}</title>
-        <link rel="stylesheet" href="{% static "css/{{schedule_settings.css}}"%}" />
+        {% with 'css/'|add:schedule_settings.css as jayhawkcss %}
+        <link rel="stylesheet" href="{% static jayhawkcss %}" />
         <link rel="icon" href="{% static "images/favicon.ico"%}" />
         <script src="{% static "js/scripts.min.js" /></script>
     </head>
