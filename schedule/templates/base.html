@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
+        {% load staticfiles %}
         <title>{% block title %}{% endblock %}</title>
-        <link rel="stylesheet" href="{{STATIC_URL}}css/{{schedule_settings.css}}" />
-        <link rel="icon" href="{{STATIC_URL}}images/favicon.ico" />
-        <script src="{{STATIC_URL}}js/scripts.min.js" /></script>
+        <link rel="stylesheet" href="{% static "css/{{schedule_settings.css}}"%}" />
+        <link rel="icon" href="{% static "images/favicon.ico"%}" />
+        <script src="{% static "js/scripts.min.js" /></script>
     </head>
     <body>
         <div id="container">
             <div id="header">
-                <img src="{{STATIC_URL}}/images/{{schedule_settings.header}}" alt="{{schedule_settings.team.name}} {{schedule_settings.year}} Basketball Schedule" />
+                <img src="{% static "images/{{schedule_settings.header}}"%}" alt="{{schedule_settings.team.name}} {{schedule_settings.year}} Basketball Schedule" />
                 <h1><a href="/">{{schedule_settings.team.name}} {{schedule_settings.year}} Basketball Schedule</a></h1>
             </div>
             <div id="content">
@@ -19,7 +20,7 @@
             <div id="footer">
                 Subscribe to <a href="webcal://jayhawkschedule.co/ical">iCal</a>
                 <strong>&copy; 2013-{% now "Y" %} Jesse Overright</strong>
-                <br>Built with the <a href="http://espn.go.com/"><img src="{{STATIC_URL}}/images/espn-red_50.png" alt="Powered by ESPN API"></a> API
+                <br>Built with the <a href="http://espn.go.com/"><img src="{% static "/images/espn-red_50.png" %} alt="Powered by ESPN API"></a> API
             </div>
         </div>
         <script>
