@@ -5,6 +5,7 @@
         <title>{% block title %}{% endblock %}</title>
         {% with 'css/'|add:schedule_settings.css as jayhawkcss %}
         <link rel="stylesheet" href="{% static jayhawkcss %}" />
+        {% endwith %}
         <link rel="icon" href="{% static "images/favicon.ico"%}" />
         <script src="{% static "js/scripts.min.js" /></script>
     </head>
