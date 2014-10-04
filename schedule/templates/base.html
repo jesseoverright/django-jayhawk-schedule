@@ -3,8 +3,8 @@
     <head>
         {% load staticfiles %}
         <title>{% block title %}{% endblock %}</title>
-        {% with 'css/'|add:schedule_settings.css as jayhawkcss %}
-        <link rel="stylesheet" href="{% static jayhawkcss %}" />
+        {% with 'css/'|add:schedule_settings.css as css %}
+        <link rel="stylesheet" href="{% static css %}" />
         {% endwith %}
         <link rel="icon" href="{% static "images/favicon.ico"%}" />
         <script src="{% static "js/scripts.min.js" /></script>
@@ -12,7 +12,9 @@
     <body>
         <div id="container">
             <div id="header">
-                <img src="{% static "images/{{schedule_settings.header}}"%}" alt="{{schedule_settings.team.name}} {{schedule_settings.year}} Basketball Schedule" />
+                {% with 'images/'|add:schedule_settings.header as header %}
+                <img src="{% static header %}" alt="{{schedule_settings.team.name}} {{schedule_settings.year}} Basketball Schedule" />
+                {% endwith %}
                 <h1><a href="/">{{schedule_settings.team.name}} {{schedule_settings.year}} Basketball Schedule</a></h1>
             </div>
             <div id="content">
