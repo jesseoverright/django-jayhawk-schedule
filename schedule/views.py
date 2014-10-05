@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.utils import timezone
 from django.conf import settings
-from django.page_views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_page
 from schedule.models import Game, Team
 
 from datetime import date
