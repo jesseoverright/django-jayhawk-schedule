@@ -1,10 +1,12 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.utils import timezone
 from django.conf import settings
+from django.page_views.decorators.cache import cache_page
 from schedule.models import Game, Team
 
 from datetime import date
 
+@cache_page(settings.CACHE_TIMEOUT, cache='page_views')
 def index(request):
     games = Game.objects.filter(season = settings.SCHEDULE_SETTINGS['year']).order_by('date')
 
@@ -44,6 +46,7 @@ def index(request):
         'schedule_settings': settings.SCHEDULE_SETTINGS,
     })
 
+@cache_page(settings.CACHE_TIMEOUT, cache='page_views')
 def all_teams(request):
     teams = Team.objects.order_by('name')
 
@@ -52,6 +55,7 @@ def all_teams(request):
         'schedule_settings': settings.SCHEDULE_SETTINGS
     })
 
+@cache_page(settings.CACHE_TIMEOUT, cache='page_views')
 def game(request, season, slug):
     game = get_object_or_404(Game, season=season, slug=slug)
 
@@ -70,6 +74,7 @@ def game(request, season, slug):
         'schedule_settings': settings.SCHEDULE_SETTINGS,
     })
 
+@cache_page(settings.CACHE_TIMEOUT, cache='page_views')
 def team(request, slug):
     team = get_object_or_404(Team, slug=slug)
     games = Game.objects.filter(opponent=team).order_by('date')
@@ -85,6 +90,7 @@ def team(request, slug):
         'schedule_settings': settings.SCHEDULE_SETTINGS,
     })
 
+@cache_page(settings.CACHE_TIMEOUT, cache='page_views')
 def category(request, slug):
     games = get_list_or_404(Game.objects.filter(game_type__iexact=slug).order_by('date'))
 
@@ -94,6 +100,7 @@ def category(request, slug):
         'schedule_settings': settings.SCHEDULE_SETTINGS,
     })
 
+@cache_page(settings.CACHE_TIMEOUT, cache='page_views')
 def ical(request):
     games = Game.objects.order_by('date')
     schedule_settings = settings.SCHEDULE_SETTINGS

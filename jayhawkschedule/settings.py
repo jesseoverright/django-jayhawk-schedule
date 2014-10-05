@@ -41,6 +41,10 @@ CACHES = {
         'OPTIONS': {
             'MAX_ENTRIES': 10000
         }
+    },
+    'page_views': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'jayhawkschedule'
     }
 }
 
