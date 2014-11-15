@@ -138,7 +138,7 @@ class Team(models.Model):
                 return u'<span style="color:#%s">%s %s</span>' % (self.color(), self.name, self.mascot)
         else:
             if self.get_ranking():
-                return u'%s %s' % (self.get_ranking(), self.name)
+                return u'%s %s %s' % (self.get_ranking(), self.name, self.mascot)
             else:
                 return self
 
