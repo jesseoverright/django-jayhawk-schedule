@@ -35,15 +35,16 @@ class EspnApi(object):
         cache_key = cache_key.replace(' ','')
         json_results = cache.get(cache_key)
 
-        if not json_results:
+        # espn api deprecated
+        #if not json_results:
 
-            try:
-                response = requests.get(url, params=params)
-                json_results = response.json()
-            except requests.exceptions.HTTPError as error:
-                json_results = False
+        #    try:
+        #        response = requests.get(url, params=params)
+        #        json_results = response.json()
+        #    except requests.exceptions.HTTPError as error:
+        #        json_results = False
 
-            cache.set(cache_key, json_results, cache_timeout)
+        #    cache.set(cache_key, json_results, cache_timeout)
 
         return json_results
 
