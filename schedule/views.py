@@ -60,7 +60,6 @@ def game(request, season, slug):
     game = get_object_or_404(Game, season=season, slug=slug)
 
     if game.get_result() == 'win' or game.get_result() == 'loss':
-        game.get_game_recaps(4)
         game.get_news(4)
     else:
         game.get_news(8)
