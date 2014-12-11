@@ -68,15 +68,6 @@ class Team(models.Model):
         else:
             return self._espn_api_team_details
 
-    def _get_espn_api_updates(self, content, limit):
-        results = []
-        return results
-
-    def _get_updates_from_date(self, date, limit):
-        results = []
-        
-        return results
-
     def get_ranking(self):
         if self._get_kenpom_stats():
             return int(self._get_kenpom_stats()['RankPythag'])
@@ -141,21 +132,6 @@ class Team(models.Model):
             return self._get_espn_api_team_details()['color']
 
         return False
-
-    def get_news(self, limit=4, date=None):
-        if self.news is None:
-            self.news = self._get_espn_api_updates('story,blog', limit)
-
-    def get_videos(self, limit=2):
-        if self.videos is None:
-            self.videos = self._get_espn_api_updates('video', limit)
-
-    def get_podcasts(self, limit=1):
-        if self.podcasts is None:
-            self.podcasts = self._get_espn_api_updates('podcast', limit)
-
-    def get_game_recaps(self, limit=4, date=None):
-        self.game_recaps = self._get_updates_from_date(date, limit)
 
     def get_tweets(self):
         return twitter_api.get_team_tweets(self.name, self.mascot)
@@ -233,25 +209,6 @@ class Game(models.Model):
 
         return game_type
 
-    def get_game_recaps(self, count):
-        # turn off recaps, espon api is deprecated
-        return False
-
-
-    def get_news(self, count):
-        self.opponent.get_news(count+3)
-        self.team.get_news(count+3)
-        self.news = dedupe_lists(self.opponent.news, self.team.news, count)
-
-    def get_videos(self, count):
-        self.opponent.get_videos(count)
-        self.team.get_videos(1)
-        self.videos = dedupe_lists(self.opponent.videos, self.team.videos, count)
-
-    def get_podcasts(self, count):
-        self.opponent.get_podcasts(count+3)
-        self.team.get_podcasts(count+3)
-        self.podcasts = dedupe_lists(self.opponent.podcasts, self.team.podcasts, count)
 
     def get_tweets(self):
         return twitter_api.get_game_tweets(self.team.name, self.team.mascot, self.team.get_nickname(), self.opponent.name, self.opponent.mascot, self.date)

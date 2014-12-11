@@ -59,14 +59,6 @@ def all_teams(request):
 def game(request, season, slug):
     game = get_object_or_404(Game, season=season, slug=slug)
 
-    if game.get_result() == 'win' or game.get_result() == 'loss':
-        game.get_news(4)
-    else:
-        game.get_news(8)
-
-    game.get_videos(2)
-    game.get_podcasts(6)
-
     return render(request, 'schedule/game.html', {
         'title': '%s vs %s' % (game.team, game.opponent),
         'game': game,
@@ -77,10 +69,6 @@ def game(request, season, slug):
 def team(request, slug):
     team = get_object_or_404(Team, slug=slug)
     games = Game.objects.filter(opponent=team).order_by('date')
-
-    team.get_news(8)
-    team.get_videos(3)
-    team.get_podcasts(8)
 
     return render(request, 'schedule/team.html', {
         'title': '%s Team Page' % team,
