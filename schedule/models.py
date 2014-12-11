@@ -70,28 +70,11 @@ class Team(models.Model):
 
     def _get_espn_api_updates(self, content, limit):
         results = []
-        if self._get_espn_api_team_details() != False:
-            updates = espn_api.get_team_updates(self._get_espn_api_team_details()['id'], content, limit)
-
-            if updates is not None:
-                if 'feed' in updates.keys():
-                    for item in updates['feed']:
-                        results.append(item)
-
         return results
 
     def _get_updates_from_date(self, date, limit):
         results = []
-        if self._get_espn_api_team_details() != False:
-            updates = espn_api.get_game_recaps(self._get_espn_api_team_details()['id'], date, limit)
-
-            if updates is not None:
-                if 'headlines' in updates.keys():
-                    for item in updates['headlines']:
-                        if 'type' in item.keys():
-                            if item['type'] == 'Recap':
-                                results.append(item)
-
+        
         return results
 
     def get_ranking(self):
@@ -253,33 +236,6 @@ class Game(models.Model):
     def get_game_recaps(self, count):
         # turn off recaps, espon api is deprecated
         return False
-
-        game_date = timezone.localtime(self.date)
-        self.opponent.get_game_recaps(count+2, game_date.strftime('%Y%m%d'))
-        self.team.get_game_recaps(count+2, game_date.strftime('%Y%m%d'))
-
-        # if no results exist for either team, incrementally check the next 3 days
-        next_day = game_date
-        while not self.opponent.game_recaps and not self.team.game_recaps and next_day < (game_date + datetime.timedelta(2)) and next_day < timezone.now():
-            next_day = next_day + datetime.timedelta(1)
-            self.opponent.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
-            self.team.get_game_recaps(count+2, next_day.strftime('%Y%m%d'))
-
-        self.game_recaps = dedupe_lists(self.opponent.game_recaps, self.team.game_recaps, count)
-
-        # remove duplicate videos from game recap
-        video_ids = []
-        recap_index = 0
-        for recap in self.game_recaps:
-            video_index = 0
-            if 'video' in recap.keys():
-                for video in recap['video']:
-                    if video['id'] in video_ids:
-                        self.game_recaps[recap_index]['video'][video_index] = 'duplicate'
-                    else:
-                        video_ids.append(video['id'])
-                    video_index += 1
-            recap_index += 1
 
 
     def get_news(self, count):
