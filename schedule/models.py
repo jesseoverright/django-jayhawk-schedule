@@ -73,9 +73,10 @@ class Team(models.Model):
         if self._get_espn_api_team_details() != False:
             updates = espn_api.get_team_updates(self._get_espn_api_team_details()['id'], content, limit)
 
-            if 'feed' in updates.keys():
-                for item in updates['feed']:
-                    results.append(item)
+            if updates is not None:
+                if 'feed' in updates.keys():
+                    for item in updates['feed']:
+                        results.append(item)
 
         return results
 
@@ -84,7 +85,7 @@ class Team(models.Model):
         if self._get_espn_api_team_details() != False:
             updates = espn_api.get_game_recaps(self._get_espn_api_team_details()['id'], date, limit)
 
-            if updates != None:
+            if updates is not None:
                 if 'headlines' in updates.keys():
                     for item in updates['headlines']:
                         if 'type' in item.keys():
@@ -250,6 +251,9 @@ class Game(models.Model):
         return game_type
 
     def get_game_recaps(self, count):
+        # turn off recaps, espon api is deprecated
+        return False
+
         game_date = timezone.localtime(self.date)
         self.opponent.get_game_recaps(count+2, game_date.strftime('%Y%m%d'))
         self.team.get_game_recaps(count+2, game_date.strftime('%Y%m%d'))
