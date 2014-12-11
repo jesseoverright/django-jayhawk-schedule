@@ -84,11 +84,12 @@ class Team(models.Model):
         if self._get_espn_api_team_details() != False:
             updates = espn_api.get_game_recaps(self._get_espn_api_team_details()['id'], date, limit)
 
-            if 'headlines' in updates.keys():
-                for item in updates['headlines']:
-                    if 'type' in item.keys():
-                        if item['type'] == 'Recap':
-                            results.append(item)
+            if updates != None:
+                if 'headlines' in updates.keys():
+                    for item in updates['headlines']:
+                        if 'type' in item.keys():
+                            if item['type'] == 'Recap':
+                                results.append(item)
 
         return results
 
