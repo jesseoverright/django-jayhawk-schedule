@@ -29,6 +29,7 @@ CONFERENCES = (
 )
 
 SEASONS = (
+    ('2015-16', '2015-16'),
     ('2014-15', '2014-15'),
     ('2013-14', '2013-14'),
 )
@@ -215,5 +216,3 @@ class Game(models.Model):
 
     def get_absolute_url(self):
         return reverse('schedule.views.game', args=[self.season, self.slug])
-
-
